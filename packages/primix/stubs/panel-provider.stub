@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ parentProviderImport }}
+use Primix\Pages\Dashboard;
+use Primix\Panel;
+
+class {{ class }} extends {{ parentProviderClass }}
+{
+{{ getIdMethod }}    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->path('{{ path }}')
+            ->login()
+            ->passwordReset()
+            ->registration()
+            ->discoverResources(in: app_path('Primix/Resources'), for: 'App\\Primix\\Resources')
+            ->discoverPages(in: app_path('Primix/Pages'), for: 'App\\Primix\\Pages')
+            ->discoverWidgets(in: app_path('Primix/Widgets'), for: 'App\\Primix\\Widgets')
+            ->pages([
+                Dashboard::class,
+            ]);
+    }
+}

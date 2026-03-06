@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ resourceNamespace }};
+use Primix\Resources\Pages\CreateRecord;
+
+class {{ class }} extends CreateRecord
+{
+    protected static ?string $resource = {{ resource }}::class;
+}

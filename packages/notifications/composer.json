@@ -1,0 +1,29 @@
+{
+    "name": "primix/notifications",
+    "description": "Notification system for Primix admin panel framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "primix/support": "^0.1 || dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\Notifications\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Primix\\Notifications\\PrimixNotificationsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

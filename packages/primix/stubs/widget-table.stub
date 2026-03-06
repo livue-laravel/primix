@@ -1,0 +1,20 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Tables\Table;
+use Primix\Widgets\TableWidget;
+
+class {{ class }} extends TableWidget
+{
+    protected ?string $heading = null;
+
+    protected function table(Table $table): Table
+    {
+        return $table
+            ->query(/* Model::query() */)
+            ->columns([
+                //
+            ]);
+    }
+}

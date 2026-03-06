@@ -1,0 +1,31 @@
+{
+    "name": "primix/widgets",
+    "description": "Dashboard widgets for Primix admin panel framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "primix/support": "^0.1 || dev-main",
+        "primix/tables": "^0.1 || dev-main",
+        "livue/livue": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\Widgets\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Primix\\Widgets\\PrimixWidgetsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

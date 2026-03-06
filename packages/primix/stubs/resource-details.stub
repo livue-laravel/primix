@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Details\Components\Entries\TextEntry;
+use Primix\Details\Details;
+
+class {{ class }} extends Details
+{
+    public static function configure(Details $details): Details
+    {
+        return $details
+            ->schema([
+                //
+            ]);
+    }
+}

@@ -1,0 +1,262 @@
+/**
+ * Primix Component CSS
+ *
+ * Custom styles for Primix components (grid, fields, tabs, repeater).
+ * Imported by the app's CSS - does NOT include Tailwind (handled by the app).
+ */
+
+/* Tab Error Indicator */
+.primix-tab-error-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background-color: var(--p-red-500);
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Vertical Tabs */
+.primix-tabs-vertical.p-tabs {
+    flex-direction: row;
+}
+
+.primix-tabs-vertical > .p-tablist {
+    flex-direction: column;
+    min-width: 180px;
+}
+
+.primix-tabs-vertical > .p-tablist .p-tablist-tab-list {
+    flex-direction: column;
+    border-width: 0 var(--p-tabs-tablist-border-width, 1px) 0 0;
+}
+
+.primix-tabs-vertical > .p-tablist .p-tablist-active-bar {
+    width: var(--p-tabs-active-bar-height, 2px);
+    height: auto;
+    inset-block-end: auto;
+    inset-inline-end: 0;
+}
+
+.primix-tabs-vertical > .p-tabpanels {
+    flex: 1;
+}
+
+/* ===== Grid System ===== */
+
+.primix-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
+}
+
+/* Responsive columns - each breakpoint falls back to the previous */
+@media (min-width: 640px) {
+    .primix-grid {
+        grid-template-columns: repeat(var(--cols-sm, var(--cols, 1)), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .primix-grid {
+        grid-template-columns: repeat(var(--cols-md, var(--cols-sm, var(--cols, 1))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .primix-grid {
+        grid-template-columns: repeat(var(--cols-lg, var(--cols-md, var(--cols-sm, var(--cols, 1)))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1280px) {
+    .primix-grid {
+        grid-template-columns: repeat(var(--cols-xl, var(--cols-lg, var(--cols-md, var(--cols-sm, var(--cols, 1))))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1536px) {
+    .primix-grid {
+        grid-template-columns: repeat(var(--cols-2xl, var(--cols-xl, var(--cols-lg, var(--cols-md, var(--cols-sm, var(--cols, 1)))))), minmax(0, 1fr));
+    }
+}
+
+/* Grid items - column span (using longhand to not conflict with column-start) */
+.primix-grid > .primix-grid-item {
+    grid-column-end: span var(--col-span, 1);
+}
+
+@media (min-width: 640px) {
+    .primix-grid > .primix-grid-item {
+        grid-column-end: span var(--col-span-sm, var(--col-span, 1));
+    }
+}
+
+@media (min-width: 768px) {
+    .primix-grid > .primix-grid-item {
+        grid-column-end: span var(--col-span-md, var(--col-span-sm, var(--col-span, 1)));
+    }
+}
+
+@media (min-width: 1024px) {
+    .primix-grid > .primix-grid-item {
+        grid-column-end: span var(--col-span-lg, var(--col-span-md, var(--col-span-sm, var(--col-span, 1))));
+    }
+}
+
+@media (min-width: 1280px) {
+    .primix-grid > .primix-grid-item {
+        grid-column-end: span var(--col-span-xl, var(--col-span-lg, var(--col-span-md, var(--col-span-sm, var(--col-span, 1)))));
+    }
+}
+
+@media (min-width: 1536px) {
+    .primix-grid > .primix-grid-item {
+        grid-column-end: span var(--col-span-2xl, var(--col-span-xl, var(--col-span-lg, var(--col-span-md, var(--col-span-sm, var(--col-span, 1))))));
+    }
+}
+
+/* Grid items - column start */
+.primix-grid > .primix-grid-item[style*="--col-start"] {
+    grid-column-start: var(--col-start);
+}
+
+@media (min-width: 640px) {
+    .primix-grid > .primix-grid-item[style*="--col-start-sm"] {
+        grid-column-start: var(--col-start-sm);
+    }
+}
+
+@media (min-width: 768px) {
+    .primix-grid > .primix-grid-item[style*="--col-start-md"] {
+        grid-column-start: var(--col-start-md);
+    }
+}
+
+@media (min-width: 1024px) {
+    .primix-grid > .primix-grid-item[style*="--col-start-lg"] {
+        grid-column-start: var(--col-start-lg);
+    }
+}
+
+@media (min-width: 1280px) {
+    .primix-grid > .primix-grid-item[style*="--col-start-xl"] {
+        grid-column-start: var(--col-start-xl);
+    }
+}
+
+@media (min-width: 1536px) {
+    .primix-grid > .primix-grid-item[style*="--col-start-2xl"] {
+        grid-column-start: var(--col-start-2xl);
+    }
+}
+
+/* Full span - spans all columns */
+.primix-grid > .primix-grid-item[data-col-span-full] {
+    grid-column: 1 / -1;
+}
+
+/* Remove field margin inside grid (gap handles spacing) */
+.primix-grid > .primix-grid-item > .primix-field {
+    margin-bottom: 0;
+}
+
+/* ===== Field Wrapper ===== */
+
+/* Field wrapper - default spacing */
+.primix-field {
+    margin-bottom: 0.75rem;
+}
+
+/* Field wrapper - auto padding for float-label fields */
+.primix-field:has(.p-floatlabel) {
+    padding-top: 1.25rem;
+}
+
+/* Hidden label - visually hide all labels */
+.primix-label-hidden label,
+.primix-label-hidden .primix-layout-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Hidden label - remove float-label padding */
+.primix-field.primix-label-hidden {
+    padding-top: 0;
+}
+
+/* Layout aside - label left, content right */
+.primix-aside {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.primix-aside > .primix-layout-label {
+    flex-shrink: 0;
+    min-width: 200px;
+    max-width: 280px;
+    padding-top: 0.5rem;
+}
+
+.primix-aside > .primix-aside-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Field inline label - label left, input right */
+.primix-field.primix-label-inline {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-top: 0;
+}
+
+.primix-field.primix-label-inline > .primix-inline-label-area {
+    flex-shrink: 0;
+    min-width: 160px;
+    padding-top: 0.5rem;
+}
+
+.primix-field.primix-label-inline > .primix-inline-label-area > .primix-inline-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--p-text-color);
+}
+
+.primix-field.primix-label-inline > .primix-field-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Inline label - hide inner labels (float-label, checkbox, toggle) */
+.primix-field.primix-label-inline label:not(.primix-inline-label) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ===== Repeater Table Layout ===== */
+
+.primix-repeater-table table {
+    border-collapse: collapse;
+}
+
+/* Remove field spacing inside table cells */
+.primix-repeater-table-cell .primix-field {
+    margin-bottom: 0;
+    padding-top: 0;
+}

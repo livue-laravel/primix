@@ -1,0 +1,58 @@
+{
+    "name": "primix/monorepo",
+    "description": "Primix - Admin panel framework for Laravel based on LiVue (Monorepo)",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "livue/livue": "dev-main"
+    },
+    "require-dev": {
+        "symplify/monorepo-builder": "^11.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\Support\\": "packages/support/src/",
+            "Primix\\Forms\\": "packages/forms/src/",
+            "Primix\\Details\\": "packages/details/src/",
+            "Primix\\Tables\\": "packages/tables/src/",
+            "Primix\\Actions\\": "packages/actions/src/",
+            "Primix\\Notifications\\": "packages/notifications/src/",
+            "Primix\\Widgets\\": "packages/widgets/src/",
+            "Primix\\MultiTenant\\": "packages/multi-tenant/src/",
+            "Primix\\": "packages/primix/src/"
+        }
+    },
+    "replace": {
+        "primix/support": "self.version",
+        "primix/forms": "self.version",
+        "primix/details": "self.version",
+        "primix/tables": "self.version",
+        "primix/actions": "self.version",
+        "primix/notifications": "self.version",
+        "primix/widgets": "self.version",
+        "primix/multi-tenant": "self.version",
+        "primix/primix": "self.version"
+    },
+    "scripts": {
+        "monorepo:merge": "vendor/bin/monorepo-builder merge",
+        "monorepo:propagate": "vendor/bin/monorepo-builder propagate",
+        "monorepo:validate": "vendor/bin/monorepo-builder validate",
+        "monorepo:release": "vendor/bin/monorepo-builder release",
+        "monorepo:release-major": "vendor/bin/monorepo-builder release major",
+        "monorepo:release-minor": "vendor/bin/monorepo-builder release minor",
+        "monorepo:release-patch": "vendor/bin/monorepo-builder release patch"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "symplify/monorepo-builder": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}

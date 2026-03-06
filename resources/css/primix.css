@@ -1,0 +1,13 @@
+/**
+ * Primix Full CSS Bundle
+ *
+ * Aggregates all package CSS entries for the monolithic "primix" build.
+ */
+
+@import "../../packages/support/resources/css/index.css";
+@import "../../packages/forms/resources/css/index.css";
+@import "../../packages/tables/resources/css/index.css";
+@import "../../packages/actions/resources/css/index.css";
+@import "../../packages/notifications/resources/css/index.css";
+@import "../../packages/widgets/resources/css/index.css";
+@import "../../packages/primix/resources/css/index.css";

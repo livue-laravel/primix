@@ -1,0 +1,54 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ modelNamespace }};
+use {{ userNamespace }};
+
+class {{ class }}
+{
+    public function viewAny({{ userClass }} $user): bool
+    {
+        return true;
+    }
+
+    public function view({{ userClass }} $user, {{ modelClass }} $record): bool
+    {
+        return true;
+    }
+
+    public function create({{ userClass }} $user): bool
+    {
+        return true;
+    }
+
+    public function update({{ userClass }} $user, {{ modelClass }} $record): bool
+    {
+        return true;
+    }
+
+    public function delete({{ userClass }} $user, {{ modelClass }} $record): bool
+    {
+        return true;
+    }
+
+    public function restore({{ userClass }} $user, {{ modelClass }} $record): bool
+    {
+        return true;
+    }
+
+    public function forceDelete({{ userClass }} $user, {{ modelClass }} $record): bool
+    {
+        return true;
+    }
+
+    public function restoreAny({{ userClass }} $user, ?string $modelClass = null): bool
+    {
+        return true;
+    }
+
+    public function forceDeleteAny({{ userClass }} $user, ?string $modelClass = null): bool
+    {
+        return true;
+    }
+}

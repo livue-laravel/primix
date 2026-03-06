@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Widgets\Widget;
+
+class {{ class }} extends Widget
+{
+    protected function render(): string
+    {
+        return 'primix.widgets.{{ class }}';
+    }
+}

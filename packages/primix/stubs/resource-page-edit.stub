@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ resourceNamespace }};
+use Primix\Resources\Pages\EditRecord;
+
+class {{ class }} extends EditRecord
+{
+    protected static ?string $resource = {{ resource }}::class;
+}

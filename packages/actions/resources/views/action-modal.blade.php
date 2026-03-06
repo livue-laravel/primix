@@ -1,0 +1,194 @@
+@props([
+    'action' => null,
+    'actionForm' => null,
+    'type' => 'page',           // 'page' | 'field'
+    'editPickerOptions' => [],
+    'editKey' => null,
+])
+
+@once('primix-forms-assets')
+    @if (config('primix.vite', true) && \Primix\Support\ViteHot::isRunning())
+        @vite('resources/js/primix/forms.js')
+    @else
+        @livueLoadStyle('primix-forms', 'primix/forms')
+        @livueLoadScript('primix-forms', 'primix/forms', ['type' => 'module'])
+    @endif
+@endonce
+
+@php
+    $isPageAction = $type === 'page';
+    $isEditPicker = !$isPageAction && !empty($editPickerOptions) && $editKey === null;
+    $resolvedActionForm = $actionForm;
+
+    if ($resolvedActionForm === null && $action && $action->hasForm() && class_exists(\Primix\Forms\Form::class)) {
+        $statePath = $isPageAction ? 'mountedActionData' : 'mountedFormFieldActionData';
+        $submitAction = $isPageAction ? 'submitMountedAction' : 'submitFormFieldAction';
+
+        $resolvedActionForm = \Primix\Forms\Form::make()
+            ->livue($this)
+            ->name($statePath)
+            ->statePath($statePath)
+            ->submitAction($submitAction)
+            ->schema($action->getFormSchema());
+    }
+@endphp
+
+@if($action && $isEditPicker)
+    {{-- Edit picker: selezione del record da modificare in multi-select --}}
+    <p-dialog
+        :visible="mountedFormFieldAction !== null"
+        @update:visible="(val) => { if (!val) { mountedFormFieldAction = null; closeFormFieldAction() } }"
+        modal
+        :header="'{{ addslashes(__('Select option to edit')) }}'"
+        :style="{ width: '400px' }"
+    >
+        <p-listbox
+            :options="{!! \Illuminate\Support\Js::from($editPickerOptions) !!}"
+            option-label="label"
+            option-value="value"
+            @update:model-value="(val) => { if (val !== null && val !== undefined) selectFormFieldEditRecord(val) }"
+        ></p-listbox>
+    </p-dialog>
+@elseif($action)
+    @if($isPageAction && $action->isPopover())
+        {{-- Popover (solo per page actions) --}}
+        <p-popover
+            :visible="mountedAction !== null"
+            @update:visible="(val) => { if (!val) { mountedAction = null; closeActionModal() } }"
+        >
+            @if($action->getModalHeading())
+                <div class="font-semibold mb-2">{{ $action->getModalHeading() }}</div>
+            @endif
+            @if($action->getModalDescription())
+                <p class="text-surface-500 dark:text-surface-400 mb-3 text-sm">{{ $action->getModalDescription() }}</p>
+            @endif
+
+            @if($resolvedActionForm)
+                @include('primix-forms::form', [
+                    'form' => $resolvedActionForm,
+                    'renderFieldActionModal' => false,
+                ])
+            @elseif($action->hasForm())
+                <div class="primix-action-form space-y-3">
+                    @foreach($action->getFormSchema() as $field)
+                        {{ $field }}
+                    @endforeach
+                </div>
+            @endif
+
+            @if(!$action->isModalFooterHidden())
+                <div class="flex justify-end gap-2 mt-3">
+                    <p-button
+                        label="{{ $action->getModalCancelActionLabel() }}"
+                        severity="secondary"
+                        size="small"
+                        @click="mountedAction = null; closeActionModal()"
+                    ></p-button>
+                    <p-button
+                        label="{{ $action->getModalSubmitActionLabel() }}"
+                        size="small"
+                        @click="callAction({ name: '{{ $action->getName() }}' })"
+                    ></p-button>
+                </div>
+            @endif
+        </p-popover>
+    @else
+        @php
+            $isSlideOver = $action->isSlideOver();
+            $slideOverPosition = $isSlideOver ? $action->getSlideOverPosition() : null;
+            $transitionMs = 300;
+
+            $sizePx = match($action->getModalWidth()) {
+                'sm' => '400px',
+                'md' => '500px',
+                'lg' => '700px',
+                'xl' => '900px',
+                '2xl' => '1100px',
+                default => '500px',
+            };
+
+            if ($isSlideOver) {
+                $dialogPosition = $slideOverPosition->getDialogPosition();
+                $dialogStyle = $slideOverPosition->isVertical()
+                    ? "width: {$sizePx}; height: 100%; max-height: 100%; border-radius: 0; margin: 0;"
+                    : "width: 100%; max-width: 100%; height: {$sizePx}; border-radius: 0; margin: 0;";
+            } else {
+                $dialogPosition = $action->getModalPosition();
+                $dialogStyle = "width: {$sizePx};";
+            }
+
+            $pt = $action->getModalPassThrough();
+            if ($isSlideOver) {
+                $pt = array_merge($pt, ['transition' => $slideOverPosition->getTransitionPt()]);
+            }
+
+            if ($isPageAction) {
+                $visibleExpr = 'mountedAction !== null';
+                $closeHandler = $isSlideOver
+                    ? "mountedAction = null; setTimeout(() => closeActionModal(), {$transitionMs})"
+                    : "mountedAction = null; closeActionModal()";
+            } else {
+                $visibleExpr = 'mountedFormFieldAction !== null';
+                $closeHandler = $isSlideOver
+                    ? "mountedFormFieldAction = null; setTimeout(() => closeFormFieldAction(), {$transitionMs})"
+                    : "mountedFormFieldAction = null; closeFormFieldAction()";
+            }
+        @endphp
+
+        <p-dialog
+            :visible="{{ $visibleExpr }}"
+            @update:visible="(val) => { if (!val) { {{ $closeHandler }} } }"
+            modal
+            :header="'{{ addslashes($action->getModalHeading()) }}'"
+            :style="{ {{ collect(explode(';', $dialogStyle))->filter()->map(function ($rule) {
+                $rule = trim($rule);
+                if (!$rule) return null;
+                [$prop, $val] = array_map('trim', explode(':', $rule, 2));
+                $camel = \Illuminate\Support\Str::camel($prop);
+                return "'{$camel}': '{$val}'";
+            })->filter()->implode(', ') }} }"
+            :closable="{{ $action->shouldCloseModalOnClickAway() ? 'true' : 'false' }}"
+            :close-on-escape="{{ $action->shouldCloseModalOnEscape() ? 'true' : 'false' }}"
+            position="{{ $dialogPosition }}"
+            :block-scroll="{{ $action->shouldModalBlockScroll() ? 'true' : 'false' }}"
+            :draggable="{{ $action->isModalDraggable() ? 'true' : 'false' }}"
+            :maximizable="{{ $action->isModalMaximizable() ? 'true' : 'false' }}"
+            @if(!empty($pt)) :pt="{!! \Illuminate\Support\Js::from($pt) !!}" @endif
+        >
+            @if($action->getModalDescription())
+                <p class="text-surface-500 dark:text-surface-400 mb-4">{{ $action->getModalDescription() }}</p>
+            @endif
+
+            @if($resolvedActionForm)
+                @include('primix-forms::form', [
+                    'form' => $resolvedActionForm,
+                    'renderFieldActionModal' => false,
+                ])
+            @elseif($action->hasForm())
+                <div class="primix-action-form space-y-4">
+                    @foreach($action->getFormSchema() as $field)
+                        {{ $field }}
+                    @endforeach
+                </div>
+            @endif
+
+            @if(!$isPageAction || !$action->isModalFooterHidden())
+                <template #footer>
+                    <p-button
+                        label="{{ $action->getModalCancelActionLabel() }}"
+                        severity="secondary"
+                        @click="{{ $closeHandler }}"
+                    ></p-button>
+                    <p-button
+                        label="{{ $action->getModalSubmitActionLabel() }}"
+                        @if($isPageAction)
+                            @click="callAction({ name: '{{ $action->getName() }}' })"
+                        @else
+                            @click="submitFormFieldAction()"
+                        @endif
+                    ></p-button>
+                </template>
+            @endif
+        </p-dialog>
+    @endif
+@endif

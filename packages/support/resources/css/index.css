@@ -1,0 +1,9 @@
+/**
+ * Primix Support CSS Entry Point
+ *
+ * Contains shared Tailwind layers used across packages.
+ */
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));

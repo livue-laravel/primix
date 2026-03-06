@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Pages\Dashboard as BaseDashboard;
+
+class {{ class }} extends BaseDashboard
+{
+    protected ?string $title = '{{ title }}';
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            //
+        ];
+    }
+}

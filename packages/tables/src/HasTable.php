@@ -1,0 +1,219 @@
+<?php
+
+namespace Primix\Tables;
+
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use LiVue\Features\SupportPagination\UsePagination;
+use Primix\Tables\Columns\Column;
+use Primix\Tables\Concerns\ExecutesBulkActions;
+use Primix\Tables\Concerns\ManagesColumnToggling;
+use Primix\Tables\Concerns\ManagesRecordSelection;
+use Primix\Tables\Concerns\ManagesTableFilters;
+use Primix\Tables\Concerns\ManagesTableReordering;
+
+trait HasTable
+{
+    use ExecutesBulkActions;
+    use ManagesColumnToggling;
+    use ManagesRecordSelection;
+    use ManagesTableFilters;
+    use ManagesTableReordering;
+    use UsePagination;
+
+    public string $tableSearch = '';
+
+    public string $tableSortColumn = '';
+
+    public string $tableSortDirection = 'asc';
+
+    public int $tablePerPage = 10;
+
+    public array $tableColumnSearches = [];
+
+    protected ?Table $cachedTable = null;
+
+    abstract protected function table(Table $table): Table;
+
+    public function getTable(): Table
+    {
+        if ($this->cachedTable === null) {
+            $this->cachedTable = $this->table(Table::make()->livue($this));
+        }
+
+        return $this->cachedTable;
+    }
+
+    public function getTableRecords(): LengthAwarePaginator
+    {
+        $table = $this->getTable();
+        $query = $this->getFilteredTableQuery();
+
+        // Apply group ordering first (ensures grouped records are contiguous)
+        if ($table->isGrouped()) {
+            $query->orderBy($table->getGroup()->getColumn());
+        }
+
+        // Apply sorting
+        if ($this->tableSortColumn) {
+            $query->orderBy($this->tableSortColumn, $this->tableSortDirection);
+        } elseif ($table->isReorderable()) {
+            // Default sort by order column when reorderable and no user sort
+            $query->orderBy($table->getOrderColumn());
+        }
+
+        return $this->paginate($query, $this->tablePerPage);
+    }
+
+    /**
+     * Build the filtered query (search + filters applied, no sorting or pagination).
+     */
+    public function getFilteredTableQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $table = $this->getTable();
+        $query = clone $table->getQuery();
+
+        $this->initializeToggleableColumns();
+
+        // Apply global search
+        if ($this->tableSearch) {
+            $searchableColumns = collect($table->getGloballySearchableColumns())
+                ->map(fn (Column $col) => $col->getSearchColumn());
+
+            if ($searchableColumns->isNotEmpty()) {
+                $query->where(function ($q) use ($searchableColumns) {
+                    foreach ($searchableColumns as $column) {
+                        $q->orWhere($column, 'like', "%{$this->tableSearch}%");
+                    }
+                });
+            }
+        }
+
+        // Apply per-column search
+        if (! empty($this->tableColumnSearches)) {
+            foreach ($this->tableColumnSearches as $columnName => $searchValue) {
+                if ($searchValue === '' || $searchValue === null) {
+                    continue;
+                }
+
+                $col = collect($table->getColumns())
+                    ->first(fn (Column $c) => $c->getName() === $columnName);
+
+                if ($col && $col->isIndividuallySearchable()) {
+                    $query->where($col->getSearchColumn(), 'like', "%{$searchValue}%");
+                }
+            }
+        }
+
+        // Apply filters
+        foreach ($table->getFilters() as $filter) {
+            $value = $this->tableFilters[$filter->getName()] ?? null;
+
+            if ($value !== null && $value !== '') {
+                $query = $filter->apply($query, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * Calculate summary values for all columns with summarizers.
+     *
+     * @return array<string, array<array{label: string, value: string|null}>>
+     */
+    public function getTableSummary(): array
+    {
+        $table = $this->getTable();
+
+        if (! $table->hasSummarizableColumns()) {
+            return [];
+        }
+
+        $query = $this->getFilteredTableQuery();
+
+        $summary = [];
+
+        foreach ($table->getVisibleColumns() as $column) {
+            if (! $column->hasSummarizers()) {
+                $summary[$column->getName()] = [];
+
+                continue;
+            }
+
+            $results = [];
+
+            foreach ($column->getSummarizers() as $summarizer) {
+                $results[] = $summarizer->resolve(clone $query, $column->getName());
+            }
+
+            $summary[$column->getName()] = $results;
+        }
+
+        return $summary;
+    }
+
+    public function searchTable(?string $search): void
+    {
+        $this->tableSearch = $search ?? '';
+        $this->resetPage();
+    }
+
+    public function searchTableColumn(string $column, ?string $search): void
+    {
+        if ($search === null || $search === '') {
+            unset($this->tableColumnSearches[$column]);
+        } else {
+            $this->tableColumnSearches[$column] = $search;
+        }
+
+        $this->resetPage();
+    }
+
+    public function sortTable(string $column): void
+    {
+        if ($this->tableSortColumn === $column) {
+            $this->tableSortDirection = $this->tableSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->tableSortColumn = $column;
+            $this->tableSortDirection = 'asc';
+        }
+
+        $this->resetPage();
+    }
+
+    public function setTablePerPage(int $perPage): void
+    {
+        $this->tablePerPage = $perPage;
+        $this->resetPage();
+    }
+
+    /**
+     * Update an editable column's state.
+     * Called from Vue when a user edits an inline column value.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function updateTableColumnState(string $columnName, mixed $recordKey, mixed $value): void
+    {
+        $table = $this->getTable();
+
+        $column = collect($table->getColumns())
+            ->first(fn (Column $col) => $col->getName() === $columnName
+                && method_exists($col, 'isEditable')
+                && $col->isEditable());
+
+        if (! $column) {
+            throw new \InvalidArgumentException("No editable column [{$columnName}] found.");
+        }
+
+        $query = clone $table->getQuery();
+        $record = $query->where($table->getRecordKeyName(), $recordKey)->firstOrFail();
+
+        $column->updateState($record, $value);
+    }
+
+    protected function resetTableCache(): void
+    {
+        $this->cachedTable = null;
+    }
+}

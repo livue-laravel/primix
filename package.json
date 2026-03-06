@@ -1,0 +1,66 @@
+{
+    "name": "primix",
+    "version": "0.1.0",
+    "description": "Admin panel framework for Laravel based on LiVue and PrimeVue",
+    "type": "module",
+    "main": "dist/primix.js",
+    "module": "dist/primix.js",
+    "exports": {
+        ".": {
+            "import": "./dist/primix.js",
+            "default": "./dist/primix.js"
+        },
+        "./support": {
+            "import": "./dist/primix-support.js",
+            "default": "./dist/primix-support.js"
+        },
+        "./forms": {
+            "import": "./dist/primix-forms.js",
+            "default": "./dist/primix-forms.js"
+        },
+        "./tables": {
+            "import": "./dist/primix-tables.js",
+            "default": "./dist/primix-tables.js"
+        },
+        "./actions": {
+            "import": "./dist/primix-actions.js",
+            "default": "./dist/primix-actions.js"
+        },
+        "./notifications": {
+            "import": "./dist/primix-notifications.js",
+            "default": "./dist/primix-notifications.js"
+        },
+        "./widgets": {
+            "import": "./dist/primix-widgets.js",
+            "default": "./dist/primix-widgets.js"
+        },
+        "./panels": {
+            "import": "./dist/primix-panels.js",
+            "default": "./dist/primix-panels.js"
+        }
+    },
+    "scripts": {
+        "build": "node scripts/build-packages.mjs",
+        "dev": "node scripts/build-packages.mjs --watch"
+    },
+    "keywords": [
+        "laravel",
+        "admin",
+        "panel",
+        "primevue",
+        "livue",
+        "vue"
+    ],
+    "author": "Claudio Giuseppe Castorina",
+    "license": "MIT",
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.1.18",
+        "@vitejs/plugin-vue": "^6.0.4",
+        "autoprefixer": "^10.4.24",
+        "tailwindcss": "^4.1.18",
+        "tailwindcss-primeui": "^0.6.1"
+    },
+    "dependencies": {
+        "chart.js": "^4.5.1"
+    }
+}

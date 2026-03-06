@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Actions\BulkAction;
+
+class {{ class }} extends BulkAction
+{
+    public static function getDefaultName(): ?string
+    {
+        return '{{ defaultName }}';
+    }
+
+    protected function setUp(): void
+    {
+        $this->label('{{ label }}');
+        $this->icon('heroicon-o-bolt');
+        $this->color('primary');
+
+        $this->action(function (): void {
+            $records = $this->getRecords();
+
+            if ($records !== null) {
+                //
+            }
+        });
+    }
+}

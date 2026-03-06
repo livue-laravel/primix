@@ -1,0 +1,15 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build / tooling
+/.idea/
+/.vscode/
+
+# OS files
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example

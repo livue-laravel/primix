@@ -1,0 +1,15 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Widgets\StatsOverviewWidget;
+
+class {{ class }} extends StatsOverviewWidget
+{
+    protected function getStats(): array
+    {
+        return [
+            //
+        ];
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "name": "primix/primix",
+    "description": "Primix - Admin panel framework for Laravel based on LiVue",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "primix/support": "^0.1 || dev-main",
+        "primix/forms": "^0.1 || dev-main",
+        "primix/details": "^0.1 || dev-main",
+        "primix/tables": "^0.1 || dev-main",
+        "primix/actions": "^0.1 || dev-main",
+        "primix/notifications": "^0.1 || dev-main",
+        "primix/widgets": "^0.1 || dev-main",
+        "livue/livue": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Primix\\PrimixServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

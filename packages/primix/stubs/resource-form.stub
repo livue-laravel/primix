@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Forms\Components\Fields\TextInput;
+use Primix\Forms\Form;
+
+class {{ class }} extends Form
+{
+    public static function configure(Form $form): Form
+    {
+        return $form
+            ->schema([
+                //
+            ]);
+    }
+}

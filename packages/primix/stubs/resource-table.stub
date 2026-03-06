@@ -1,0 +1,35 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Resources\Actions\CreateAction;
+use Primix\Resources\Actions\DeleteAction;
+use Primix\Resources\Actions\EditAction;
+use Primix\Resources\Actions\ViewAction;
+use Primix\Tables\Columns\TextColumn;
+use Primix\Tables\Table;
+
+class {{ class }} extends Table
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                //
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                CreateAction::make(),
+            ])
+            ->actions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+            ])
+            ->bulkActions([
+                //
+            ]);
+    }
+}

@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ resourceNamespace }};
+use Primix\Resources\Pages\ListRecords;
+
+class {{ class }} extends ListRecords
+{
+    protected static ?string $resource = {{ resource }}::class;
+}

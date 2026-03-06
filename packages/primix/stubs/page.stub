@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Pages\Page;
+
+class {{ class }} extends Page
+{
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?string $title = null;
+
+    protected function render(): string
+    {
+        return 'primix.pages.{{ class }}';
+    }
+}

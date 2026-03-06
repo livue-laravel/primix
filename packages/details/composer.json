@@ -1,0 +1,31 @@
+{
+    "name": "primix/details",
+    "description": "Read-only details builder for Primix admin panel framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "primix/support": "^0.1 || dev-main",
+        "primix/forms": "^0.1 || dev-main",
+        "livue/livue": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\Details\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Primix\\Details\\PrimixDetailsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

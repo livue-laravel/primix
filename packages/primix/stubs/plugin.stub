@@ -1,0 +1,29 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Contracts\Plugin;
+use Primix\Panel;
+
+class {{ class }} implements Plugin
+{
+    public static function make(): static
+    {
+        return new static();
+    }
+
+    public function getId(): string
+    {
+        return '{{ pluginId }}';
+    }
+
+    public function register(Panel $panel): void
+    {
+        //
+    }
+
+    public function boot(Panel $panel): void
+    {
+        //
+    }
+}

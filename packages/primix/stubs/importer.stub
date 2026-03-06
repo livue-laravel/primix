@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Tables\Imports\Importer;
+use Primix\Tables\Imports\ImportColumn;
+
+class {{ class }} extends Importer
+{
+    protected static ?string $model = \{{ modelNamespace }}::class;
+
+    public static function getColumns(): array
+    {
+        return [
+            //
+        ];
+    }
+}

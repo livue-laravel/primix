@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Tables\Exports\Exporter;
+use Primix\Tables\Exports\ExportColumn;
+
+class {{ class }} extends Exporter
+{
+    protected static ?string $model = \{{ modelNamespace }}::class;
+
+    public static function getColumns(): array
+    {
+        return [
+            //
+        ];
+    }
+}

@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Support\Theme\Theme;
+use Primix\Support\Theme\ThemeConfig;
+use Primix\Support\Theme\PassThroughConfig;
+
+class {{ class }} extends Theme
+{
+    public function configure(ThemeConfig $config): void
+    {
+        $config
+            ->primaryColor('emerald')
+            ->surfaceColor('slate')
+            ->borderRadius('md');
+    }
+
+    public function passThrough(PassThroughConfig $pt): void
+    {
+        //
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "name": "primix/actions",
+    "description": "Action system for Primix admin panel framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Claudio Giuseppe Castorina"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "primix/support": "^0.1 || dev-main",
+        "primix/notifications": "^0.1 || dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Primix\\Actions\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Primix\\Actions\\PrimixActionsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
