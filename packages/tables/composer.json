@@ -10,8 +10,8 @@
     "type": "library",
     "require": {
         "php": "^8.2",
-        "primix/support": "^0.1 || dev-main",
-        "primix/actions": "^0.1 || dev-main",
+        "primix/support": "^0.1.0",
+        "primix/actions": "^0.1.0",
         "livue/livue": "*"
     },
     "suggest": {
