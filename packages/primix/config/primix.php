@@ -53,4 +53,20 @@ return [
     |
     */
     'dark_mode' => env('PRIMIX_DARK_MODE', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Panels
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for panel registration and discovery.
+    |
+    | autodiscovery: When true, Primix automatically discovers and registers
+    | any *PanelProvider.php classes found in app/Providers/, without requiring
+    | manual registration in bootstrap/providers.php.
+    |
+    */
+    'panels' => [
+        'autodiscovery' => env('PRIMIX_PANELS_AUTODISCOVERY', true),
+    ],
 ];

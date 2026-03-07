@@ -17,8 +17,10 @@ use Primix\Support\Concerns\CanBeHidden;
 use Primix\Support\Concerns\HasColor;
 use Primix\Support\Concerns\HasIcon;
 use Primix\Support\Concerns\HasId;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 use Primix\Support\Concerns\HasSize;
 use Primix\Support\Enums\TooltipPosition;
+use Primix\Support\SchemaBuilder;
 
 class Action extends ViewComponent
 {
@@ -35,8 +37,11 @@ class Action extends ViewComponent
     use HasIcon;
     use HasId;
     use HasName;
+    use HasSchemaComponentIdentifier;
     use HasSize;
     use InteractsWithRecord;
+
+    protected static ?string $schemaComponentCategory = 'action';
 
     protected ?string $evaluationIdentifier = 'action';
 
@@ -78,6 +83,28 @@ class Action extends ViewComponent
         $static->configure();
 
         return $static;
+    }
+
+    /**
+     * Build an action instance from a schema definition.
+     *
+     * @param  array<string, mixed>  $definition
+     * @param  array<string, \Closure>  $callbacks
+     */
+    public static function fromSchema(array $definition, array $callbacks = []): static
+    {
+        $builder = app(SchemaBuilder::class);
+        $definition['type'] ??= static::getSchemaComponentType();
+
+        $component = $builder->buildComponent($definition, 'action', $callbacks);
+
+        if (! $component instanceof static) {
+            $resolved = is_object($component) ? $component::class : 'null';
+
+            throw new \InvalidArgumentException("Unable to build action schema as " . static::class . ", got {$resolved}.");
+        }
+
+        return $component;
     }
 
     public function action(?Closure $callback): static

@@ -1589,9 +1589,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
+function ensurePrimeVueTheme(app) {
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 var ToastEventBus = s$a();
 var PrimeVueToastSymbol = /* @__PURE__ */ Symbol();
 var ToastService = {
@@ -1614,10 +1624,13 @@ var ToastService = {
     app.provide(PrimeVueToastSymbol, ToastService2);
   }
 };
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerNotificationsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixNotificationsReady) {
+    return;
   }
+  app.config.globalProperties.__primixNotificationsReady = true;
+  ensurePrimeVueTheme(app);
   app.use(ToastService);
-});
+};
+LiVue.setup(registerNotificationsComponents);
 //# sourceMappingURL=primix-notifications.js.map

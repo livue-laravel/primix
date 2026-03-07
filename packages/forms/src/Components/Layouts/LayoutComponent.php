@@ -8,13 +8,17 @@ use Primix\Forms\Concerns\HasColumns;
 use Primix\Forms\Concerns\HasNestedRelationship;
 use Primix\Forms\Concerns\HasSchema;
 use Primix\Support\Concerns\HasDescription;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 
 abstract class LayoutComponent extends FormComponent
 {
     use HasColumns;
     use HasDescription;
     use HasNestedRelationship;
+    use HasSchemaComponentIdentifier;
     use HasSchema;
+
+    protected static ?string $schemaComponentCategory = 'layout';
 
     public function getWrapperView(): ?string
     {

@@ -5,7 +5,7 @@
  */
 
 import LiVue from 'livue';
-import { setupTheme } from './theme/index.js';
+import { ensurePrimeVueTheme } from './primix.js';
 
 import '../css/index.css';
 
@@ -34,10 +34,14 @@ import Tooltip from 'primevue/tooltip';
 import Badge from 'primevue/badge';
 import Tag from 'primevue/tag';
 
-LiVue.setup((app) => {
-    if (!app?.config?.globalProperties?.$primevue?.config) {
-        setupTheme(app);
+const registerSupportComponents = (app) => {
+    if (app?.config?.globalProperties?.__primixSupportReady) {
+        return;
     }
+
+    app.config.globalProperties.__primixSupportReady = true;
+
+    ensurePrimeVueTheme(app);
 
     // Layout
     app.component('PCard', Card);
@@ -62,4 +66,6 @@ LiVue.setup((app) => {
     // Misc
     app.component('PBadge', Badge);
     app.component('PTag', Tag);
-});
+};
+
+LiVue.setup(registerSupportComponents);

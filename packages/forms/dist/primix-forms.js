@@ -1,5 +1,5 @@
-import LiVue from "livue";
 import { ref, readonly, getCurrentInstance, onMounted, nextTick as nextTick$1, watch, reactive, computed, resolveComponent, openBlock, createBlock, withCtx, createCommentVNode, renderSlot, createElementBlock, Fragment as Fragment$1, renderList, createVNode, createElementVNode, normalizeStyle, normalizeClass, toDisplayString, useId, mergeProps, Teleport, resolveDirective, createTextVNode, resolveDynamicComponent, Transition, normalizeProps, createSlots, withDirectives, withModifiers, vShow, withKeys, toHandlers, defineAsyncComponent, onBeforeUnmount, unref, createStaticVNode, shallowRef } from "vue";
+import LiVue from "livue";
 var ie$3 = Object.defineProperty;
 var K$1 = Object.getOwnPropertySymbols;
 var se = Object.prototype.hasOwnProperty, ae$1 = Object.prototype.propertyIsEnumerable;
@@ -2201,9 +2201,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options6);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
+function ensurePrimeVueTheme(app) {
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 const _sfc_main$d = {
   __name: "TextInput",
   props: {
@@ -30264,13 +30274,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, _ctx.ptmi("root")), [renderSlot(_ctx.$slots, "default")], 16);
 }
 script.render = render;
-const ensurePrimeVueInitialized = (app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
-  }
-};
 const registerFormsComponents = (app) => {
-  ensurePrimeVueInitialized(app);
+  if (app?.config?.globalProperties?.__primixFormsReady) {
+    return;
+  }
+  app.config.globalProperties.__primixFormsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PrimixTextInput", _sfc_main$d);
   app.component("PrimixTagsInput", _sfc_main$c);
   app.component("PrimixCheckboxList", _sfc_main$b);
@@ -30315,28 +30324,6 @@ const registerFormsComponents = (app) => {
   app.component("PInputGroupAddon", script);
 };
 LiVue.setup(registerFormsComponents);
-const mountedRoots = typeof LiVue.all === "function" ? LiVue.all() : [];
-if (Array.isArray(mountedRoots) && mountedRoots.length > 0) {
-  mountedRoots.forEach((root35) => {
-    if (root35?.vueApp) {
-      registerFormsComponents(root35.vueApp);
-    }
-  });
-  const hasOpenActionModal = mountedRoots.some((root35) => {
-    const state = root35?.state ?? {};
-    return state.mountedAction !== null || state.mountedFormFieldAction !== null;
-  });
-  if (hasOpenActionModal) {
-    queueMicrotask(() => {
-      mountedRoots.forEach((root35) => {
-        const livue = root35?._rootLivue;
-        if (livue && typeof livue.$refresh === "function") {
-          livue.$refresh();
-        }
-      });
-    });
-  }
-}
 const DEFAULT_ADJUSTMENTS = {
   brightness: 0,
   // -100 to +100

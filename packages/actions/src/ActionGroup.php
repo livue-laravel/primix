@@ -10,6 +10,7 @@ use Primix\Support\Concerns\CanBeHidden;
 use Primix\Support\Concerns\HasColor;
 use Primix\Support\Concerns\HasIcon;
 use Primix\Support\Concerns\HasId;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 
 class ActionGroup extends Component implements Htmlable
 {
@@ -17,6 +18,9 @@ class ActionGroup extends Component implements Htmlable
     use HasColor;
     use HasIcon;
     use HasId;
+    use HasSchemaComponentIdentifier;
+
+    protected static ?string $schemaComponentCategory = 'action';
 
     /**
      * @var array<Action>

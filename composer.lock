@@ -1885,12 +1885,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/livue-laravel/livue.git",
-                "reference": "19164875e73979e1258892ebf06bbc37b5ce88ef"
+                "reference": "45d4188c408ecf19c8f713fcdd674e23b5ddcbf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livue-laravel/livue/zipball/19164875e73979e1258892ebf06bbc37b5ce88ef",
-                "reference": "19164875e73979e1258892ebf06bbc37b5ce88ef",
+                "url": "https://api.github.com/repos/livue-laravel/livue/zipball/45d4188c408ecf19c8f713fcdd674e23b5ddcbf3",
+                "reference": "45d4188c408ecf19c8f713fcdd674e23b5ddcbf3",
                 "shasum": ""
             },
             "require": {
@@ -1955,7 +1955,7 @@
                 "issues": "https://github.com/livue-laravel/livue/issues",
                 "source": "https://github.com/livue-laravel/livue"
             },
-            "time": "2026-03-05T21:28:54+00:00"
+            "time": "2026-03-06T01:22:32+00:00"
         },
         {
             "name": "nesbot/carbon",

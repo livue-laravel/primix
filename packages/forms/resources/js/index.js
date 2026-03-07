@@ -4,9 +4,9 @@
  * Registers form input components.
  */
 
-import LiVue from 'livue';
 import { defineAsyncComponent } from 'vue';
-import { setupTheme } from '@primix/support/primix';
+import LiVue from 'livue';
+import { ensurePrimeVueTheme } from '@primix/support/primix';
 
 import '../css/index.css';
 
@@ -76,14 +76,13 @@ import FloatLabel from 'primevue/floatlabel';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 
-const ensurePrimeVueInitialized = (app) => {
-    if (!app?.config?.globalProperties?.$primevue?.config) {
-        setupTheme(app);
-    }
-};
-
 const registerFormsComponents = (app) => {
-    ensurePrimeVueInitialized(app);
+    if (app?.config?.globalProperties?.__primixFormsReady) {
+        return;
+    }
+
+    app.config.globalProperties.__primixFormsReady = true;
+    ensurePrimeVueTheme(app);
 
     // Custom Primix Components
     app.component('PrimixTextInput', TextInput);
@@ -157,35 +156,3 @@ const registerFormsComponents = (app) => {
 };
 
 LiVue.setup(registerFormsComponents);
-
-// When forms.js is lazy-loaded after LiVue apps are already mounted
-// (e.g. first open of an action modal), apply registrations immediately.
-const mountedRoots = typeof LiVue.all === 'function' ? LiVue.all() : [];
-
-if (Array.isArray(mountedRoots) && mountedRoots.length > 0) {
-    mountedRoots.forEach((root) => {
-        if (root?.vueApp) {
-            registerFormsComponents(root.vueApp);
-        }
-    });
-
-    // If an action modal is already open, trigger a refresh so unknown
-    // tags are re-rendered after components have been registered.
-    const hasOpenActionModal = mountedRoots.some((root) => {
-        const state = root?.state ?? {};
-
-        return state.mountedAction !== null || state.mountedFormFieldAction !== null;
-    });
-
-    if (hasOpenActionModal) {
-        queueMicrotask(() => {
-            mountedRoots.forEach((root) => {
-                const livue = root?._rootLivue;
-
-                if (livue && typeof livue.$refresh === 'function') {
-                    livue.$refresh();
-                }
-            });
-        });
-    }
-}

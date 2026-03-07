@@ -28,15 +28,6 @@ class PrimixDetailsServiceProvider extends ServiceProvider
     protected function registerComponentTypes(): void
     {
         $registry = $this->app->make(ComponentTypeRegistry::class);
-
-        $registry->registerMany('entry', [
-            'text-entry' => Components\Entries\TextEntry::class,
-            'list-entry' => Components\Entries\ListEntry::class,
-            'boolean-entry' => Components\Entries\BooleanEntry::class,
-            'icon-entry' => Components\Entries\IconEntry::class,
-            'color-entry' => Components\Entries\ColorEntry::class,
-            'html-entry' => Components\Entries\HtmlEntry::class,
-            'long-text-entry' => Components\Entries\LongTextEntry::class,
-        ]);
+        $registry->discoverInPath('Primix\\Details\\Components\\Entries', __DIR__ . '/Components/Entries');
     }
 }

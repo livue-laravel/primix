@@ -5,7 +5,7 @@
  */
 
 import LiVue from 'livue';
-import { setupTheme } from '@primix/support/primix';
+import { ensurePrimeVueTheme } from '@primix/support/primix';
 
 import '../css/index.css';
 
@@ -28,10 +28,14 @@ import DialogService from 'primevue/dialogservice';
 // Store confirm instance globally
 let confirmInstance = null;
 
-LiVue.setup((app) => {
-    if (!app?.config?.globalProperties?.$primevue?.config) {
-        setupTheme(app);
+const registerActionsComponents = (app) => {
+    if (app?.config?.globalProperties?.__primixActionsReady) {
+        return;
     }
+
+    app.config.globalProperties.__primixActionsReady = true;
+
+    ensurePrimeVueTheme(app);
 
     // Buttons
     app.component('PButton', Button);
@@ -50,6 +54,10 @@ LiVue.setup((app) => {
     app.use(ConfirmationService);
     app.use(DialogService);
 
+    if (!confirmInstance && app.config.globalProperties.$confirm) {
+        confirmInstance = app.config.globalProperties.$confirm;
+    }
+
     // Capture confirm instance on mount
     app.mixin({
         mounted() {
@@ -58,7 +66,9 @@ LiVue.setup((app) => {
             }
         }
     });
-});
+};
+
+LiVue.setup(registerActionsComponents);
 
 // Set custom confirm handler for LiVue
 LiVue.setConfirmHandler((config) => {

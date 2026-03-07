@@ -5,6 +5,7 @@ namespace Primix\Tables\Columns;
 use Closure;
 use Primix\Support\Components\Schema\Component;
 use Primix\Support\Concerns\HasColor;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 use Primix\Tables\Concerns\HasName;
 use Primix\Tables\Columns\Concerns\CanBeCopied;
 use Primix\Tables\Columns\Concerns\CanBeSearchable;
@@ -21,8 +22,11 @@ abstract class Column extends Component
     use HasAlignment;
     use HasColor;
     use HasName;
+    use HasSchemaComponentIdentifier;
     use HasSummarizers;
     use HasTooltip;
+
+    protected static ?string $schemaComponentCategory = 'column';
 
     protected ?string $evaluationIdentifier = 'column';
 

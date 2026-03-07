@@ -5,20 +5,26 @@
  * Tables use Blade views with standard HTML (not PrimeVue DataTable).
  */
 
-import LiVue from 'livue';
 import DatePicker from 'primevue/datepicker';
 import Select from 'primevue/select';
 import SelectButton from 'primevue/selectbutton';
-import { setupTheme } from '@primix/support/primix';
+import LiVue from 'livue';
+import { ensurePrimeVueTheme } from '@primix/support/primix';
 
 import '../css/index.css';
 
-LiVue.setup((app) => {
-    if (!app?.config?.globalProperties?.$primevue?.config) {
-        setupTheme(app);
+const registerTablesComponents = (app) => {
+    if (app?.config?.globalProperties?.__primixTablesReady) {
+        return;
     }
+
+    app.config.globalProperties.__primixTablesReady = true;
+
+    ensurePrimeVueTheme(app);
 
     app.component('PDatePicker', DatePicker);
     app.component('PSelect', Select);
     app.component('PSelectButton', SelectButton);
-});
+};
+
+LiVue.setup(registerTablesComponents);

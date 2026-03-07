@@ -5,11 +5,15 @@ namespace Primix\Tables\Filters;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Primix\Support\Components\Schema\Component;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 use Primix\Tables\Concerns\HasName;
 
 abstract class Filter extends Component
 {
     use HasName;
+    use HasSchemaComponentIdentifier;
+
+    protected static ?string $schemaComponentCategory = 'filter';
 
     protected ?Closure $query = null;
 

@@ -18,7 +18,13 @@ import TenantMenu from './components/TenantMenu.vue';
 import GlobalSearch from './components/GlobalSearch.vue';
 import NotificationBell from './components/NotificationBell.vue';
 
-LiVue.setup((app) => {
+const registerPanelComponents = (app) => {
+    if (app?.config?.globalProperties?.__primixPanelsReady) {
+        return;
+    }
+
+    app.config.globalProperties.__primixPanelsReady = true;
+
     app.component('PrimixDropdown', Dropdown);
     app.component('PrimixCollapsible', Collapsible);
     app.component('PrimixToast', Toast);
@@ -28,4 +34,6 @@ LiVue.setup((app) => {
     app.component('PrimixTenantMenu', TenantMenu);
     app.component('PrimixGlobalSearch', GlobalSearch);
     app.component('PrimixNotificationBell', NotificationBell);
-});
+};
+
+LiVue.setup(registerPanelComponents);

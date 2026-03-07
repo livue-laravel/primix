@@ -1843,9 +1843,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
+function ensurePrimeVueTheme(app) {
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 var Base = {
   _loadedStyleNames: /* @__PURE__ */ new Set(),
   getLoadedStyleNames: function getLoadedStyleNames() {
@@ -7580,10 +7590,12 @@ var DialogService = {
   }
 };
 let confirmInstance = null;
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerActionsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixActionsReady) {
+    return;
   }
+  app.config.globalProperties.__primixActionsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PButton", script$b);
   app.component("PButtonGroup", script$a);
   app.component("PMenu", script$8);
@@ -7592,6 +7604,9 @@ LiVue.setup((app) => {
   app.component("PSpeedDial", script);
   app.use(ConfirmationService);
   app.use(DialogService);
+  if (!confirmInstance && app.config.globalProperties.$confirm) {
+    confirmInstance = app.config.globalProperties.$confirm;
+  }
   app.mixin({
     mounted() {
       if (!confirmInstance && this.$confirm) {
@@ -7599,7 +7614,8 @@ LiVue.setup((app) => {
       }
     }
   });
-});
+};
+LiVue.setup(registerActionsComponents);
 LiVue.setConfirmHandler((config) => {
   return new Promise((resolve) => {
     if (!confirmInstance) {

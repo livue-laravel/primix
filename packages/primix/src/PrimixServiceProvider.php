@@ -9,7 +9,6 @@ use LiVue\Facades\LiVueAsset;
 use LiVue\Features\SupportAssets\Css;
 use LiVue\Features\SupportAssets\Js;
 use Primix\Components\NotificationManager;
-use Primix\Resources\Actions;
 use Primix\Routing\PanelRouteRegistrar;
 use Primix\Support\AssetVersion;
 use Primix\Support\ComponentTypeRegistry;
@@ -21,11 +20,13 @@ class PrimixServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/primix.php', 'primix');
+
         $this->app->singleton(PanelRegistry::class, function () {
             return new PanelRegistry();
         });
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/primix.php', 'primix');
+        $this->discoverPanelProviders();
     }
 
     public function boot(): void
@@ -42,6 +43,16 @@ class PrimixServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/primix'),
             ], 'primix-views');
+
+            $assets = [
+                __DIR__ . '/../dist/primix-panels.css' => public_path('vendor/livue/primix/primix/primix-panels.css'),
+                __DIR__ . '/../dist/primix-panels.js' => public_path('vendor/livue/primix/primix/primix-panels.js'),
+                __DIR__ . '/../dist/primix-panels.js.map' => public_path('vendor/livue/primix/primix/primix-panels.js.map'),
+            ];
+
+            $this->publishes($assets, 'primix-assets');
+            $this->publishes($assets, 'livue-assets');
+            $this->publishes($assets, 'laravel-assets');
 
             $this->commands([
                 Commands\MakePanelCommand::class,
@@ -68,10 +79,11 @@ class PrimixServiceProvider extends ServiceProvider
     protected function registerAssets(): void
     {
         $assetVersion = AssetVersion::resolve();
+        $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-panels', '/primix/primix-panels.css')->version($assetVersion),
-            Js::make('primix-panels', '/primix/primix-panels.js')->module()->version($assetVersion),
+            Css::make('primix-panels', "{$assetsBasePath}/primix/primix/primix-panels.css")->version($assetVersion),
+            Js::make('primix-panels', "{$assetsBasePath}/primix/primix/primix-panels.js")->module()->version($assetVersion),
         ], 'primix/primix');
     }
 
@@ -95,6 +107,33 @@ class PrimixServiceProvider extends ServiceProvider
         $livue->register('notification-manager', NotificationManager::class);
         $livue->register('primix-topbar', Components\Topbar::class);
         $livue->register('primix-sidebar', Components\Sidebar::class);
+    }
+
+    protected function discoverPanelProviders(): void
+    {
+        if (! config('primix.panels.autodiscovery', true)) {
+            return;
+        }
+
+        $path = app_path('Providers');
+
+        if (! is_dir($path)) {
+            return;
+        }
+
+        foreach (glob($path . '/*PanelProvider.php') as $file) {
+            $class = 'App\\Providers\\' . basename($file, '.php');
+
+            if (! class_exists($class)) {
+                continue;
+            }
+
+            if (! is_subclass_of($class, PanelProvider::class)) {
+                continue;
+            }
+
+            $this->app->register($class);
+        }
     }
 
     protected function registerViewComposers(): void
@@ -123,18 +162,7 @@ class PrimixServiceProvider extends ServiceProvider
     protected function registerComponentTypes(): void
     {
         $registry = $this->app->make(ComponentTypeRegistry::class);
-
-        $registry->registerMany('action', [
-            'create-action' => Actions\CreateAction::class,
-            'edit-action' => Actions\EditAction::class,
-            'view-action' => Actions\ViewAction::class,
-            'delete-action' => Actions\DeleteAction::class,
-            'force-delete-action' => Actions\ForceDeleteAction::class,
-            'restore-action' => Actions\RestoreAction::class,
-            'delete-bulk-action' => Actions\DeleteBulkAction::class,
-            'force-delete-bulk-action' => Actions\ForceDeleteBulkAction::class,
-            'restore-bulk-action' => Actions\RestoreBulkAction::class,
-        ]);
+        $registry->discoverInPath('Primix\\Resources\\Actions', __DIR__ . '/Resources/Actions');
     }
 
     protected function registerRoutes(): void

@@ -9,6 +9,7 @@ use Primix\Forms\Concerns\HasName;
 use Primix\Support\Concerns\HasDefaultValue;
 use Primix\Support\Concerns\HasHelperText;
 use Primix\Support\Concerns\HasPlaceholder;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 use Primix\Support\Concerns\HasStatePath;
 
 abstract class Entry extends FormComponent
@@ -17,7 +18,10 @@ abstract class Entry extends FormComponent
     use HasHelperText;
     use HasName;
     use HasPlaceholder;
+    use HasSchemaComponentIdentifier;
     use HasStatePath;
+
+    protected static ?string $schemaComponentCategory = 'entry';
 
     protected mixed $state = null;
 

@@ -2228,9 +2228,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options7);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
+function ensurePrimeVueTheme(app) {
+  const plugins2 = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins2 && typeof plugins2.has === "function" && plugins2.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 var Base = {
   _loadedStyleNames: /* @__PURE__ */ new Set(),
   getLoadedStyleNames: function getLoadedStyleNames() {
@@ -8467,10 +8477,12 @@ function render$18(_ctx, _cache, $props, $setup, $data, $options) {
   }) : createCommentVNode("", true)], 16, _hoisted_1$S);
 }
 script$1b.render = render$18;
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerSupportComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixSupportReady) {
+    return;
   }
+  app.config.globalProperties.__primixSupportReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PCard", script$1y);
   app.component("PPanel", script$1r);
   app.component("PTabs", script$1q);
@@ -8485,7 +8497,8 @@ LiVue.setup((app) => {
   app.directive("tooltip", Tooltip$1);
   app.component("PBadge", script$1t);
   app.component("PTag", script$1b);
-});
+};
+LiVue.setup(registerSupportComponents);
 const _sfc_main$q = {
   __name: "TextInput",
   props: {
@@ -33905,13 +33918,12 @@ function render$b(_ctx, _cache, $props, $setup, $data, $options) {
   }, _ctx.ptmi("root")), [renderSlot(_ctx.$slots, "default")], 16);
 }
 script$c.render = render$b;
-const ensurePrimeVueInitialized = (app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
-  }
-};
 const registerFormsComponents = (app) => {
-  ensurePrimeVueInitialized(app);
+  if (app?.config?.globalProperties?.__primixFormsReady) {
+    return;
+  }
+  app.config.globalProperties.__primixFormsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PrimixTextInput", _sfc_main$q);
   app.component("PrimixTagsInput", _sfc_main$p);
   app.component("PrimixCheckboxList", _sfc_main$o);
@@ -33956,36 +33968,17 @@ const registerFormsComponents = (app) => {
   app.component("PInputGroupAddon", script$c);
 };
 LiVue.setup(registerFormsComponents);
-const mountedRoots = typeof LiVue.all === "function" ? LiVue.all() : [];
-if (Array.isArray(mountedRoots) && mountedRoots.length > 0) {
-  mountedRoots.forEach((root48) => {
-    if (root48?.vueApp) {
-      registerFormsComponents(root48.vueApp);
-    }
-  });
-  const hasOpenActionModal = mountedRoots.some((root48) => {
-    const state = root48?.state ?? {};
-    return state.mountedAction !== null || state.mountedFormFieldAction !== null;
-  });
-  if (hasOpenActionModal) {
-    queueMicrotask(() => {
-      mountedRoots.forEach((root48) => {
-        const livue = root48?._rootLivue;
-        if (livue && typeof livue.$refresh === "function") {
-          livue.$refresh();
-        }
-      });
-    });
+const registerTablesComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixTablesReady) {
+    return;
   }
-}
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
-  }
+  app.config.globalProperties.__primixTablesReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PDatePicker", script$O);
   app.component("PSelect", script$Z);
   app.component("PSelectButton", script$w);
-});
+};
+LiVue.setup(registerTablesComponents);
 var style$g = "\n    .p-buttongroup {\n        display: inline-flex;\n    }\n\n    .p-buttongroup .p-button {\n        margin: 0;\n    }\n\n    .p-buttongroup .p-button:not(:last-child),\n    .p-buttongroup .p-button:not(:last-child):hover {\n        border-inline-end: 0 none;\n    }\n\n    .p-buttongroup .p-button:not(:first-of-type):not(:last-of-type) {\n        border-radius: 0;\n    }\n\n    .p-buttongroup .p-button:first-of-type:not(:only-of-type) {\n        border-start-end-radius: 0;\n        border-end-end-radius: 0;\n    }\n\n    .p-buttongroup .p-button:last-of-type:not(:only-of-type) {\n        border-start-start-radius: 0;\n        border-end-start-radius: 0;\n    }\n\n    .p-buttongroup .p-button:focus {\n        position: relative;\n        z-index: 1;\n    }\n";
 var classes$7 = {
   root: "p-buttongroup p-component"
@@ -36510,10 +36503,12 @@ var DialogService = {
   }
 };
 let confirmInstance = null;
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerActionsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixActionsReady) {
+    return;
   }
+  app.config.globalProperties.__primixActionsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PButton", script$1s);
   app.component("PButtonGroup", script$b);
   app.component("PMenu", script$a);
@@ -36522,6 +36517,9 @@ LiVue.setup((app) => {
   app.component("PSpeedDial", script$5);
   app.use(ConfirmationService);
   app.use(DialogService);
+  if (!confirmInstance && app.config.globalProperties.$confirm) {
+    confirmInstance = app.config.globalProperties.$confirm;
+  }
   app.mixin({
     mounted() {
       if (!confirmInstance && this.$confirm) {
@@ -36529,7 +36527,8 @@ LiVue.setup((app) => {
       }
     }
   });
-});
+};
+LiVue.setup(registerActionsComponents);
 LiVue.setConfirmHandler((config) => {
   return new Promise((resolve2) => {
     if (!confirmInstance) {
@@ -36569,12 +36568,15 @@ var ToastService = {
     app.provide(PrimeVueToastSymbol, ToastService2);
   }
 };
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerNotificationsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixNotificationsReady) {
+    return;
   }
+  app.config.globalProperties.__primixNotificationsReady = true;
+  ensurePrimeVueTheme(app);
   app.use(ToastService);
-});
+};
+LiVue.setup(registerNotificationsComponents);
 var inlineStyles = {
   root: {
     position: "relative"
@@ -47077,15 +47079,18 @@ const _sfc_main$n = {
     };
   }
 };
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerWidgetsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixWidgetsReady) {
+    return;
   }
+  app.config.globalProperties.__primixWidgetsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PChart", script$4);
   app.component("PMeterGroup", script$3);
   app.component("PProgressBar", script);
   app.component("PrimixSparkline", _sfc_main$n);
-});
+};
+LiVue.setup(registerWidgetsComponents);
 const _hoisted_1$k = { key: 0 };
 const _sfc_main$m = {
   __name: "Dropdown",
@@ -49445,7 +49450,11 @@ const _sfc_main$b = {
     };
   }
 };
-LiVue.setup((app) => {
+const registerPanelComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixPanelsReady) {
+    return;
+  }
+  app.config.globalProperties.__primixPanelsReady = true;
   app.component("PrimixDropdown", _sfc_main$m);
   app.component("PrimixCollapsible", _sfc_main$l);
   app.component("PrimixToast", _sfc_main$k);
@@ -49455,7 +49464,8 @@ LiVue.setup((app) => {
   app.component("PrimixTenantMenu", _sfc_main$g);
   app.component("PrimixGlobalSearch", GlobalSearch);
   app.component("PrimixNotificationBell", _sfc_main$b);
-});
+};
+LiVue.setup(registerPanelComponents);
 const DEFAULT_ADJUSTMENTS = {
   brightness: 0,
   // -100 to +100
@@ -88850,6 +88860,7 @@ const index = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePropert
 export {
   PrimeVue,
   PrimixPreset,
+  ensurePrimeVueTheme,
   setupTheme
 };
 //# sourceMappingURL=primix.js.map

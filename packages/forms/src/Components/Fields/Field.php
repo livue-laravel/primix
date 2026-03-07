@@ -17,6 +17,7 @@ use Primix\Support\Concerns\HasDefaultValue;
 use Primix\Support\Concerns\HasHelperText;
 use Primix\Support\Concerns\HasHint;
 use Primix\Support\Concerns\HasPlaceholder;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 use Primix\Support\Concerns\HasStatePath;
 
 abstract class Field extends FormComponent
@@ -31,8 +32,11 @@ abstract class Field extends FormComponent
     use HasName;
     use HasNullableValidationRule;
     use HasPlaceholder;
+    use HasSchemaComponentIdentifier;
     use HasSizeValidationRules;
     use HasStatePath;
+
+    protected static ?string $schemaComponentCategory = 'field';
 
     protected string|array|null $rules = null;
 

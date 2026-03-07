@@ -28,6 +28,64 @@ class ComponentTypeRegistry
     }
 
     /**
+     * Register a component class using its schema metadata.
+     */
+    public function registerClass(string $class): void
+    {
+        if (! class_exists($class)) {
+            return;
+        }
+
+        if (! method_exists($class, 'getSchemaComponentCategory') || ! method_exists($class, 'getSchemaComponentType')) {
+            return;
+        }
+
+        $reflection = new \ReflectionClass($class);
+
+        if ($reflection->isAbstract()) {
+            return;
+        }
+
+        $category = $class::getSchemaComponentCategory();
+        $alias = $class::getSchemaComponentType();
+
+        if (! is_string($category) || $category === '' || ! is_string($alias) || $alias === '') {
+            return;
+        }
+
+        $this->register($category, $alias, $class);
+    }
+
+    /**
+     * Discover and register all schema components under a PSR-4 namespace/path pair.
+     */
+    public function discoverInPath(string $namespace, string $path): void
+    {
+        if (! is_dir($path)) {
+            return;
+        }
+
+        $baseNamespace = trim($namespace, '\\');
+        $basePath = rtrim($path, DIRECTORY_SEPARATOR);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($basePath, \FilesystemIterator::SKIP_DOTS),
+        );
+
+        /** @var \SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->getExtension() !== 'php') {
+                continue;
+            }
+
+            $relativePath = substr($file->getPathname(), strlen($basePath) + 1);
+            $relativeClass = str_replace(['/', '\\'], '\\', substr($relativePath, 0, -4));
+            $class = "{$baseNamespace}\\{$relativeClass}";
+
+            $this->registerClass($class);
+        }
+    }
+
+    /**
      * Resolve a type alias to its FQCN.
      *
      * If category is given, looks there first.

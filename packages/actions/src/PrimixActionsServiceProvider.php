@@ -31,6 +31,16 @@ class PrimixActionsServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/primix-actions'),
             ], 'primix-actions-views');
 
+            $assets = [
+                __DIR__ . '/../dist/primix-actions.css' => public_path('vendor/livue/primix/actions/primix-actions.css'),
+                __DIR__ . '/../dist/primix-actions.js' => public_path('vendor/livue/primix/actions/primix-actions.js'),
+                __DIR__ . '/../dist/primix-actions.js.map' => public_path('vendor/livue/primix/actions/primix-actions.js.map'),
+            ];
+
+            $this->publishes($assets, 'primix-assets');
+            $this->publishes($assets, 'livue-assets');
+            $this->publishes($assets, 'laravel-assets');
+
             $this->commands([
                 Commands\MakeActionCommand::class,
             ]);
@@ -40,22 +50,17 @@ class PrimixActionsServiceProvider extends ServiceProvider
     protected function registerComponentTypes(): void
     {
         $registry = $this->app->make(ComponentTypeRegistry::class);
-
-        $registry->registerMany('action', [
-            'action' => Action::class,
-            'bulk-action' => BulkAction::class,
-            'action-group' => ActionGroup::class,
-            'view-action' => ViewAction::class,
-        ]);
+        $registry->discoverInPath('Primix\\Actions', __DIR__);
     }
 
     protected function registerAssets(): void
     {
         $assetVersion = AssetVersion::resolve();
+        $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-actions', '/primix/primix-actions.css')->version($assetVersion),
-            Js::make('primix-actions', '/primix/primix-actions.js')->module()->version($assetVersion),
+            Css::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.css")->version($assetVersion),
+            Js::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.js")->module()->version($assetVersion),
         ], 'primix/actions');
     }
 }

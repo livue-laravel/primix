@@ -7,12 +7,8 @@
 ])
 
 @once('primix-forms-assets')
-    @if (config('primix.vite', true) && \Primix\Support\ViteHot::isRunning())
-        @vite('resources/js/primix/forms.js')
-    @else
-        @livueLoadStyle('primix-forms', 'primix/forms')
-        @livueLoadScript('primix-forms', 'primix/forms', ['type' => 'module'])
-    @endif
+    @livueLoadStyle('primix-forms', 'primix/forms')
+    @livueLoadScript('primix-forms', 'primix/forms', ['type' => 'module'])
 @endonce
 
 @php

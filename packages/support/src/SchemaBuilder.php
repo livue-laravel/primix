@@ -4,12 +4,11 @@ namespace Primix\Support;
 
 use Illuminate\Support\Str;
 use ReflectionMethod;
-use ReflectionNamedType;
 
 class SchemaBuilder
 {
     /** Keys that are consumed by the builder and should not be applied as properties. */
-    protected const RESERVED_KEYS = ['type', 'schema', 'tabs', 'steps'];
+    protected const RESERVED_KEYS = ['type', 'schema', 'tabs', 'steps', 'form'];
 
     public function __construct(
         protected ComponentTypeRegistry $typeRegistry,
@@ -153,6 +152,24 @@ class SchemaBuilder
      */
     protected function applyNestedSchemas(object $component, array $definition, array $callbacks): void
     {
+        // Action form schema
+        if (array_key_exists('form', $definition) && method_exists($component, 'form')) {
+            $form = $definition['form'];
+
+            if (is_string($form) && str_starts_with($form, '@')) {
+                $callbackName = substr($form, 1);
+                if (isset($callbacks[$callbackName])) {
+                    $form = $callbacks[$callbackName];
+                }
+            }
+
+            if (is_array($form) && method_exists($component, 'formFromSchema')) {
+                $component->formFromSchema($form, $callbacks);
+            } elseif (is_array($form) || $form instanceof \Closure) {
+                $component->form($form);
+            }
+        }
+
         // Nested schema (Section, Fieldset, Repeater, etc.)
         if (isset($definition['schema']) && method_exists($component, 'schema')) {
             $children = $this->build($definition['schema'], 'field', $callbacks);

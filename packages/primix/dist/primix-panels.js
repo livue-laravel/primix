@@ -2359,7 +2359,11 @@ const _sfc_main = {
     };
   }
 };
-LiVue.setup((app) => {
+const registerPanelComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixPanelsReady) {
+    return;
+  }
+  app.config.globalProperties.__primixPanelsReady = true;
   app.component("PrimixDropdown", _sfc_main$b);
   app.component("PrimixCollapsible", _sfc_main$a);
   app.component("PrimixToast", _sfc_main$9);
@@ -2369,5 +2373,6 @@ LiVue.setup((app) => {
   app.component("PrimixTenantMenu", _sfc_main$5);
   app.component("PrimixGlobalSearch", GlobalSearch);
   app.component("PrimixNotificationBell", _sfc_main);
-});
+};
+LiVue.setup(registerPanelComponents);
 //# sourceMappingURL=primix-panels.js.map

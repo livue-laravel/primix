@@ -9,6 +9,7 @@ use Primix\Forms\Concerns\HasName;
 use Primix\Forms\Concerns\HasNestedRelationship;
 use Primix\Forms\Concerns\HasSchema;
 use Primix\Support\Concerns\HasIcon;
+use Primix\Support\Concerns\HasSchemaComponentIdentifier;
 
 class Tab extends FormComponent
 {
@@ -17,7 +18,10 @@ class Tab extends FormComponent
     use HasIcon;
     use HasName;
     use HasNestedRelationship;
+    use HasSchemaComponentIdentifier;
     use HasSchema;
+
+    protected static ?string $schemaComponentCategory = 'layout';
 
     protected ?string $badge = null;
 

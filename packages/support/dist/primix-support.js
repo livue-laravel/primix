@@ -1878,6 +1878,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options);
 }
+function ensurePrimeVueTheme(app) {
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 var Base = {
   _loadedStyleNames: /* @__PURE__ */ new Set(),
   getLoadedStyleNames: function getLoadedStyleNames() {
@@ -8114,10 +8127,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }) : createCommentVNode("", true)], 16, _hoisted_1);
 }
 script.render = render;
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerSupportComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixSupportReady) {
+    return;
   }
+  app.config.globalProperties.__primixSupportReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PCard", script$o);
   app.component("PPanel", script$h);
   app.component("PTabs", script$g);
@@ -8132,5 +8147,6 @@ LiVue.setup((app) => {
   app.directive("tooltip", Tooltip);
   app.component("PBadge", script$j);
   app.component("PTag", script);
-});
+};
+LiVue.setup(registerSupportComponents);
 //# sourceMappingURL=primix-support.js.map

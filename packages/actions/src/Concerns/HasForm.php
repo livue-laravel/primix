@@ -3,6 +3,7 @@
 namespace Primix\Actions\Concerns;
 
 use Closure;
+use Primix\Support\SchemaBuilder;
 
 trait HasForm
 {
@@ -15,6 +16,20 @@ trait HasForm
         $this->formSchema = $schema;
 
         return $this;
+    }
+
+    /**
+     * Build and assign action form schema from definition arrays.
+     *
+     * @param  array<array>  $definitions
+     * @param  array<string, \Closure>  $callbacks
+     */
+    public function formFromSchema(array $definitions, array $callbacks = []): static
+    {
+        $builder = app(SchemaBuilder::class);
+        $components = $builder->build($definitions, 'field', $callbacks);
+
+        return $this->form($components);
     }
 
     public function fillForm(array|Closure $data): static

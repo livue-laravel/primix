@@ -1,5 +1,5 @@
-import LiVue from "livue";
 import { ref, readonly, getCurrentInstance, onMounted, nextTick, watch, useId, mergeProps, openBlock, createElementBlock, createElementVNode, renderSlot, createTextVNode, toDisplayString, resolveComponent, resolveDirective, withDirectives, createBlock, resolveDynamicComponent, withCtx, createCommentVNode, normalizeClass, Teleport, normalizeStyle, createVNode, Fragment, Transition, renderList, vShow, withKeys, normalizeProps, createSlots, withModifiers, reactive } from "vue";
+import LiVue from "livue";
 function f$a(...e2) {
   if (e2) {
     let t2 = [];
@@ -12127,15 +12127,28 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options2);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
+function ensurePrimeVueTheme(app) {
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
     setupTheme(app);
   }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
+const registerTablesComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixTablesReady) {
+    return;
+  }
+  app.config.globalProperties.__primixTablesReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PDatePicker", script$a);
   app.component("PSelect", script$3);
   app.component("PSelectButton", script);
-});
+};
+LiVue.setup(registerTablesComponents);
 //# sourceMappingURL=primix-tables.js.map

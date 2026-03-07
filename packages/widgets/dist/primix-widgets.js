@@ -1625,9 +1625,19 @@ function setupTheme(app) {
   }
   app.use(PrimeVue, options2);
 }
-LiVue.setup((app) => {
-  setupTheme(app);
-});
+function ensurePrimeVueTheme(app) {
+  const plugins2 = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins2 && typeof plugins2.has === "function" && plugins2.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
+}
+const registerPrimeVueTheme = (app) => {
+  ensurePrimeVueTheme(app);
+};
+LiVue.setup(registerPrimeVueTheme);
 var Base = {
   _loadedStyleNames: /* @__PURE__ */ new Set(),
   getLoadedStyleNames: function getLoadedStyleNames() {
@@ -12687,15 +12697,18 @@ const _sfc_main = {
     };
   }
 };
-LiVue.setup((app) => {
-  if (!app?.config?.globalProperties?.$primevue?.config) {
-    setupTheme(app);
+const registerWidgetsComponents = (app) => {
+  if (app?.config?.globalProperties?.__primixWidgetsReady) {
+    return;
   }
+  app.config.globalProperties.__primixWidgetsReady = true;
+  ensurePrimeVueTheme(app);
   app.component("PChart", script$4);
   app.component("PMeterGroup", script$3);
   app.component("PProgressBar", script);
   app.component("PrimixSparkline", _sfc_main);
-});
+};
+LiVue.setup(registerWidgetsComponents);
 function round(v2) {
   return v2 + 0.5 | 0;
 }

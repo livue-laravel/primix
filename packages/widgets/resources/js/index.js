@@ -6,7 +6,7 @@
  */
 
 import LiVue from 'livue';
-import { setupTheme } from '@primix/support/primix';
+import { ensurePrimeVueTheme } from '@primix/support/primix';
 
 import '../css/index.css';
 
@@ -20,10 +20,14 @@ import ProgressBar from 'primevue/progressbar';
 // Sparkline (mini chart for stat cards)
 import Sparkline from './components/Sparkline.vue';
 
-LiVue.setup((app) => {
-    if (!app?.config?.globalProperties?.$primevue?.config) {
-        setupTheme(app);
+const registerWidgetsComponents = (app) => {
+    if (app?.config?.globalProperties?.__primixWidgetsReady) {
+        return;
     }
+
+    app.config.globalProperties.__primixWidgetsReady = true;
+
+    ensurePrimeVueTheme(app);
 
     // Chart
     app.component('PChart', Chart);
@@ -34,4 +38,6 @@ LiVue.setup((app) => {
 
     // Sparkline
     app.component('PrimixSparkline', Sparkline);
-});
+};
+
+LiVue.setup(registerWidgetsComponents);

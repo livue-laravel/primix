@@ -1,5 +1,9 @@
 <?php
 
+use Primix\Actions\ActionGroup;
+use Primix\Forms\Components\Fields\Field;
+use Primix\Forms\Components\Fields\TextInput;
+use Primix\Forms\Components\Layouts\Tabs\Tab;
 use Primix\Support\ComponentTypeRegistry;
 
 beforeEach(function () {
@@ -87,4 +91,29 @@ it('prefers exact category match over cross-category', function () {
 
     expect($this->registry->resolve('select', 'field'))->toBe('App\\Fields\\Select');
     expect($this->registry->resolve('select', 'column'))->toBe('App\\Columns\\Select');
+});
+
+it('can register a component class using schema metadata', function () {
+    $this->registry->registerClass(TextInput::class);
+
+    expect($this->registry->resolve('text-input', 'field'))->toBe(TextInput::class);
+});
+
+it('skips abstract classes when registering by class', function () {
+    $this->registry->registerClass(Field::class);
+
+    expect($this->registry->resolve('field', 'field'))->toBeNull();
+});
+
+it('can discover and register schema components from a path', function () {
+    $this->registry->discoverInPath('Primix\\Forms\\Components', __DIR__ . '/../../forms/src/Components');
+
+    expect($this->registry->resolve('text-input', 'field'))->toBe(TextInput::class);
+    expect($this->registry->resolve('tab', 'layout'))->toBe(Tab::class);
+});
+
+it('can discover action groups from action package path', function () {
+    $this->registry->discoverInPath('Primix\\Actions', __DIR__ . '/../../actions/src');
+
+    expect($this->registry->resolve('action-group', 'action'))->toBe(ActionGroup::class);
 });

@@ -20,12 +20,8 @@
 @endphp
 
 @once
-    @if (config('primix.vite', true) && \Primix\Support\ViteHot::isRunning())
-        @vite('resources/js/primix/tables.js')
-    @else
-        @livueLoadStyle('primix-tables', 'primix/tables')
-        @livueLoadScript('primix-tables', 'primix/tables', ['type' => 'module'])
-    @endif
+    @livueLoadStyle('primix-tables', 'primix/tables')
+    @livueLoadScript('primix-tables', 'primix/tables', ['type' => 'module'])
 @endonce
 
 <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg">
