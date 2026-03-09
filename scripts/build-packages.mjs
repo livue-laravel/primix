@@ -1,4 +1,4 @@
-import { existsSync, rmSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
@@ -37,42 +37,49 @@ const targets = [
         entry: 'packages/support/resources/js/index.js',
         outDir: 'packages/support/dist',
         fileName: 'primix-support',
+        publicVendorDir: 'primix/support',
     },
     {
         label: 'forms',
         entry: 'packages/forms/resources/js/index.js',
         outDir: 'packages/forms/dist',
         fileName: 'primix-forms',
+        publicVendorDir: 'primix/forms',
     },
     {
         label: 'tables',
         entry: 'packages/tables/resources/js/index.js',
         outDir: 'packages/tables/dist',
         fileName: 'primix-tables',
+        publicVendorDir: 'primix/tables',
     },
     {
         label: 'actions',
         entry: 'packages/actions/resources/js/index.js',
         outDir: 'packages/actions/dist',
         fileName: 'primix-actions',
+        publicVendorDir: 'primix/actions',
     },
     {
         label: 'notifications',
         entry: 'packages/notifications/resources/js/index.js',
         outDir: 'packages/notifications/dist',
         fileName: 'primix-notifications',
+        publicVendorDir: 'primix/notifications',
     },
     {
         label: 'widgets',
         entry: 'packages/widgets/resources/js/index.js',
         outDir: 'packages/widgets/dist',
         fileName: 'primix-widgets',
+        publicVendorDir: 'primix/widgets',
     },
     {
         label: 'panels',
         entry: 'packages/primix/resources/js/index.js',
         outDir: 'packages/primix/dist',
         fileName: 'primix-panels',
+        publicVendorDir: 'primix/primix',
     },
     {
         label: 'full',
@@ -81,6 +88,32 @@ const targets = [
         fileName: 'primix',
     },
 ];
+
+/**
+ * Vite plugin that copies built assets to public/vendor after every build.
+ * Works in both normal build and watch mode (fires after each rebuild).
+ */
+function autoCopyPlugin(target, absoluteOutDir) {
+    return {
+        name: 'primix-auto-copy',
+        closeBundle() {
+            if (!target.publicVendorDir) return;
+
+            const destDir = path.resolve(projectRoot, 'public/vendor/livue', target.publicVendorDir);
+            mkdirSync(destDir, { recursive: true });
+
+            for (const ext of ['.js', '.css', '.js.map']) {
+                const src = path.join(absoluteOutDir, `${target.fileName}${ext}`);
+                const dest = path.join(destDir, `${target.fileName}${ext}`);
+                if (existsSync(src)) {
+                    copyFileSync(src, dest);
+                }
+            }
+
+            console.log(`  → copied to public/vendor/livue/${target.publicVendorDir}/`);
+        },
+    };
+}
 
 if (!watchMode) {
     rmSync(path.resolve(rootDir, 'dist'), { recursive: true, force: true });
@@ -100,7 +133,7 @@ for (const target of targets) {
     await build({
         configFile: false,
         root: rootDir,
-        plugins: [vue()],
+        plugins: [vue(), autoCopyPlugin(target, absoluteOutDir)],
         css: {
             postcss: path.resolve(rootDir, 'postcss.config.js'),
         },
@@ -113,7 +146,9 @@ for (const target of targets) {
             sourcemap: true,
             minify: false,
             cssCodeSplit: false,
-            watch: watchMode ? {} : undefined,
+            watch: watchMode ? {
+                    exclude: ['**/dist/**', '**/node_modules/**', '**/public/vendor/**'],
+                } : undefined,
             lib: {
                 entry: {
                     [target.fileName]: path.resolve(rootDir, target.entry),

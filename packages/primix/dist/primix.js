@@ -47044,7 +47044,11 @@ const _sfc_main$n = {
           },
           scales: {
             x: { display: false },
-            y: { display: false }
+            y: {
+              display: false,
+              beginAtZero: true,
+              suggestedMax: Math.max(1, ...props.data)
+            }
           },
           animation: {
             duration: 500
