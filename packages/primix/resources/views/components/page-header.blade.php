@@ -26,6 +26,7 @@
             <p-breadcrumb
                 :model="{!! \Illuminate\Support\Js::from($breadcrumbItems) !!}"
                 class="mb-2"
+                :pt="{ root: { style: 'background: transparent; border: none; padding: 0;' } }"
             >
                 <template #item="{ item }">
                     <a

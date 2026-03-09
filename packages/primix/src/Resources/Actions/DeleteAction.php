@@ -18,6 +18,7 @@ class DeleteAction extends Action
         $this->color('danger');
         $this->requiresConfirmation();
         $this->successNotificationTitle('Record deleted successfully');
+        $this->iconButton();
 
         $this->visible(function (mixed $record): bool {
             if ($record === null) {

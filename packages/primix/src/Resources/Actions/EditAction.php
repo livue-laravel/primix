@@ -19,6 +19,7 @@ class EditAction extends Action
         $this->label('Edit');
         $this->icon('heroicon-o-pencil-square');
         $this->color('primary');
+        $this->iconButton();
 
         $this->modal(fn () => $this->shouldUseModalForPage('edit'));
 
