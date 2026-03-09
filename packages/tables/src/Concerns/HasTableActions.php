@@ -38,7 +38,7 @@ trait HasTableActions
     public function actions(array $actions): static
     {
         $this->actions = $actions;
-        $this->propagateLiVueTo($this->actions);
+        $this->propagateContextToComponents($this->actions);
         $this->propagateResourceTo($this->actions);
 
         return $this;
@@ -47,7 +47,7 @@ trait HasTableActions
     public function bulkActions(array $actions): static
     {
         $this->bulkActions = $actions;
-        $this->propagateLiVueTo($this->bulkActions);
+        $this->propagateContextToComponents($this->bulkActions);
         $this->propagateResourceTo($this->bulkActions);
 
         return $this;
@@ -56,7 +56,7 @@ trait HasTableActions
     public function headerActions(array $actions): static
     {
         $this->headerActions = $actions;
-        $this->propagateLiVueTo($this->headerActions);
+        $this->propagateContextToComponents($this->headerActions);
         $this->propagateResourceTo($this->headerActions);
 
         return $this;
@@ -124,19 +124,6 @@ trait HasTableActions
         return $this->headerActions;
     }
 
-    protected function propagateLiVueTo(array $children): void
-    {
-        if (! $this->getLiVue()) {
-            return;
-        }
-
-        foreach ($children as $child) {
-            if (method_exists($child, 'livue')) {
-                $child->livue($this->getLiVue());
-            }
-        }
-    }
-
     protected function propagateResourceTo(array $items): void
     {
         if ($this->resourceClass === null) {
@@ -160,7 +147,7 @@ trait HasTableActions
             return [];
         }
 
-        $this->propagateLiVueTo($resolved);
+        $this->propagateContextToComponents($resolved);
         $this->propagateResourceTo($resolved);
 
         return $resolved;

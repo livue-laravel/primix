@@ -6,9 +6,7 @@ use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\View;
-use Primix\Support\Concerns\BelongsToLiVue;
-use Primix\Support\Concerns\EvaluatesClosures;
-use Primix\Support\Concerns\Makeable;
+use Primix\Support\Components\ComponentContainer;
 use Primix\Tables\Concerns\AnalyzesColumnCapabilities;
 use Primix\Tables\Concerns\HasEmptyState;
 use Primix\Tables\Concerns\HasGridLayout;
@@ -18,14 +16,11 @@ use Primix\Tables\Concerns\ManagesColumnVisibility;
 use Primix\Support\SchemaBuilder;
 use Primix\Tables\Enums\FiltersLayout;
 
-class Table implements Htmlable
+class Table extends ComponentContainer implements Htmlable
 {
     use AnalyzesColumnCapabilities;
-    use BelongsToLiVue;
-    use EvaluatesClosures;
     use HasEmptyState;
     use HasTableActions;
-    use Makeable;
     use ManagesColumnVisibility;
     use HasTreeStructure;
     use HasGridLayout;
@@ -40,6 +35,8 @@ class Table implements Htmlable
     protected array $filters = [];
 
     protected ?Builder $query = null;
+
+    protected ?array $embeddedRecords = null;
 
     protected int $defaultPerPage = 10;
 
@@ -126,7 +123,7 @@ class Table implements Htmlable
     public function columns(array $columns): static
     {
         $this->columns = $columns;
-        $this->propagateLiVueTo($this->columns);
+        $this->propagateContextToComponents($this->columns);
 
         return $this;
     }
@@ -134,7 +131,7 @@ class Table implements Htmlable
     public function filters(array $filters): static
     {
         $this->filters = $filters;
-        $this->propagateLiVueTo($this->filters);
+        $this->propagateContextToComponents($this->filters);
 
         return $this;
     }
@@ -144,6 +141,23 @@ class Table implements Htmlable
         $this->query = $query;
 
         return $this;
+    }
+
+    public function embeddedRecords(array $records): static
+    {
+        $this->embeddedRecords = $records;
+
+        return $this;
+    }
+
+    public function getEmbeddedRecords(): ?array
+    {
+        return $this->embeddedRecords;
+    }
+
+    public function isEmbedded(): bool
+    {
+        return $this->embeddedRecords !== null;
     }
 
     public function defaultPerPage(int $perPage): static

@@ -5,6 +5,7 @@ namespace Primix\Resources\Pages;
 use Illuminate\Database\Eloquent\Model;
 use Primix\Actions\Action;
 use Primix\Forms\Form;
+use Primix\Concerns\HandlesRelationTableModals;
 use Primix\Forms\HasForms;
 use Primix\Notifications\Notification;
 use Primix\Resources\Actions\DeleteAction;
@@ -13,6 +14,7 @@ use Primix\Resources\Actions\RestoreAction;
 
 class EditRecord extends Page
 {
+    use HandlesRelationTableModals;
     use HasForms;
 
     protected function getHeaderActions(): array

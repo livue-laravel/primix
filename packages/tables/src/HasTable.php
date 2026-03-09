@@ -46,6 +46,11 @@ trait HasTable
     public function getTableRecords(): LengthAwarePaginator
     {
         $table = $this->getTable();
+
+        if ($table->isEmbedded()) {
+            return $this->getEmbeddedTableRecords($table);
+        }
+
         $query = $this->getFilteredTableQuery();
 
         // Apply group ordering first (ensures grouped records are contiguous)
@@ -124,6 +129,10 @@ trait HasTable
     public function getTableSummary(): array
     {
         $table = $this->getTable();
+
+        if ($table->isEmbedded()) {
+            return [];
+        }
 
         if (! $table->hasSummarizableColumns()) {
             return [];
@@ -215,5 +224,49 @@ trait HasTable
     protected function resetTableCache(): void
     {
         $this->cachedTable = null;
+    }
+
+    private function getEmbeddedTableRecords(Table $table): LengthAwarePaginator
+    {
+        $items = collect($table->getEmbeddedRecords());
+
+        // Apply global search
+        if ($this->tableSearch) {
+            $searchableColumns = $table->getGloballySearchableColumns();
+
+            $items = $items->filter(function ($item) use ($searchableColumns) {
+                foreach ($searchableColumns as $col) {
+                    if (str_contains(
+                        strtolower((string) data_get($item, $col->getName())),
+                        strtolower($this->tableSearch)
+                    )) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        }
+
+        // Apply sorting
+        if ($this->tableSortColumn) {
+            $direction = $this->tableSortDirection === 'desc' ? 'sortByDesc' : 'sortBy';
+            $items = $items->{$direction}(fn ($item) => data_get($item, $this->tableSortColumn));
+            $items = $items->values();
+        }
+
+        // Paginate manually
+        $total = $items->count();
+        $page = $this->page;
+        $perPage = $this->tablePerPage;
+        $sliced = $items->slice(($page - 1) * $perPage, $perPage)->values();
+
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $sliced,
+            $total,
+            $perPage,
+            $page,
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
     }
 }

@@ -27,6 +27,10 @@
     <x-primix-actions::modals />
     @endfragment
 
+    @fragment('relation-table-modal')
+    @include('primix::components.relation-table-modal')
+    @endfragment
+
     @renderHook(\Primix\Enums\PanelsRenderHook::PAGE_END)
 
     <p-confirm-dialog></p-confirm-dialog>

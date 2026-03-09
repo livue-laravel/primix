@@ -26,7 +26,11 @@ class ViewAction extends Action
 
         $this->modal(fn () => $this->shouldUseModalForPage('view'));
 
-        $this->modalHeading(fn () => 'View ' . $this->getResourceClass()::getModelLabel());
+        $this->modalHeading(function () {
+            $class = $this->getResourceClass();
+
+            return 'View' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+        });
 
         $this->modalWidth('lg');
 

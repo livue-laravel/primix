@@ -3,18 +3,13 @@
 namespace Primix\Forms;
 
 use Primix\Forms\Concerns\HasColumns;
-use Primix\Support\Concerns\BelongsToLiVue;
-use Primix\Support\Concerns\EvaluatesClosures;
-use Primix\Support\Concerns\Makeable;
+use Primix\Support\Components\ComponentContainer;
 use Primix\Support\Contracts\SchemaContainer;
 use Primix\Support\Enums\SchemaContext;
 
-abstract class Schema implements SchemaContainer
+abstract class Schema extends ComponentContainer implements SchemaContainer
 {
-    use BelongsToLiVue;
-    use EvaluatesClosures;
     use HasColumns;
-    use Makeable;
 
     protected array $components = [];
 
@@ -25,6 +20,16 @@ abstract class Schema implements SchemaContainer
     protected array $state = [];
 
     abstract public function getContext(): SchemaContext;
+
+    public function getRecord(): mixed
+    {
+        return $this->record;
+    }
+
+    public function getStatePath(): ?string
+    {
+        return $this->statePath;
+    }
 
     public function schema(array $components): static
     {
@@ -102,21 +107,11 @@ abstract class Schema implements SchemaContainer
         return $this;
     }
 
-    public function fill(array $state): static
+    public function fill(array $state = []): static
     {
         $this->state = $state;
 
         return $this;
-    }
-
-    public function getStatePath(): ?string
-    {
-        return $this->statePath;
-    }
-
-    public function getRecord(): mixed
-    {
-        return $this->record;
     }
 
     public function getState(): array

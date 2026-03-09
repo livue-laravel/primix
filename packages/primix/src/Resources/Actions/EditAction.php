@@ -22,7 +22,11 @@ class EditAction extends Action
 
         $this->modal(fn () => $this->shouldUseModalForPage('edit'));
 
-        $this->modalHeading(fn () => 'Edit ' . $this->getResourceClass()::getModelLabel());
+        $this->modalHeading(function () {
+            $class = $this->getResourceClass();
+
+            return 'Edit' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+        });
 
         $this->modalWidth('lg');
 

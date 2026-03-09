@@ -107,6 +107,7 @@ class PrimixServiceProvider extends ServiceProvider
         $livue->register('notification-manager', NotificationManager::class);
         $livue->register('primix-topbar', Components\Topbar::class);
         $livue->register('primix-sidebar', Components\Sidebar::class);
+        $livue->register('primix-relation-manager', \Primix\RelationManagers\RelationManagerComponent::class);
     }
 
     protected function discoverPanelProviders(): void

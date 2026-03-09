@@ -56,6 +56,7 @@ trait HasForms
 
         if (method_exists($this, $name)) {
             $form = $this->{$name}(Form::make()->livue($this)->name($name));
+            $form->fill();
             $this->cachedForms[$name] = $form;
 
             return $form;

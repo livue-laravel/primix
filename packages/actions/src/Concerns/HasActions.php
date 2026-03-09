@@ -34,8 +34,9 @@ trait HasActions
 
     /**
      * Cached record instance to avoid multiple DB queries per render.
+     * Typed as mixed to support non-Eloquent records (e.g., embedded array items).
      */
-    protected ?Model $cachedMountedActionRecord = null;
+    protected mixed $cachedMountedActionRecord = null;
 
     /**
      * Define the actions for this component.
@@ -124,6 +125,16 @@ trait HasActions
      */
     #[Fragment('modal')]
     public function callAction(array $arguments): mixed
+    {
+        return $this->executeCallAction($arguments);
+    }
+
+    /**
+     * Core action execution logic. Extracted so subclasses can override
+     * callAction with a different #[Fragment] without using parent:: (which
+     * would incorrectly target the base Component class, not the trait).
+     */
+    protected function executeCallAction(array $arguments): mixed
     {
         $name = $arguments['name'] ?? null;
 
@@ -221,9 +232,16 @@ trait HasActions
 
         $this->mountedAction = $name;
 
-        // Fill form with initial data if action has a form
+        // Fill form with initial data if action has a form.
+        // getActionForm()->fill() initializes field keys in the LiVue reactive state
+        // so Vue tracks them from the start and syncs user input correctly.
         if ($action->hasForm()) {
-            $this->mountedActionData = $action->getInitialFormData();
+            $form = $this->getActionForm();
+            if ($form !== null) {
+                $form->fill($action->getFormData());
+            } else {
+                $this->mountedActionData = $action->getInitialFormData();
+            }
         }
     }
 
@@ -269,8 +287,9 @@ trait HasActions
     /**
      * Resolve a record by key for action execution.
      * Override in subclasses (e.g., ListRecords) to load from table query.
+     * Returns mixed to support non-Eloquent records (e.g., embedded array items).
      */
-    protected function resolveActionRecord(mixed $key): ?Model
+    protected function resolveActionRecord(mixed $key): mixed
     {
         return null;
     }

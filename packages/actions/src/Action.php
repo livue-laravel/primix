@@ -5,6 +5,7 @@ namespace Primix\Actions;
 use Closure;
 use Primix\Actions\Concerns\BelongsToComponent;
 use Primix\Actions\Concerns\CanNotify;
+use Primix\Support\Concerns\BelongsToContainer;
 use Primix\Actions\Concerns\CanOpenModal;
 use Primix\Actions\Concerns\CanRedirect;
 use Primix\Actions\Concerns\CanRequireConfirmation;
@@ -26,6 +27,7 @@ class Action extends ViewComponent
 {
     public const HALT = '__halt__';
     use BelongsToComponent;
+    use BelongsToContainer;
     use CanBeDisabled;
     use CanBeHidden;
     use CanNotify;
@@ -311,6 +313,7 @@ class Action extends ViewComponent
             'record' => [$this->getRecord()],
             'data' => [$this->getFormData()],
             'component' => [$this->getComponent()],
+            'container' => [$this->getContainer()],
             default => parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName),
         };
     }
@@ -328,7 +331,7 @@ class Action extends ViewComponent
     public function toVueProps(): array
     {
         $record = $this->getRecord();
-        $recordKey = $record instanceof \Illuminate\Database\Eloquent\Model ? $record->getKey() : null;
+        $recordKey = $record !== null && method_exists($record, 'getKey') ? $record->getKey() : null;
 
         return array_merge(parent::toVueProps(), [
             'id' => $this->getId(),

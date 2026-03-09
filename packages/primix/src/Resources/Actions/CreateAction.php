@@ -22,7 +22,11 @@ class CreateAction extends Action
 
         $this->modal(fn () => $this->shouldUseModalForPage('create'));
 
-        $this->modalHeading(fn () => 'Create ' . $this->getResourceClass()::getModelLabel());
+        $this->modalHeading(function () {
+            $class = $this->getResourceClass();
+
+            return 'Create' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+        });
 
         $this->modalWidth('lg');
 

@@ -4,11 +4,13 @@ namespace Primix\Resources\Pages;
 
 use Primix\Actions\Action;
 use Primix\Forms\Form;
+use Primix\Concerns\HandlesRelationTableModals;
 use Primix\Forms\HasForms;
 use Primix\Notifications\Notification;
 
 class CreateRecord extends Page
 {
+    use HandlesRelationTableModals;
     use HasForms;
 
     protected function getFooterActions(): array
@@ -97,9 +99,24 @@ class CreateRecord extends Page
             ->send();
 
         $this->redirect(
-            $resource::getUrl('index'),
+            $this->getRedirectUrl($record),
             navigate: true
         );
+    }
+
+    protected function getRedirectUrl(\Illuminate\Database\Eloquent\Model $record): string
+    {
+        $resource = $this->resolveResource();
+
+        if ($resource::hasPage('edit')) {
+            return $resource::getUrl('edit', ['record' => $record->getKey()]);
+        }
+
+        if ($resource::hasPage('view')) {
+            return $resource::getUrl('view', ['record' => $record->getKey()]);
+        }
+
+        return $resource::getUrl('index');
     }
 
     public function getTitle(): string

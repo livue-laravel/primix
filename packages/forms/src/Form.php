@@ -206,6 +206,35 @@ class Form extends Schema implements Htmlable
         return false;
     }
 
+    public function fill(array $state = []): static
+    {
+        $formStatePath = $this->getStatePath();
+
+        // Initialize every field key to null (or its default) if not already in $state
+        foreach ($this->getLeafComponents() as $path => $field) {
+            $relPath = ($formStatePath !== null && str_starts_with($path, $formStatePath . '.'))
+                ? substr($path, strlen($formStatePath) + 1)
+                : $path;
+
+            if ($relPath === '' || ! array_key_exists($relPath, $state)) {
+                $default = method_exists($field, 'getDefaultValue') ? $field->getDefaultValue() : null;
+                data_set($state, $relPath, $default);
+            }
+        }
+
+        $this->state = $state;
+
+        // Write to the LiVue component's public property (non-destructively:
+        // existing values — e.g. user input already hydrated — take precedence)
+        $livue = $this->getLiVue();
+        if ($livue !== null && $formStatePath !== null && property_exists($livue, $formStatePath)) {
+            $existing = $livue->{$formStatePath};
+            $livue->{$formStatePath} = array_merge($state, is_array($existing) ? $existing : []);
+        }
+
+        return $this;
+    }
+
     public function dehydrateState(array &$data): void
     {
         $formStatePath = $this->getStatePath();

@@ -2,20 +2,20 @@
 
 namespace Primix\Support\Concerns;
 
-use Primix\Support\Contracts\SchemaContainer;
+use Primix\Support\Components\ComponentContainer;
 
 trait BelongsToContainer
 {
-    protected ?SchemaContainer $container = null;
+    protected ?ComponentContainer $container = null;
 
-    public function container(?SchemaContainer $container): static
+    public function container(?ComponentContainer $container): static
     {
         $this->container = $container;
 
         return $this;
     }
 
-    public function getContainer(): ?SchemaContainer
+    public function getContainer(): ?ComponentContainer
     {
         return $this->container;
     }
