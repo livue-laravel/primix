@@ -24,15 +24,17 @@
     </td>
 @endforeach
 
-@if($hasActions)
+@if($showActionsColumn ?? $hasActions)
     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-        <div class="flex items-center justify-end gap-1">
-            @foreach($table->getActions() as $action)
-                @php($action->record($record))
-                @if($action->isVisible())
-                    {{ $action }}
-                @endif
-            @endforeach
-        </div>
+        @if($hasActions)
+            <div class="flex items-center justify-end gap-1">
+                @foreach($rowActions ?? $table->getRowActions() as $action)
+                    @php($action->record($record))
+                    @if($action->isVisible())
+                        {{ $action }}
+                    @endif
+                @endforeach
+            </div>
+        @endif
     </td>
 @endif

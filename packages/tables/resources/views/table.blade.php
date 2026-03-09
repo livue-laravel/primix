@@ -4,13 +4,15 @@
     /** @var array $summary */
     $livue = $this;
     $visibleColumns = $table->getVisibleColumns();
-    $hasActions = count($table->getActions()) > 0;
+    $rowActions = $table->getRowActions();
+    $hasActions = count($rowActions) > 0;
+    $showActionsColumn = $hasActions || $table->hasInlineCreate();
     $isReorderEnabled = $livue->isReorderEnabled();
     $isGrouped = $table->isGrouped();
     $group = $table->getGroup();
     $colCount = count($visibleColumns)
         + ($table->isSelectable() ? 1 : 0)
-        + ($hasActions ? 1 : 0)
+        + ($showActionsColumn ? 1 : 0)
         + ($isReorderEnabled ? 1 : 0);
     $hasIndividualSearch = $table->hasIndividuallySearchableColumns();
     $headerActions = $table->getHeaderActions();
@@ -152,7 +154,7 @@
                                 @endif
                                 @if($hasActions)
                                     <div class="flex items-center gap-1">
-                                        @foreach($table->getActions() as $action)
+                                        @foreach($rowActions as $action)
                                             @php($action->record($record)->recordTitle(data_get($record, $table->getRecordTitleAttribute() ?? 'id')))
                                             @if($action->isVisible())
                                                 {{ $action }}
@@ -211,7 +213,7 @@
                         </th>
                     @endforeach
 
-                    @if($hasActions)
+                    @if($showActionsColumn)
                         <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                             <span class="sr-only">Actions</span>
                         </th>
@@ -240,7 +242,7 @@
                                 @endif
                             </th>
                         @endforeach
-                        @if($hasActions)
+                        @if($showActionsColumn)
                             <th></th>
                         @endif
                     </tr>
@@ -315,6 +317,7 @@
                                     'table' => $table,
                                     'visibleColumns' => $visibleColumns,
                                     'hasActions' => $hasActions,
+                                    'showActionsColumn' => $showActionsColumn,
                                     'isReorderEnabled' => $isReorderEnabled,
                                 ])
                             </tr>
@@ -347,10 +350,21 @@
                                 'table' => $table,
                                 'visibleColumns' => $visibleColumns,
                                 'hasActions' => $hasActions,
+                                'showActionsColumn' => $showActionsColumn,
                                 'isReorderEnabled' => $isReorderEnabled,
                             ])
                         </tr>
                     @endforeach
+                @endif
+
+                @if($table->hasInlineCreate())
+                    @include('primix-tables::partials.table-inline-create-row', [
+                        'table' => $table,
+                        'visibleColumns' => $visibleColumns,
+                        'hasActions' => $hasActions,
+                        'showActionsColumn' => $showActionsColumn,
+                        'isReorderEnabled' => $isReorderEnabled,
+                    ])
                 @endif
             </tbody>
 

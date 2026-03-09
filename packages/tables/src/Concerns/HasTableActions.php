@@ -104,6 +104,14 @@ trait HasTableActions
         return array_filter($this->actions, fn ($action) => ! $action->isHidden());
     }
 
+    public function getRowActions(): array
+    {
+        return array_values(array_filter(
+            $this->actions,
+            fn ($action) => ! ($action instanceof \Primix\Tables\Actions\AddAction)
+        ));
+    }
+
     public function getBulkActions(): array
     {
         return $this->bulkActions;

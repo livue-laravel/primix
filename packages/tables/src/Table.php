@@ -64,6 +64,11 @@ class Table extends ComponentContainer implements Htmlable
 
     protected ?Closure $recordUrlResolver = null;
 
+    protected bool|Closure|null $inlineCreateEnabled = null;
+
+    protected ?Closure $inlineCreateUsing = null;
+
+
     /**
      * Build the table from an array of definitions.
      *
@@ -282,6 +287,46 @@ class Table extends ComponentContainer implements Htmlable
         return $this->recordUrlResolver;
     }
 
+    public function inlineCreate(bool|Closure $condition = true): static
+    {
+        $this->inlineCreateEnabled = $condition;
+
+        return $this;
+    }
+
+    public function inlineCreateUsing(?Closure $callback): static
+    {
+        $this->inlineCreateUsing = $callback;
+
+        return $this;
+    }
+
+    public function hasInlineCreate(): bool
+    {
+        return (bool) $this->evaluate($this->inlineCreateEnabled ?? false);
+    }
+
+    public function isInlineCreateExplicitlyConfigured(): bool
+    {
+        return $this->inlineCreateEnabled !== null;
+    }
+
+    public function getInlineCreateCallback(): ?Closure
+    {
+        return $this->inlineCreateUsing;
+    }
+
+    public function getInlineCreateAction(): ?\Primix\Tables\Actions\AddAction
+    {
+        foreach ($this->actions as $action) {
+            if ($action instanceof \Primix\Tables\Actions\AddAction) {
+                return $action;
+            }
+        }
+
+        return null;
+    }
+
     public function getRecordUrl(mixed $record): ?string
     {
         if (! $this->isRowClickEnabled()) {
@@ -393,6 +438,7 @@ class Table extends ComponentContainer implements Htmlable
                 'description' => $this->getEmptyStateDescription(),
                 'icon' => $this->getEmptyStateIcon(),
             ],
+            'inlineCreate' => $this->hasInlineCreate(),
         ];
     }
 }

@@ -102,6 +102,11 @@ class RelationManagerComponent extends Component
             $table = $manager::table($table->query($this->getRelationQuery()));
         }
 
+        // Enable inline create by default unless explicitly configured
+        if (! $table->isInlineCreateExplicitlyConfigured()) {
+            $table->inlineCreate();
+        }
+
         // Configure all table actions immediately so isModal() returns the correct value
         // when the table Blade template renders action buttons. Without this, actions are
         // rendered unconfigured (isModal=false) and Vue calls callAction instead of
@@ -350,6 +355,31 @@ class RelationManagerComponent extends Component
                 ->success()
                 ->send();
         });
+    }
+
+    protected function performInlineCreate(\Primix\Tables\Table $table, array $data): void
+    {
+        if ($table->getInlineCreateCallback() !== null) {
+            $this->evaluate($table->getInlineCreateCallback(), ['data' => $data]);
+
+            return;
+        }
+
+        if ($this->embedded) {
+            $this->embeddedItems[] = $data;
+
+            return;
+        }
+
+        $relation = $this->getRelation();
+
+        if ($this->isDetachedRelation()) {
+            /** @var BelongsToMany $relation */
+            $record = $relation->getRelated()::create($data);
+            $relation->attach($record->getKey());
+        } else {
+            $relation->create($data);
+        }
     }
 
     protected function resolveActionRecord(mixed $key): mixed

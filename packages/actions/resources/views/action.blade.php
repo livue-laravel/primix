@@ -119,7 +119,7 @@
         @if($hasTooltipLabel && !in_array($tooltipPosition, ['top', 'right', 'bottom', 'left'], true)) v-tooltip="'{{ addslashes($tooltipLabel) }}'" @endif
         @if($iconPosition === 'after') icon-pos="right" @endif
         {!! $extraAttributes !!}
-        @click="{{ $jsAction }}"
+        @click="{!! $jsAction !!}"
     >@if($iconHtml)<template #icon>{!! $iconHtml !!}</template>@endif</p-button>
 @else
     {{-- Simple action button --}}

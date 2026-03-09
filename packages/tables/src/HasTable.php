@@ -3,6 +3,7 @@
 namespace Primix\Tables;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Validator;
 use LiVue\Features\SupportPagination\UsePagination;
 use Primix\Tables\Columns\Column;
 use Primix\Tables\Concerns\ExecutesBulkActions;
@@ -29,6 +30,8 @@ trait HasTable
     public int $tablePerPage = 10;
 
     public array $tableColumnSearches = [];
+
+    public array $tableInlineCreateData = [];
 
     protected ?Table $cachedTable = null;
 
@@ -219,6 +222,61 @@ trait HasTable
         $record = $query->where($table->getRecordKeyName(), $recordKey)->firstOrFail();
 
         $column->updateState($record, $value);
+    }
+
+    public function createTableRecord(array $data = []): void
+    {
+        $table = $this->getTable();
+
+        if (! $table->hasInlineCreate()) {
+            return;
+        }
+
+        if (empty($data)) {
+            $data = $this->tableInlineCreateData;
+        }
+
+        // Persist data so inputs re-hydrate their values if validation fails
+        $this->tableInlineCreateData = $data;
+
+        $rules = [];
+        $validationMessages = [];
+
+        foreach ($table->getColumns() as $column) {
+            if (method_exists($column, 'isEditable') && $column->isEditable()
+                && method_exists($column, 'getRules') && $column->getRules() !== null) {
+                $rules[$column->getName()] = $column->getRules();
+                $validationMessages = array_merge($validationMessages, $column->getValidationMessages());
+            }
+        }
+
+        if (! empty($rules)) {
+            Validator::make($data, $rules, $validationMessages)->validate();
+        }
+
+        $this->performInlineCreate($table, $data);
+
+        $this->tableInlineCreateData = [];
+        $this->resetTableCache();
+    }
+
+    protected function performInlineCreate(Table $table, array $data): void
+    {
+        if ($table->getInlineCreateCallback() !== null) {
+            $this->evaluate($table->getInlineCreateCallback(), ['data' => $data]);
+
+            return;
+        }
+
+        $query = $table->getQuery();
+
+        if ($query === null) {
+            throw new \LogicException(
+                'Cannot use inlineCreate() without a query. Specify ->inlineCreateUsing() or override performInlineCreate().'
+            );
+        }
+
+        $query->getModel()->newInstance()->fill($data)->save();
     }
 
     protected function resetTableCache(): void
