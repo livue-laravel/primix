@@ -12,6 +12,8 @@ class MakePageCommand extends GeneratorCommand
 
     protected $type = 'Page';
 
+    protected $aliases = ['primix:page'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/page.stub';

@@ -15,6 +15,8 @@ class MakePolicyCommand extends GeneratorCommand
 
     protected $type = 'Policy';
 
+    protected $aliases = ['primix:policy'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/policy.stub';

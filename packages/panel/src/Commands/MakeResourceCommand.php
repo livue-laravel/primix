@@ -14,6 +14,8 @@ class MakeResourceCommand extends GeneratorCommand
 
     protected $type = 'Resource';
 
+    protected $aliases = ['primix:resource'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/resource.stub';

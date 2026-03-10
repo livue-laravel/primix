@@ -12,6 +12,8 @@ class MakeThemeCommand extends GeneratorCommand
 
     protected $type = 'Theme';
 
+    protected $aliases = ['primix:theme'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/theme.stub';

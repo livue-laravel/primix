@@ -13,6 +13,8 @@ class MakeActionCommand extends GeneratorCommand
 
     protected $type = 'Action';
 
+    protected $aliases = ['primix:action'];
+
     protected function getStub(): string
     {
         if ($this->option('bulk')) {

@@ -13,6 +13,8 @@ class MakePluginCommand extends GeneratorCommand
 
     protected $type = 'Plugin';
 
+    protected $aliases = ['primix:plugin'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/plugin.stub';

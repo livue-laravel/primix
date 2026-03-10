@@ -13,6 +13,8 @@ class MakeImporterCommand extends GeneratorCommand
 
     protected $type = 'Importer';
 
+    protected $aliases = ['primix:importer'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/importer.stub';

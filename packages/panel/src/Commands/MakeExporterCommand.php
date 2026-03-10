@@ -13,6 +13,8 @@ class MakeExporterCommand extends GeneratorCommand
 
     protected $type = 'Exporter';
 
+    protected $aliases = ['primix:exporter'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/exporter.stub';

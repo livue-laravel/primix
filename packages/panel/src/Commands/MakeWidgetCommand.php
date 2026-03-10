@@ -12,6 +12,8 @@ class MakeWidgetCommand extends GeneratorCommand
 
     protected $type = 'Widget';
 
+    protected $aliases = ['primix:widget'];
+
     protected function getStub(): string
     {
         if ($this->option('table')) {

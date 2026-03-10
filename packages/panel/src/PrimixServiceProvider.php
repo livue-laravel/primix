@@ -55,6 +55,7 @@ class PrimixServiceProvider extends ServiceProvider
             $this->publishes($assets, 'laravel-assets');
 
             $this->commands([
+                Commands\InstallCommand::class,
                 Commands\MakePanelCommand::class,
                 Commands\MakeResourceCommand::class,
                 Commands\MakePageCommand::class,

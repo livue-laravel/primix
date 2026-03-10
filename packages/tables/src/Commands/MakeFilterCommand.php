@@ -19,6 +19,8 @@ class MakeFilterCommand extends GeneratorCommand
 
     protected $type = 'Filter';
 
+    protected $aliases = ['primix:filter'];
+
     public function handle(): ?bool
     {
         if ($this->hasMultipleTypeOptions()) {

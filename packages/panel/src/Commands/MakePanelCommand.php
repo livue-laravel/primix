@@ -18,6 +18,8 @@ class MakePanelCommand extends GeneratorCommand
 
     protected $type = 'Panel Provider';
 
+    protected $aliases = ['primix:panel'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/panel-provider.stub';

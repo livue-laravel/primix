@@ -13,6 +13,8 @@ class MakeDashboardCommand extends GeneratorCommand
 
     protected $type = 'Dashboard';
 
+    protected $aliases = ['primix:dashboard'];
+
     protected function getStub(): string
     {
         return __DIR__ . '/../../stubs/dashboard.stub';
