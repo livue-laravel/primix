@@ -292,7 +292,7 @@
                         @foreach($groupRecords as $record)
                             @php($recordUrl = $table->getRecordUrl($record))
                             <tr
-                                class="{{ $table->isStriped() ? 'even:bg-gray-50 dark:even:bg-gray-900/50' : '' }} {{ $recordUrl ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50' : '' }}"
+                                class="{{ $table->isStriped() ? 'even:bg-gray-50 dark:even:bg-gray-900/50' : '' }} {{ $recordUrl ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50' : '' }} {{ $table->isInlineInput() ? 'focus-within:bg-gray-50 dark:focus-within:bg-gray-700/30' : '' }}"
                                 @if($group->isCollapsible())
                                     v-show="!collapsedGroups.includes('{{ $groupValue }}')"
                                 @endif
@@ -327,7 +327,7 @@
                     @foreach($records as $record)
                         @php($recordUrl = $table->getRecordUrl($record))
                         <tr
-                            class="{{ $table->isStriped() ? 'even:bg-gray-50 dark:even:bg-gray-900/50' : '' }} {{ $recordUrl ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50' : '' }}"
+                            class="{{ $table->isStriped() ? 'even:bg-gray-50 dark:even:bg-gray-900/50' : '' }} {{ $recordUrl ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50' : '' }} {{ $table->isInlineInput() ? 'focus-within:bg-gray-50 dark:focus-within:bg-gray-700/30' : '' }}"
                             @if($isReorderEnabled) v-sort-item="{{ $record->{$table->getRecordKeyName()} }}" @endif
                             @if($recordUrl)
                                 @click="

@@ -18,14 +18,16 @@
     </td>
 @endif
 
+@php($inlineInput = $table->isInlineInput())
+
 @foreach($visibleColumns as $column)
-    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+    <td class="whitespace-nowrap px-3 {{ $inlineInput ? 'py-1' : 'py-4' }} text-sm text-gray-500 dark:text-gray-400">
         {{ $column->record($record) }}
     </td>
 @endforeach
 
 @if($showActionsColumn ?? $hasActions)
-    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+    <td class="relative whitespace-nowrap {{ $inlineInput ? 'py-1' : 'py-4' }} pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
         @if($hasActions)
             <div class="flex items-center justify-end gap-1">
                 @foreach($rowActions ?? $table->getRowActions() as $action)

@@ -5,11 +5,13 @@ namespace Primix\Tables\Columns;
 use Closure;
 use Primix\Forms\Concerns\HasOptions;
 use Primix\Tables\Columns\Concerns\CanUpdateState;
+use Primix\Tables\Columns\Concerns\HasInlineStyle;
 
 class SelectColumn extends Column
 {
     use CanUpdateState;
     use HasOptions;
+    use HasInlineStyle;
 
     protected string|Closure|null $selectPlaceholder = null;
 
@@ -36,6 +38,7 @@ class SelectColumn extends Column
             'options' => $this->getOptions(),
             'editable' => $this->isEditable(),
             'selectPlaceholder' => $this->getSelectPlaceholder(),
+            'inlineInput' => $this->isInlineInput(),
         ]);
     }
 }

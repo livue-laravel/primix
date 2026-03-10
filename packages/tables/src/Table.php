@@ -68,6 +68,8 @@ class Table extends ComponentContainer implements Htmlable
 
     protected ?Closure $inlineCreateUsing = null;
 
+    protected bool $inlineInput = false;
+
 
     /**
      * Build the table from an array of definitions.
@@ -129,6 +131,14 @@ class Table extends ComponentContainer implements Htmlable
     {
         $this->columns = $columns;
         $this->propagateContextToComponents($this->columns);
+
+        if ($this->inlineInput) {
+            foreach ($this->columns as $column) {
+                if (method_exists($column, 'inlineInput')) {
+                    $column->inlineInput(true);
+                }
+            }
+        }
 
         return $this;
     }
@@ -325,6 +335,24 @@ class Table extends ComponentContainer implements Htmlable
         }
 
         return null;
+    }
+
+    public function inlineInput(bool $condition = true): static
+    {
+        $this->inlineInput = $condition;
+
+        foreach ($this->columns as $column) {
+            if (method_exists($column, 'inlineInput')) {
+                $column->inlineInput($condition);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isInlineInput(): bool
+    {
+        return $this->inlineInput;
     }
 
     public function getRecordUrl(mixed $record): ?string

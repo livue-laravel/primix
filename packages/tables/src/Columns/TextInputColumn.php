@@ -4,10 +4,12 @@ namespace Primix\Tables\Columns;
 
 use Closure;
 use Primix\Tables\Columns\Concerns\CanUpdateState;
+use Primix\Tables\Columns\Concerns\HasInlineStyle;
 
 class TextInputColumn extends Column
 {
     use CanUpdateState;
+    use HasInlineStyle;
 
     protected string|Closure $inputType = 'text';
 
@@ -71,6 +73,7 @@ class TextInputColumn extends Column
             'inputType' => $this->getInputType(),
             'editable' => $this->isEditable(),
             'step' => $this->getStep(),
+            'inlineInput' => $this->isInlineInput(),
         ]);
     }
 }

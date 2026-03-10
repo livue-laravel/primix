@@ -5,10 +5,12 @@ namespace Primix\Tables\Columns;
 use Closure;
 use Primix\Support\Colors\Color;
 use Primix\Tables\Columns\Concerns\CanUpdateState;
+use Primix\Tables\Columns\Concerns\HasInlineStyle;
 
 class ToggleColumn extends Column
 {
     use CanUpdateState;
+    use HasInlineStyle;
 
     protected Color|string|Closure|null $onColor = null;
 
@@ -121,6 +123,7 @@ class ToggleColumn extends Column
             'offLabel' => $this->getOffLabel(),
             'onIcon' => $this->getOnIcon(),
             'offIcon' => $this->getOffIcon(),
+            'inlineInput' => $this->isInlineInput(),
         ]);
     }
 }
