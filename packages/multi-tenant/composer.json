@@ -3,14 +3,8 @@
     "description": "Multi-tenancy support for Primix admin panel framework",
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Claudio Giuseppe Castorina"
-        }
-    ],
     "require": {
         "php": "^8.2",
-        "primix/support": "self.version",
         "illuminate/contracts": "^12.0",
         "illuminate/database": "^12.0",
         "illuminate/events": "^12.0",

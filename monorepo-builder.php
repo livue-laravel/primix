@@ -22,11 +22,13 @@ return static function (MBConfig $mbConfig): void {
     $mbConfig->dataToAppend([
         'authors' => [
             [
-                'name' => 'Claudio Giuseppe Castorina',
+                'name' => 'cCast',
+                'email' => 'software@ccast.it',
             ],
         ],
         'require' => [
             'php' => '^8.2',
+            'livue/livue' => '^1.5.0'
         ],
     ]);
 

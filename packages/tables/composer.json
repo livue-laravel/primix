@@ -2,17 +2,11 @@
     "name": "primix/tables",
     "description": "Table builder for Primix admin panel framework",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Claudio Giuseppe Castorina"
-        }
-    ],
     "type": "library",
     "require": {
         "php": "^8.2",
-        "primix/support": "^0.1.0",
-        "primix/actions": "^0.1.0",
-        "livue/livue": "*"
+        "primix/support": "self.version",
+        "primix/actions": "self.version"
     },
     "suggest": {
         "primix/forms": "Required for ExportAction and ImportAction form schemas"

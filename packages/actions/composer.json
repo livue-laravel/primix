@@ -3,15 +3,10 @@
     "description": "Action system for Primix admin panel framework",
     "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Claudio Giuseppe Castorina"
-        }
-    ],
     "require": {
         "php": "^8.2",
-        "primix/support": "^0.1.0",
-        "primix/notifications": "^0.1.0"
+        "primix/support": "self.version",
+        "primix/notifications": "self.version"
     },
     "autoload": {
         "psr-4": {
