@@ -5,8 +5,8 @@
     "type": "library",
     "require": {
         "php": "^8.2",
-        "primix/support": "self.version",
-        "primix/forms": "self.version"
+        "primix/support": "^0.1.3",
+        "primix/forms": "^0.1.3"
     },
     "autoload": {
         "psr-4": {

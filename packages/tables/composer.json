@@ -5,8 +5,8 @@
     "type": "library",
     "require": {
         "php": "^8.2",
-        "primix/support": "self.version",
-        "primix/actions": "self.version"
+        "primix/support": "^0.1.3",
+        "primix/actions": "^0.1.3"
     },
     "suggest": {
         "primix/forms": "Required for ExportAction and ImportAction form schemas"
