@@ -13,10 +13,10 @@ class DetachAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('Detach');
+        $this->label(__('primix::panel.actions.detach'));
         $this->icon('heroicon-o-x-mark');
         $this->color('warning');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record detached successfully');
+        $this->successNotificationTitle(__('primix::panel.notifications.detached'));
     }
 }

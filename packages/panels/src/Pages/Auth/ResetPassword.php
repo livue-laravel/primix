@@ -21,7 +21,7 @@ class ResetPassword extends SimplePage
 
     protected static ?string $slug = 'password-reset/reset';
 
-    protected ?string $title = 'Reset your password';
+    protected ?string $title = null;
 
     public array $data = [];
 
@@ -29,6 +29,8 @@ class ResetPassword extends SimplePage
 
     public function mount(string $token): void
     {
+        $this->title = __('primix::panel.auth.reset_password_title');
+
         $panel = Primix::getCurrentPanel();
 
         if (Auth::guard($panel->getAuthGuard())->check()) {
@@ -53,13 +55,13 @@ class ResetPassword extends SimplePage
         return $form
             ->schema([
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label(__('primix::panel.auth.email'))
                     ->email()
                     ->required()
                     ->disabled()
                     ->autocomplete('email'),
                 TextInput::make('password')
-                    ->label('New password')
+                    ->label(__('primix::panel.auth.new_password'))
                     ->password()
                     ->revealable()
                     ->required()
@@ -67,7 +69,7 @@ class ResetPassword extends SimplePage
                     ->autocomplete('new-password')
                     ->autofocus(),
                 TextInput::make('password_confirmation')
-                    ->label('Confirm password')
+                    ->label(__('primix::panel.auth.confirm_password'))
                     ->password()
                     ->revealable()
                     ->required()
@@ -77,7 +79,7 @@ class ResetPassword extends SimplePage
             ->submitAction('resetPassword')
             ->submitButton(
                 Action::make('resetPassword')
-                    ->label('Reset password')
+                    ->label(__('primix::panel.auth.reset_password_button'))
                     ->submit()
             );
     }

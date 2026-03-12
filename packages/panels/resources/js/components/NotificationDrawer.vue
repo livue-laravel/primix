@@ -25,7 +25,7 @@
                 <!-- Header -->
                 <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-base font-semibold text-gray-900 dark:text-white">
-                        Notifiche
+                        {{ translations.title || 'Notifications' }}
                         <span v-if="unreadCount > 0" class="ml-1 text-sm font-normal text-gray-500 dark:text-gray-400">
                             ({{ unreadCount }})
                         </span>
@@ -37,14 +37,14 @@
                             class="text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium"
                             @click="$emit('mark-all-read')"
                         >
-                            Segna tutte come lette
+                            {{ translations.mark_all_read || 'Mark all as read' }}
                         </button>
                         <button
                             type="button"
                             class="rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
                             @click="$emit('close')"
                         >
-                            <span class="sr-only">Chiudi</span>
+                            <span class="sr-only">{{ translations.close || 'Close' }}</span>
                             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
@@ -69,7 +69,7 @@
                         <svg class="mx-auto h-10 w-10 text-gray-300 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.143 17.082a24.248 24.248 0 0 0 5.714 0m-5.714 0a2.25 2.25 0 0 1-2.244-2.077L6.394 5.694a6.001 6.001 0 0 1 11.212 0l-.505 9.311a2.25 2.25 0 0 1-2.244 2.077m-5.714 0a3 3 0 0 0 5.714 0" />
                         </svg>
-                        <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">Nessuna notifica</p>
+                        <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">{{ translations.no_notifications || 'No notifications' }}</p>
                     </div>
                 </div>
 
@@ -81,7 +81,7 @@
                         :disabled="loading"
                         @click="$emit('load-more')"
                     >
-                        {{ loading ? 'Caricamento...' : 'Carica altre' }}
+                        {{ loading ? (translations.loading || 'Loading...') : (translations.load_more || 'Load more') }}
                     </button>
                 </div>
             </div>
@@ -113,6 +113,10 @@ defineProps({
     loading: {
         type: Boolean,
         default: false,
+    },
+    translations: {
+        type: Object,
+        default: () => ({}),
     },
 });
 

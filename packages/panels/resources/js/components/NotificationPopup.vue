@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-                Notifiche
+                {{ translations.title || 'Notifications' }}
                 <span v-if="unreadCount > 0" class="ml-1 text-xs font-normal text-gray-500 dark:text-gray-400">
                     ({{ unreadCount }})
                 </span>
@@ -14,7 +14,7 @@
                 class="text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium"
                 @click="$emit('mark-all-read')"
             >
-                Segna tutte come lette
+                {{ translations.mark_all_read || 'Mark all as read' }}
             </button>
         </div>
 
@@ -35,7 +35,7 @@
                 <svg class="mx-auto h-8 w-8 text-gray-300 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.143 17.082a24.248 24.248 0 0 0 5.714 0m-5.714 0a2.25 2.25 0 0 1-2.244-2.077L6.394 5.694a6.001 6.001 0 0 1 11.212 0l-.505 9.311a2.25 2.25 0 0 1-2.244 2.077m-5.714 0a3 3 0 0 0 5.714 0" />
                 </svg>
-                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Nessuna notifica</p>
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ translations.no_notifications || 'No notifications' }}</p>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                 :disabled="loading"
                 @click="$emit('load-more')"
             >
-                {{ loading ? 'Caricamento...' : 'Carica altre' }}
+                {{ loading ? (translations.loading || 'Loading...') : (translations.load_more || 'Load more') }}
             </button>
         </div>
     </div>
@@ -72,6 +72,10 @@ defineProps({
     loading: {
         type: Boolean,
         default: false,
+    },
+    translations: {
+        type: Object,
+        default: () => ({}),
     },
 });
 

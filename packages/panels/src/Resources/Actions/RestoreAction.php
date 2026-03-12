@@ -15,11 +15,11 @@ class RestoreAction extends Action
     {
         parent::setUp();
 
-        $this->label('Restore');
+        $this->label(__('primix::panel.actions.restore'));
         $this->icon('heroicon-o-arrow-uturn-left');
         $this->color('success');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record restored successfully');
+        $this->successNotificationTitle(__('primix::panel.notifications.restored'));
 
         $this->visible(function (mixed $record): bool {
             if ($record === null) {

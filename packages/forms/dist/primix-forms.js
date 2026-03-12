@@ -1,4 +1,4 @@
-import { ref, readonly, getCurrentInstance, onMounted, nextTick as nextTick$1, watch, reactive, computed, resolveComponent, openBlock, createBlock, withCtx, createCommentVNode, renderSlot, createElementBlock, Fragment as Fragment$1, renderList, createVNode, createElementVNode, normalizeStyle, normalizeClass, toDisplayString, useId, mergeProps, Teleport, resolveDirective, createTextVNode, resolveDynamicComponent, Transition, normalizeProps, createSlots, withDirectives, withModifiers, vShow, withKeys, toHandlers, defineAsyncComponent, onBeforeUnmount, unref, createStaticVNode, shallowRef } from "vue";
+import { ref, readonly, getCurrentInstance, onMounted, nextTick as nextTick$1, watch, reactive, computed, resolveComponent, openBlock, createBlock, withCtx, createCommentVNode, renderSlot, createElementBlock, Fragment as Fragment$1, renderList, createVNode, createElementVNode, normalizeStyle, normalizeClass, toDisplayString, useId, mergeProps, Teleport, resolveDirective, createTextVNode, resolveDynamicComponent, Transition, normalizeProps, createSlots, withDirectives, withModifiers, vShow, withKeys, toHandlers, defineAsyncComponent, onBeforeUnmount, unref, shallowRef } from "vue";
 import LiVue from "livue";
 var ie$3 = Object.defineProperty;
 var K$1 = Object.getOwnPropertySymbols;
@@ -2469,11 +2469,11 @@ const _hoisted_3$q = {
   class: "mb-2 flex gap-2"
 };
 const _hoisted_4$i = ["for"];
-const _hoisted_5$c = {
+const _hoisted_5$d = {
   key: 0,
   class: "text-sm text-surface-500"
 };
-const _hoisted_6$a = {
+const _hoisted_6$c = {
   key: 2,
   class: "text-sm text-surface-400 py-2"
 };
@@ -2595,7 +2595,7 @@ const _sfc_main$b = {
                     }, toDisplayString(option7.label), 9, _hoisted_4$i),
                     option7.description ? (openBlock(), createElementBlock(
                       "p",
-                      _hoisted_5$c,
+                      _hoisted_5$d,
                       toDisplayString(option7.description),
                       1
                       /* TEXT */
@@ -2610,7 +2610,7 @@ const _sfc_main$b = {
           6
           /* CLASS, STYLE */
         ),
-        __props.searchable && filteredOptions.value.length === 0 ? (openBlock(), createElementBlock("p", _hoisted_6$a, " No results found. ")) : createCommentVNode("v-if", true)
+        __props.searchable && filteredOptions.value.length === 0 ? (openBlock(), createElementBlock("p", _hoisted_6$c, " No results found. ")) : createCommentVNode("v-if", true)
       ]);
     };
   }
@@ -7334,9 +7334,9 @@ var _hoisted_1$z = ["id", "data-p"];
 var _hoisted_2$u = ["name", "id", "value", "placeholder", "tabindex", "disabled", "aria-label", "aria-labelledby", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-invalid", "data-p"];
 var _hoisted_3$p = ["name", "id", "tabindex", "aria-label", "aria-labelledby", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-invalid", "aria-disabled", "data-p"];
 var _hoisted_4$h = ["data-p"];
-var _hoisted_5$b = ["id"];
-var _hoisted_6$9 = ["id"];
-var _hoisted_7$5 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onMousedown", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
+var _hoisted_5$c = ["id"];
+var _hoisted_6$b = ["id"];
+var _hoisted_7$7 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onMousedown", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
 function render$U(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_SpinnerIcon = resolveComponent("SpinnerIcon");
   var _component_InputText = resolveComponent("InputText");
@@ -7600,7 +7600,7 @@ function render$U(_ctx, _cache, $props, $setup, $data, $options) {
                   }, {
                     ref_for: true
                   }, _ctx.ptm("optionGroupLabel")), toDisplayString($options.getOptionGroupLabel(option7.optionGroup)), 17)];
-                })], 16, _hoisted_6$9)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
+                })], 16, _hoisted_6$b)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
                   key: 1,
                   id: _ctx.$id + "_" + $options.getOptionIndex(i, getItemOptions),
                   "class": _ctx.cx("option", {
@@ -7651,7 +7651,7 @@ function render$U(_ctx, _cache, $props, $setup, $data, $options) {
                   }, {
                     ref_for: true
                   }, _ctx.ptm("optionLabel")), toDisplayString($options.getOptionLabel(option7)), 17)];
-                })], 16, _hoisted_7$5)), [[_directive_ripple]])], 64);
+                })], 16, _hoisted_7$7)), [[_directive_ripple]])], 64);
               }), 128)), $data.filterValue && (!items || items && items.length === 0) ? (openBlock(), createElementBlock("li", mergeProps({
                 key: 0,
                 "class": _ctx.cx("emptyMessage"),
@@ -7668,7 +7668,7 @@ function render$U(_ctx, _cache, $props, $setup, $data, $options) {
                 "data-p-hidden-accessible": true
               }), [renderSlot(_ctx.$slots, "empty", {}, function() {
                 return [createTextVNode(toDisplayString($options.emptyMessageText), 1)];
-              })], 16)) : createCommentVNode("", true)], 16, _hoisted_5$b)];
+              })], 16)) : createCommentVNode("", true)], 16, _hoisted_5$c)];
             }),
             _: 2
           }, [_ctx.$slots.loader ? {
@@ -9494,10 +9494,10 @@ var _hoisted_3$n = ["data-p"];
 var _hoisted_4$g = {
   key: 0
 };
-var _hoisted_5$a = ["data-p"];
-var _hoisted_6$8 = ["id", "aria-label"];
-var _hoisted_7$4 = ["id"];
-var _hoisted_8$4 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
+var _hoisted_5$b = ["data-p"];
+var _hoisted_6$a = ["id", "aria-label"];
+var _hoisted_7$6 = ["id"];
+var _hoisted_8$5 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
 function render$P(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Chip = resolveComponent("Chip");
   var _component_SpinnerIcon = resolveComponent("SpinnerIcon");
@@ -9802,7 +9802,7 @@ function render$P(_ctx, _cache, $props, $setup, $data, $options) {
                   index: $options.getOptionIndex(i, getItemOptions)
                 }, function() {
                   return [createTextVNode(toDisplayString($options.getOptionGroupLabel(option7.optionGroup)), 1)];
-                })], 16, _hoisted_7$4)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
+                })], 16, _hoisted_7$6)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
                   key: 1,
                   id: _ctx.$id + "_" + $options.getOptionIndex(i, getItemOptions),
                   style: {
@@ -9863,7 +9863,7 @@ function render$P(_ctx, _cache, $props, $setup, $data, $options) {
                   return [createElementVNode("span", mergeProps({
                     ref_for: true
                   }, _ctx.ptm("optionLabel")), toDisplayString($options.getOptionLabel(option7)), 17)];
-                })], 16, _hoisted_8$4)), [[_directive_ripple]])], 64);
+                })], 16, _hoisted_8$5)), [[_directive_ripple]])], 64);
               }), 128)), $data.filterValue && (!items || items && items.length === 0) ? (openBlock(), createElementBlock("li", mergeProps({
                 key: 0,
                 "class": _ctx.cx("emptyMessage"),
@@ -9876,7 +9876,7 @@ function render$P(_ctx, _cache, $props, $setup, $data, $options) {
                 role: "option"
               }, _ctx.ptm("emptyMessage")), [renderSlot(_ctx.$slots, "empty", {}, function() {
                 return [createTextVNode(toDisplayString($options.emptyMessageText), 1)];
-              })], 16)) : createCommentVNode("", true)], 16, _hoisted_6$8)];
+              })], 16)) : createCommentVNode("", true)], 16, _hoisted_6$a)];
             }),
             _: 2
           }, [_ctx.$slots.loader ? {
@@ -9916,7 +9916,7 @@ function render$P(_ctx, _cache, $props, $setup, $data, $options) {
           }, _ctx.ptm("hiddenLastFocusableEl"), {
             "data-p-hidden-accessible": true,
             "data-p-hidden-focusable": true
-          }), null, 16)], 16, _hoisted_5$a)) : createCommentVNode("", true)];
+          }), null, 16)], 16, _hoisted_5$b)) : createCommentVNode("", true)];
         }),
         _: 3
       }, 16, ["onEnter", "onAfterEnter", "onLeave", "onAfterLeave"])];
@@ -11162,12 +11162,12 @@ var _hoisted_1$v = ["data-p"];
 var _hoisted_2$q = ["aria-activedescendant", "data-p-has-dropdown", "data-p"];
 var _hoisted_3$m = ["id", "aria-label", "aria-setsize", "aria-posinset"];
 var _hoisted_4$f = ["id", "placeholder", "tabindex", "disabled", "aria-label", "aria-labelledby", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-invalid"];
-var _hoisted_5$9 = ["data-p-has-dropdown"];
-var _hoisted_6$7 = ["disabled", "aria-expanded", "aria-controls"];
-var _hoisted_7$3 = ["id", "data-p"];
-var _hoisted_8$3 = ["id", "aria-label"];
-var _hoisted_9$2 = ["id"];
-var _hoisted_10$2 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
+var _hoisted_5$a = ["data-p-has-dropdown"];
+var _hoisted_6$9 = ["disabled", "aria-expanded", "aria-controls"];
+var _hoisted_7$5 = ["id", "data-p"];
+var _hoisted_8$4 = ["id", "aria-label"];
+var _hoisted_9$4 = ["id"];
+var _hoisted_10$4 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousemove", "data-p-selected", "data-p-focused", "data-p-disabled"];
 function render$O(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputText = resolveComponent("InputText");
   var _component_TimesIcon = resolveComponent("TimesIcon");
@@ -11339,7 +11339,7 @@ function render$O(_ctx, _cache, $props, $setup, $data, $options) {
       "class": ["pi-spin", _ctx.cx("loader"), _ctx.loader, _ctx.loadingIcon],
       "aria-hidden": "true",
       "data-p-has-dropdown": _ctx.dropdown
-    }, _ctx.ptm("loader")), null, 16, _hoisted_5$9)) : _ctx.loading ? (openBlock(), createBlock(_component_SpinnerIcon, mergeProps({
+    }, _ctx.ptm("loader")), null, 16, _hoisted_5$a)) : _ctx.loading ? (openBlock(), createBlock(_component_SpinnerIcon, mergeProps({
       key: 1,
       "class": _ctx.cx("loader"),
       spin: "",
@@ -11369,7 +11369,7 @@ function render$O(_ctx, _cache, $props, $setup, $data, $options) {
       return [(openBlock(), createBlock(resolveDynamicComponent(_ctx.dropdownIcon ? "span" : "ChevronDownIcon"), mergeProps({
         "class": _ctx.dropdownIcon
       }, _ctx.ptm("dropdownIcon")), null, 16, ["class"]))];
-    })], 16, _hoisted_6$7)) : createCommentVNode("", true)];
+    })], 16, _hoisted_6$9)) : createCommentVNode("", true)];
   }), _ctx.typeahead ? (openBlock(), createElementBlock("span", mergeProps({
     key: 4,
     role: "status",
@@ -11450,7 +11450,7 @@ function render$O(_ctx, _cache, $props, $setup, $data, $options) {
                   index: $options.getOptionIndex(i, getItemOptions)
                 }, function() {
                   return [createTextVNode(toDisplayString($options.getOptionGroupLabel(option7.optionGroup)), 1)];
-                })], 16, _hoisted_9$2)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
+                })], 16, _hoisted_9$4)) : withDirectives((openBlock(), createElementBlock("li", mergeProps({
                   key: 1,
                   id: _ctx.$id + "_" + $options.getOptionIndex(i, getItemOptions),
                   style: {
@@ -11483,14 +11483,14 @@ function render$O(_ctx, _cache, $props, $setup, $data, $options) {
                   index: $options.getOptionIndex(i, getItemOptions)
                 }, function() {
                   return [createTextVNode(toDisplayString($options.getOptionLabel(option7)), 1)];
-                })], 16, _hoisted_10$2)), [[_directive_ripple]])], 64);
+                })], 16, _hoisted_10$4)), [[_directive_ripple]])], 64);
               }), 128)), _ctx.showEmptyMessage && (!items || items && items.length === 0) ? (openBlock(), createElementBlock("li", mergeProps({
                 key: 0,
                 "class": _ctx.cx("emptyMessage"),
                 role: "option"
               }, _ctx.ptm("emptyMessage")), [renderSlot(_ctx.$slots, "empty", {}, function() {
                 return [createTextVNode(toDisplayString($options.searchResultMessageText), 1)];
-              })], 16)) : createCommentVNode("", true)], 16, _hoisted_8$3)];
+              })], 16)) : createCommentVNode("", true)], 16, _hoisted_8$4)];
             }),
             _: 2
           }, [_ctx.$slots.loader ? {
@@ -11511,7 +11511,7 @@ function render$O(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "p-hidden-accessible"
           }, _ctx.ptm("hiddenSelectedMessage"), {
             "data-p-hidden-accessible": true
-          }), toDisplayString($options.selectedMessageText), 17)], 16, _hoisted_7$3)) : createCommentVNode("", true)];
+          }), toDisplayString($options.selectedMessageText), 17)], 16, _hoisted_7$5)) : createCommentVNode("", true)];
         }),
         _: 3
       }, 16, ["onEnter", "onAfterEnter", "onLeave", "onAfterLeave"])];
@@ -12344,8 +12344,8 @@ var _hoisted_1$u = ["id", "data-p"];
 var _hoisted_2$p = ["tabindex"];
 var _hoisted_3$l = ["id", "aria-multiselectable", "aria-label", "aria-labelledby", "aria-activedescendant", "aria-disabled"];
 var _hoisted_4$e = ["id"];
-var _hoisted_5$8 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousedown", "onMousemove", "onDblclick", "data-p-selected", "data-p-focused", "data-p-disabled"];
-var _hoisted_6$6 = ["tabindex"];
+var _hoisted_5$9 = ["id", "aria-label", "aria-selected", "aria-disabled", "aria-setsize", "aria-posinset", "onClick", "onMousedown", "onMousemove", "onDblclick", "data-p-selected", "data-p-focused", "data-p-disabled"];
+var _hoisted_6$8 = ["tabindex"];
 function render$N(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputText = resolveComponent("InputText");
   var _component_SearchIcon = resolveComponent("SearchIcon");
@@ -12545,7 +12545,7 @@ function render$N(_ctx, _cache, $props, $setup, $data, $options) {
           index: $options.getOptionIndex(i, getItemOptions)
         }, function() {
           return [createTextVNode(toDisplayString($options.getOptionLabel(option7)), 1)];
-        })], 16, _hoisted_5$8)), [[_directive_ripple]])], 64);
+        })], 16, _hoisted_5$9)), [[_directive_ripple]])], 64);
       }), 128)), $data.filterValue && (!items || items && items.length === 0) ? (openBlock(), createElementBlock("li", mergeProps({
         key: 0,
         "class": _ctx.cx("emptyMessage"),
@@ -12598,7 +12598,7 @@ function render$N(_ctx, _cache, $props, $setup, $data, $options) {
   }, _ctx.ptm("hiddenLastFocusableEl"), {
     "data-p-hidden-accessible": true,
     "data-p-hidden-focusable": true
-  }), null, 16, _hoisted_6$6)], 16, _hoisted_1$u);
+  }), null, 16, _hoisted_6$8)], 16, _hoisted_1$u);
 }
 script$O.render = render$N;
 var style$w = "\n    .p-radiobutton {\n        position: relative;\n        display: inline-flex;\n        user-select: none;\n        vertical-align: bottom;\n        width: dt('radiobutton.width');\n        height: dt('radiobutton.height');\n    }\n\n    .p-radiobutton-input {\n        cursor: pointer;\n        appearance: none;\n        position: absolute;\n        top: 0;\n        inset-inline-start: 0;\n        width: 100%;\n        height: 100%;\n        padding: 0;\n        margin: 0;\n        opacity: 0;\n        z-index: 1;\n        outline: 0 none;\n        border: 1px solid transparent;\n        border-radius: 50%;\n    }\n\n    .p-radiobutton-box {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        border-radius: 50%;\n        border: 1px solid dt('radiobutton.border.color');\n        background: dt('radiobutton.background');\n        width: dt('radiobutton.width');\n        height: dt('radiobutton.height');\n        transition:\n            background dt('radiobutton.transition.duration'),\n            color dt('radiobutton.transition.duration'),\n            border-color dt('radiobutton.transition.duration'),\n            box-shadow dt('radiobutton.transition.duration'),\n            outline-color dt('radiobutton.transition.duration');\n        outline-color: transparent;\n        box-shadow: dt('radiobutton.shadow');\n    }\n\n    .p-radiobutton-icon {\n        transition-duration: dt('radiobutton.transition.duration');\n        background: transparent;\n        font-size: dt('radiobutton.icon.size');\n        width: dt('radiobutton.icon.size');\n        height: dt('radiobutton.icon.size');\n        border-radius: 50%;\n        backface-visibility: hidden;\n        transform: translateZ(0) scale(0.1);\n    }\n\n    .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {\n        border-color: dt('radiobutton.hover.border.color');\n    }\n\n    .p-radiobutton-checked .p-radiobutton-box {\n        border-color: dt('radiobutton.checked.border.color');\n        background: dt('radiobutton.checked.background');\n    }\n\n    .p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {\n        background: dt('radiobutton.icon.checked.color');\n        transform: translateZ(0) scale(1, 1);\n        visibility: visible;\n    }\n\n    .p-radiobutton-checked:not(.p-disabled):has(.p-radiobutton-input:hover) .p-radiobutton-box {\n        border-color: dt('radiobutton.checked.hover.border.color');\n        background: dt('radiobutton.checked.hover.background');\n    }\n\n    .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover).p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon {\n        background: dt('radiobutton.icon.checked.hover.color');\n    }\n\n    .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:focus-visible) .p-radiobutton-box {\n        border-color: dt('radiobutton.focus.border.color');\n        box-shadow: dt('radiobutton.focus.ring.shadow');\n        outline: dt('radiobutton.focus.ring.width') dt('radiobutton.focus.ring.style') dt('radiobutton.focus.ring.color');\n        outline-offset: dt('radiobutton.focus.ring.offset');\n    }\n\n    .p-radiobutton-checked:not(.p-disabled):has(.p-radiobutton-input:focus-visible) .p-radiobutton-box {\n        border-color: dt('radiobutton.checked.focus.border.color');\n    }\n\n    .p-radiobutton.p-invalid > .p-radiobutton-box {\n        border-color: dt('radiobutton.invalid.border.color');\n    }\n\n    .p-radiobutton.p-variant-filled .p-radiobutton-box {\n        background: dt('radiobutton.filled.background');\n    }\n\n    .p-radiobutton.p-variant-filled.p-radiobutton-checked .p-radiobutton-box {\n        background: dt('radiobutton.checked.background');\n    }\n\n    .p-radiobutton.p-variant-filled:not(.p-disabled):has(.p-radiobutton-input:hover).p-radiobutton-checked .p-radiobutton-box {\n        background: dt('radiobutton.checked.hover.background');\n    }\n\n    .p-radiobutton.p-disabled {\n        opacity: 1;\n    }\n\n    .p-radiobutton.p-disabled .p-radiobutton-box {\n        background: dt('radiobutton.disabled.background');\n        border-color: dt('radiobutton.checked.disabled.border.color');\n    }\n\n    .p-radiobutton-checked.p-disabled .p-radiobutton-box .p-radiobutton-icon {\n        background: dt('radiobutton.icon.disabled.color');\n    }\n\n    .p-radiobutton-sm,\n    .p-radiobutton-sm .p-radiobutton-box {\n        width: dt('radiobutton.sm.width');\n        height: dt('radiobutton.sm.height');\n    }\n\n    .p-radiobutton-sm .p-radiobutton-icon {\n        font-size: dt('radiobutton.icon.sm.size');\n        width: dt('radiobutton.icon.sm.size');\n        height: dt('radiobutton.icon.sm.size');\n    }\n\n    .p-radiobutton-lg,\n    .p-radiobutton-lg .p-radiobutton-box {\n        width: dt('radiobutton.lg.width');\n        height: dt('radiobutton.lg.height');\n    }\n\n    .p-radiobutton-lg .p-radiobutton-icon {\n        font-size: dt('radiobutton.icon.lg.size');\n        width: dt('radiobutton.icon.lg.size');\n        height: dt('radiobutton.icon.lg.size');\n    }\n";
@@ -17108,15 +17108,15 @@ var _hoisted_1$p = ["id", "data-p"];
 var _hoisted_2$l = ["disabled", "aria-label", "aria-expanded", "aria-controls"];
 var _hoisted_3$i = ["data-p"];
 var _hoisted_4$b = ["id", "role", "aria-modal", "aria-label", "data-p"];
-var _hoisted_5$7 = ["disabled", "aria-label"];
-var _hoisted_6$5 = ["disabled", "aria-label"];
-var _hoisted_7$2 = ["disabled", "aria-label"];
-var _hoisted_8$2 = ["disabled", "aria-label"];
-var _hoisted_9$1 = ["data-p-disabled"];
-var _hoisted_10$1 = ["abbr"];
-var _hoisted_11$1 = ["data-p-disabled"];
+var _hoisted_5$8 = ["disabled", "aria-label"];
+var _hoisted_6$7 = ["disabled", "aria-label"];
+var _hoisted_7$4 = ["disabled", "aria-label"];
+var _hoisted_8$3 = ["disabled", "aria-label"];
+var _hoisted_9$3 = ["data-p-disabled"];
+var _hoisted_10$3 = ["abbr"];
+var _hoisted_11$3 = ["data-p-disabled"];
 var _hoisted_12$1 = ["aria-label", "data-p-today", "data-p-other-month"];
-var _hoisted_13 = ["onClick", "onKeydown", "aria-selected", "aria-disabled", "data-p"];
+var _hoisted_13$1 = ["onClick", "onKeydown", "aria-selected", "aria-disabled", "data-p"];
 var _hoisted_14 = ["onClick", "onKeydown", "data-p-disabled", "data-p-selected"];
 var _hoisted_15 = ["onClick", "onKeydown", "data-p-disabled", "data-p-selected"];
 var _hoisted_16 = ["data-p"];
@@ -17317,7 +17317,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
               ref_for: true
             }, _ctx.ptm("selectYear"), {
               "data-pc-group-section": "view"
-            }), toDisplayString($options.getYear(month2)), 17, _hoisted_5$7)) : createCommentVNode("", true), $data.currentView === "date" ? (openBlock(), createElementBlock("button", mergeProps({
+            }), toDisplayString($options.getYear(month2)), 17, _hoisted_5$8)) : createCommentVNode("", true), $data.currentView === "date" ? (openBlock(), createElementBlock("button", mergeProps({
               key: 1,
               type: "button",
               onClick: _cache[3] || (_cache[3] = function() {
@@ -17333,7 +17333,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
               ref_for: true
             }, _ctx.ptm("selectMonth"), {
               "data-pc-group-section": "view"
-            }), toDisplayString($options.getMonthName(month2.month)), 17, _hoisted_6$5)) : createCommentVNode("", true)], 64)) : (openBlock(), createElementBlock(Fragment$1, {
+            }), toDisplayString($options.getMonthName(month2.month)), 17, _hoisted_6$7)) : createCommentVNode("", true)], 64)) : (openBlock(), createElementBlock(Fragment$1, {
               key: 1
             }, [$data.currentView === "date" ? (openBlock(), createElementBlock("button", mergeProps({
               key: 0,
@@ -17351,7 +17351,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
               ref_for: true
             }, _ctx.ptm("selectMonth"), {
               "data-pc-group-section": "view"
-            }), toDisplayString($options.getMonthName(month2.month)), 17, _hoisted_7$2)) : createCommentVNode("", true), $data.currentView !== "year" ? (openBlock(), createElementBlock("button", mergeProps({
+            }), toDisplayString($options.getMonthName(month2.month)), 17, _hoisted_7$4)) : createCommentVNode("", true), $data.currentView !== "year" ? (openBlock(), createElementBlock("button", mergeProps({
               key: 1,
               type: "button",
               onClick: _cache[7] || (_cache[7] = function() {
@@ -17367,7 +17367,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
               ref_for: true
             }, _ctx.ptm("selectYear"), {
               "data-pc-group-section": "view"
-            }), toDisplayString($options.getYear(month2)), 17, _hoisted_8$2)) : createCommentVNode("", true)], 64)), $data.currentView === "year" ? (openBlock(), createElementBlock("span", mergeProps({
+            }), toDisplayString($options.getYear(month2)), 17, _hoisted_8$3)) : createCommentVNode("", true)], 64)), $data.currentView === "year" ? (openBlock(), createElementBlock("span", mergeProps({
               key: 2,
               "class": _ctx.cx("decade")
             }, {
@@ -17443,7 +17443,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
               }), {
                 "data-pc-group-section": "tableheadercelllabel"
               }), toDisplayString($options.weekHeaderLabel), 17)];
-            })], 16, _hoisted_9$1)) : createCommentVNode("", true), (openBlock(true), createElementBlock(Fragment$1, null, renderList($options.weekDays, function(weekDay) {
+            })], 16, _hoisted_9$3)) : createCommentVNode("", true), (openBlock(true), createElementBlock(Fragment$1, null, renderList($options.weekDays, function(weekDay) {
               return openBlock(), createElementBlock("th", mergeProps({
                 key: weekDay,
                 scope: "col",
@@ -17459,7 +17459,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
                 ref_for: true
               }, _ctx.ptm("weekDay"), {
                 "data-pc-group-section": "tableheadercelllabel"
-              }), toDisplayString(weekDay), 17)], 16, _hoisted_10$1);
+              }), toDisplayString(weekDay), 17)], 16, _hoisted_10$3);
             }), 128))], 16)], 16), createElementVNode("tbody", mergeProps({
               ref_for: true
             }, _ctx.ptm("tableBody")), [(openBlock(true), createElementBlock(Fragment$1, null, renderList(month2.dates, function(week, i) {
@@ -17496,7 +17496,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
                 }, {
                   ref_for: true
                 }, _ctx.ptm("weekLabel")), "0", 16)) : createCommentVNode("", true), createTextVNode(" " + toDisplayString(month2.weekNumbers[i]), 1)];
-              })], 16, _hoisted_11$1)], 16)) : createCommentVNode("", true), (openBlock(true), createElementBlock(Fragment$1, null, renderList(week, function(date) {
+              })], 16, _hoisted_11$3)], 16)) : createCommentVNode("", true), (openBlock(true), createElementBlock(Fragment$1, null, renderList(week, function(date) {
                 return openBlock(), createElementBlock("td", mergeProps({
                   key: date.day + "" + date.month,
                   "aria-label": date.day,
@@ -17548,7 +17548,7 @@ function render$E(_ctx, _cache, $props, $setup, $data, $options) {
                   date
                 }, function() {
                   return [createTextVNode(toDisplayString(date.day), 1)];
-                })], 16, _hoisted_13)), [[_directive_ripple]]) : createCommentVNode("", true), $options.isSelected(date) ? (openBlock(), createElementBlock("div", mergeProps({
+                })], 16, _hoisted_13$1)), [[_directive_ripple]]) : createCommentVNode("", true), $options.isSelected(date) ? (openBlock(), createElementBlock("div", mergeProps({
                   key: 1,
                   "class": "p-hidden-accessible",
                   "aria-live": "polite"
@@ -19203,7 +19203,7 @@ var _hoisted_1$n = ["data-p"];
 var _hoisted_2$k = ["data-p"];
 var _hoisted_3$h = ["tabindex", "aria-valuemin", "aria-valuenow", "aria-valuemax", "aria-labelledby", "aria-label", "aria-orientation", "data-p"];
 var _hoisted_4$a = ["tabindex", "aria-valuemin", "aria-valuenow", "aria-valuemax", "aria-labelledby", "aria-label", "aria-orientation", "data-p"];
-var _hoisted_5$6 = ["tabindex", "aria-valuemin", "aria-valuenow", "aria-valuemax", "aria-labelledby", "aria-label", "aria-orientation", "data-p"];
+var _hoisted_5$7 = ["tabindex", "aria-valuemin", "aria-valuenow", "aria-valuemax", "aria-labelledby", "aria-label", "aria-orientation", "data-p"];
 function render$C(_ctx, _cache, $props, $setup, $data, $options) {
   return openBlock(), createElementBlock("div", mergeProps({
     "class": _ctx.cx("root"),
@@ -19314,7 +19314,7 @@ function render$C(_ctx, _cache, $props, $setup, $data, $options) {
     "aria-orientation": _ctx.orientation
   }, _ctx.ptm("endHandler"), {
     "data-p": $options.dataP
-  }), null, 16, _hoisted_5$6)) : createCommentVNode("", true)], 16, _hoisted_1$n);
+  }), null, 16, _hoisted_5$7)) : createCommentVNode("", true)], 16, _hoisted_1$n);
 }
 script$D.render = render$C;
 var script$C = {
@@ -26706,8 +26706,8 @@ var _hoisted_1$g = ["data-p"];
 var _hoisted_2$d = ["data-p"];
 var _hoisted_3$b = ["disabled", "data-p"];
 var _hoisted_4$8 = ["disabled", "data-p"];
-var _hoisted_5$5 = ["disabled", "data-p"];
-var _hoisted_6$4 = ["disabled", "data-p"];
+var _hoisted_5$6 = ["disabled", "data-p"];
+var _hoisted_6$6 = ["disabled", "data-p"];
 function render$m(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputText = resolveComponent("InputText");
   var _component_TimesIcon = resolveComponent("TimesIcon");
@@ -26818,7 +26818,7 @@ function render$m(_ctx, _cache, $props, $setup, $data, $options) {
       }, _ctx.ptm("incrementIcon"), {
         "data-pc-section": "incrementicon"
       }), null, 16, ["class"]))];
-    })], 16, _hoisted_5$5)) : createCommentVNode("", true)];
+    })], 16, _hoisted_5$6)) : createCommentVNode("", true)];
   }), renderSlot(_ctx.$slots, "decrementbutton", {
     listeners: $options.downButtonListeners
   }, function() {
@@ -26838,7 +26838,7 @@ function render$m(_ctx, _cache, $props, $setup, $data, $options) {
       }, _ctx.ptm("decrementIcon"), {
         "data-pc-section": "decrementicon"
       }), null, 16, ["class"]))];
-    })], 16, _hoisted_6$4)) : createCommentVNode("", true)];
+    })], 16, _hoisted_6$6)) : createCommentVNode("", true)];
   })], 16, _hoisted_1$g);
 }
 script$n.render = render$m;
@@ -30984,26 +30984,27 @@ const _sfc_main$9 = {
   __name: "EditorToolPanel",
   props: {
     activeTool: { type: String, required: true },
-    config: { type: Object, default: () => ({}) }
+    config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["tool-change"],
   setup(__props) {
     const props = __props;
-    const allTools = [
+    const allTools = computed(() => [
       // Canvas interaction tools
-      { id: "move", label: "Sposta", icon: "pi-arrows-alt" },
-      { id: "crop", label: "Ritaglia", icon: "pi-objects-column", configKey: "crop" },
-      { id: "zoom", label: "Zoom", icon: "pi-search-plus" },
+      { id: "move", label: props.translations.tool_move || "Move", icon: "pi-arrows-alt" },
+      { id: "crop", label: props.translations.tool_crop || "Crop", icon: "pi-objects-column", configKey: "crop" },
+      { id: "zoom", label: props.translations.tool_zoom || "Zoom", icon: "pi-search-plus" },
       // Separator
       { type: "separator" },
       // Panel tools
-      { id: "transform", label: "Trasforma", icon: "pi-sync" },
-      { id: "adjustments", label: "Regolazioni", icon: "pi-sliders-h", configKey: "adjustments" },
-      { id: "filters", label: "Filtri", icon: "pi-palette", configKey: "filters" },
-      { id: "ai", label: "AI", icon: "pi-sparkles", configKey: "ai" }
-    ];
+      { id: "transform", label: props.translations.tool_transform || "Transform", icon: "pi-sync" },
+      { id: "adjustments", label: props.translations.tool_adjustments || "Adjustments", icon: "pi-sliders-h", configKey: "adjustments" },
+      { id: "filters", label: props.translations.tool_filters || "Filters", icon: "pi-palette", configKey: "filters" },
+      { id: "ai", label: props.translations.tool_ai || "AI", icon: "pi-sparkles", configKey: "ai" }
+    ]);
     const visibleTools = computed(() => {
-      return allTools.filter((item) => {
+      return allTools.value.filter((item) => {
         if (item.type === "separator") return true;
         if (item.id === "transform") {
           return props.config.rotate?.enabled !== false || props.config.flip?.enabled !== false;
@@ -34030,15 +34031,17 @@ const _sfc_main$8 = {
   }
 };
 const _hoisted_1$7 = { class: "space-y-4" };
-const _hoisted_2$7 = { class: "grid grid-cols-2 gap-2" };
-const _hoisted_3$7 = ["onClick"];
-const _hoisted_4$6 = { class: "w-4 h-4 flex items-center justify-center" };
-const _hoisted_5$4 = { class: "pt-2 border-t border-surface-200 dark:border-surface-700" };
+const _hoisted_2$7 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_3$7 = { class: "grid grid-cols-2 gap-2" };
+const _hoisted_4$6 = ["onClick"];
+const _hoisted_5$5 = { class: "w-4 h-4 flex items-center justify-center" };
+const _hoisted_6$5 = { class: "pt-2 border-t border-surface-200 dark:border-surface-700" };
 const _sfc_main$7 = {
   __name: "CropControls",
   props: {
     currentRatio: { type: Number, default: null },
-    config: { type: Object, default: () => ({}) }
+    config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["crop-ratio-change", "apply-crop"],
   setup(__props) {
@@ -34063,14 +34066,14 @@ const _sfc_main$7 = {
     return (_ctx, _cache) => {
       const _component_p_button = resolveComponent("p-button");
       return openBlock(), createElementBlock("div", _hoisted_1$7, [
-        _cache[3] || (_cache[3] = createElementVNode(
+        createElementVNode(
           "h4",
-          { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-          "Proporzioni",
-          -1
-          /* CACHED */
-        )),
-        createElementVNode("div", _hoisted_2$7, [
+          _hoisted_2$7,
+          toDisplayString(__props.translations.crop_aspect_ratio || "Aspect ratio"),
+          1
+          /* TEXT */
+        ),
+        createElementVNode("div", _hoisted_3$7, [
           createCommentVNode(" Free crop (always available) "),
           createElementVNode(
             "button",
@@ -34079,22 +34082,22 @@ const _sfc_main$7 = {
               class: normalizeClass(["flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors", __props.currentRatio === null ? "bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 ring-1 ring-primary-300 dark:ring-primary-700" : "bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-600"]),
               onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("crop-ratio-change", null))
             },
-            [..._cache[2] || (_cache[2] = [
-              createElementVNode(
+            [
+              _cache[2] || (_cache[2] = createElementVNode(
                 "i",
                 { class: "pi pi-arrows-alt text-xs" },
                 null,
                 -1
                 /* CACHED */
-              ),
+              )),
               createElementVNode(
                 "span",
                 null,
-                "Libero",
-                -1
-                /* CACHED */
+                toDisplayString(__props.translations.crop_free || "Free"),
+                1
+                /* TEXT */
               )
-            ])],
+            ],
             2
             /* CLASS */
           ),
@@ -34109,7 +34112,7 @@ const _sfc_main$7 = {
                 class: normalizeClass(["flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors", isActive3(value4) ? "bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 ring-1 ring-primary-300 dark:ring-primary-700" : "bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-600"]),
                 onClick: ($event) => _ctx.$emit("crop-ratio-change", value4)
               }, [
-                createElementVNode("span", _hoisted_4$6, [
+                createElementVNode("span", _hoisted_5$5, [
                   createElementVNode(
                     "span",
                     {
@@ -34128,21 +34131,21 @@ const _sfc_main$7 = {
                   1
                   /* TEXT */
                 )
-              ], 10, _hoisted_3$7);
+              ], 10, _hoisted_4$6);
             }),
             128
             /* KEYED_FRAGMENT */
           ))
         ]),
         createCommentVNode(" Apply crop button "),
-        createElementVNode("div", _hoisted_5$4, [
+        createElementVNode("div", _hoisted_6$5, [
           createVNode(_component_p_button, {
-            label: "Applica ritaglio",
+            label: __props.translations.apply_crop || "Apply crop",
             icon: "pi pi-check",
             class: "w-full",
             size: "small",
             onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("apply-crop"))
-          })
+          }, null, 8, ["label"])
         ])
       ]);
     };
@@ -34150,16 +34153,20 @@ const _sfc_main$7 = {
 };
 const _hoisted_1$6 = { class: "space-y-5" };
 const _hoisted_2$6 = { class: "space-y-3" };
-const _hoisted_3$6 = { class: "flex items-center gap-2" };
-const _hoisted_4$5 = { class: "space-y-1" };
-const _hoisted_5$3 = { class: "flex items-center justify-between" };
-const _hoisted_6$3 = { class: "text-xs text-surface-500 dark:text-surface-400 tabular-nums" };
-const _hoisted_7$1 = { class: "space-y-3" };
-const _hoisted_8$1 = { class: "flex items-center gap-2" };
+const _hoisted_3$6 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_4$5 = { class: "flex items-center gap-2" };
+const _hoisted_5$4 = { class: "space-y-1" };
+const _hoisted_6$4 = { class: "flex items-center justify-between" };
+const _hoisted_7$3 = { class: "text-xs text-surface-500 dark:text-surface-400" };
+const _hoisted_8$2 = { class: "text-xs text-surface-500 dark:text-surface-400 tabular-nums" };
+const _hoisted_9$2 = { class: "space-y-3" };
+const _hoisted_10$2 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_11$2 = { class: "flex items-center gap-2" };
 const _sfc_main$6 = {
   __name: "TransformControls",
   props: {
-    config: { type: Object, default: () => ({}) }
+    config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["rotate", "flip"],
   setup(__props, { emit: __emit }) {
@@ -34199,14 +34206,14 @@ const _sfc_main$6 = {
       return openBlock(), createElementBlock("div", _hoisted_1$6, [
         createCommentVNode(" Rotation "),
         createElementVNode("div", _hoisted_2$6, [
-          _cache[4] || (_cache[4] = createElementVNode(
+          createElementVNode(
             "h4",
-            { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-            "Rotazione",
-            -1
-            /* CACHED */
-          )),
-          createElementVNode("div", _hoisted_3$6, [
+            _hoisted_3$6,
+            toDisplayString(__props.translations.rotation_title || "Rotation"),
+            1
+            /* TEXT */
+          ),
+          createElementVNode("div", _hoisted_4$5, [
             withDirectives(createVNode(
               _component_p_button,
               {
@@ -34222,7 +34229,7 @@ const _sfc_main$6 = {
             ), [
               [
                 _directive_tooltip,
-                "Ruota -90°",
+                __props.translations.rotate_ccw || "Rotate -90°",
                 void 0,
                 { bottom: true }
               ]
@@ -34242,25 +34249,25 @@ const _sfc_main$6 = {
             ), [
               [
                 _directive_tooltip,
-                "Ruota +90°",
+                __props.translations.rotate_cw || "Rotate +90°",
                 void 0,
                 { bottom: true }
               ]
             ])
           ]),
           createCommentVNode(" Free rotation slider "),
-          createElementVNode("div", _hoisted_4$5, [
-            createElementVNode("div", _hoisted_5$3, [
-              _cache[3] || (_cache[3] = createElementVNode(
-                "span",
-                { class: "text-xs text-surface-500 dark:text-surface-400" },
-                "Rotazione libera",
-                -1
-                /* CACHED */
-              )),
+          createElementVNode("div", _hoisted_5$4, [
+            createElementVNode("div", _hoisted_6$4, [
               createElementVNode(
                 "span",
-                _hoisted_6$3,
+                _hoisted_7$3,
+                toDisplayString(__props.translations.free_rotation || "Free rotation"),
+                1
+                /* TEXT */
+              ),
+              createElementVNode(
+                "span",
+                _hoisted_8$2,
                 toDisplayString(freeRotation.value) + "°",
                 1
                 /* TEXT */
@@ -34280,15 +34287,15 @@ const _sfc_main$6 = {
           ])
         ]),
         createCommentVNode(" Flip "),
-        createElementVNode("div", _hoisted_7$1, [
-          _cache[5] || (_cache[5] = createElementVNode(
+        createElementVNode("div", _hoisted_9$2, [
+          createElementVNode(
             "h4",
-            { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-            "Ribalta",
-            -1
-            /* CACHED */
-          )),
-          createElementVNode("div", _hoisted_8$1, [
+            _hoisted_10$2,
+            toDisplayString(__props.translations.flip_title || "Flip"),
+            1
+            /* TEXT */
+          ),
+          createElementVNode("div", _hoisted_11$2, [
             withDirectives(createVNode(_component_p_button, {
               icon: "pi pi-arrows-h",
               severity: "secondary",
@@ -34299,7 +34306,7 @@ const _sfc_main$6 = {
             }, null, 8, ["class"]), [
               [
                 _directive_tooltip,
-                "Ribalta orizzontale",
+                __props.translations.flip_horizontal || "Flip horizontal",
                 void 0,
                 { bottom: true }
               ]
@@ -34314,7 +34321,7 @@ const _sfc_main$6 = {
             }, null, 8, ["class"]), [
               [
                 _directive_tooltip,
-                "Ribalta verticale",
+                __props.translations.flip_vertical || "Flip vertical",
                 void 0,
                 { bottom: true }
               ]
@@ -34327,15 +34334,17 @@ const _sfc_main$6 = {
 };
 const _hoisted_1$5 = { class: "space-y-4" };
 const _hoisted_2$5 = { class: "flex items-center justify-between" };
-const _hoisted_3$5 = { class: "space-y-4" };
-const _hoisted_4$4 = { class: "flex items-center justify-between" };
-const _hoisted_5$2 = { class: "text-xs text-surface-600 dark:text-surface-400 flex items-center gap-1.5" };
-const _hoisted_6$2 = { class: "text-xs text-surface-500 dark:text-surface-400 tabular-nums w-10 text-right" };
+const _hoisted_3$5 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_4$4 = { class: "space-y-4" };
+const _hoisted_5$3 = { class: "flex items-center justify-between" };
+const _hoisted_6$3 = { class: "text-xs text-surface-600 dark:text-surface-400 flex items-center gap-1.5" };
+const _hoisted_7$2 = { class: "text-xs text-surface-500 dark:text-surface-400 tabular-nums w-10 text-right" };
 const _sfc_main$5 = {
   __name: "AdjustmentControls",
   props: {
     adjustments: { type: Object, required: true },
-    hasChanges: Boolean
+    hasChanges: Boolean,
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["adjustment-change", "reset"],
   setup(__props, { emit: __emit }) {
@@ -34354,13 +34363,13 @@ const _sfc_main$5 = {
       const _component_p_slider = resolveComponent("p-slider");
       return openBlock(), createElementBlock("div", _hoisted_1$5, [
         createElementVNode("div", _hoisted_2$5, [
-          _cache[1] || (_cache[1] = createElementVNode(
+          createElementVNode(
             "h4",
-            { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-            "Regolazioni",
-            -1
-            /* CACHED */
-          )),
+            _hoisted_3$5,
+            toDisplayString(__props.translations.tool_adjustments || "Adjustments"),
+            1
+            /* TEXT */
+          ),
           __props.hasChanges ? (openBlock(), createBlock(_component_p_button, {
             key: 0,
             label: "Reset",
@@ -34370,7 +34379,7 @@ const _sfc_main$5 = {
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("reset"))
           })) : createCommentVNode("v-if", true)
         ]),
-        createElementVNode("div", _hoisted_3$5, [
+        createElementVNode("div", _hoisted_4$4, [
           (openBlock(true), createElementBlock(
             Fragment$1,
             null,
@@ -34379,8 +34388,8 @@ const _sfc_main$5 = {
                 key,
                 class: "space-y-1"
               }, [
-                createElementVNode("div", _hoisted_4$4, [
-                  createElementVNode("label", _hoisted_5$2, [
+                createElementVNode("div", _hoisted_5$3, [
+                  createElementVNode("label", _hoisted_6$3, [
                     createElementVNode(
                       "i",
                       {
@@ -34398,7 +34407,7 @@ const _sfc_main$5 = {
                   ]),
                   createElementVNode(
                     "span",
-                    _hoisted_6$2,
+                    _hoisted_7$2,
                     toDisplayString(formatValue3(key, __props.adjustments[key])),
                     1
                     /* TEXT */
@@ -34426,8 +34435,8 @@ const _hoisted_1$4 = { class: "space-y-4" };
 const _hoisted_2$4 = { class: "grid grid-cols-3 gap-2" };
 const _hoisted_3$4 = ["onClick"];
 const _hoisted_4$3 = { class: "w-14 h-14 rounded-md overflow-hidden bg-surface-200 dark:bg-surface-600" };
-const _hoisted_5$1 = ["src"];
-const _hoisted_6$1 = {
+const _hoisted_5$2 = ["src"];
+const _hoisted_6$2 = {
   key: 1,
   class: "w-full h-full flex items-center justify-center"
 };
@@ -34471,7 +34480,7 @@ const _sfc_main$4 = {
                     src: __props.thumbnailUrl,
                     class: "w-full h-full object-cover",
                     style: normalizeStyle({ filter: filter2.css || "none" })
-                  }, null, 12, _hoisted_5$1)) : (openBlock(), createElementBlock("div", _hoisted_6$1, [..._cache[0] || (_cache[0] = [
+                  }, null, 12, _hoisted_5$2)) : (openBlock(), createElementBlock("div", _hoisted_6$2, [..._cache[0] || (_cache[0] = [
                     createElementVNode(
                       "i",
                       { class: "pi pi-image text-surface-400 text-xs" },
@@ -34502,26 +34511,27 @@ const _sfc_main$4 = {
   }
 };
 const _hoisted_1$3 = { class: "space-y-4" };
-const _hoisted_2$3 = { class: "space-y-2" };
-const _hoisted_3$3 = ["disabled", "onClick"];
-const _hoisted_4$2 = {
+const _hoisted_2$3 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_3$3 = { class: "space-y-2" };
+const _hoisted_4$2 = ["disabled", "onClick"];
+const _hoisted_5$1 = {
   key: 0,
   class: "pi pi-spin pi-spinner text-primary-500"
 };
-const _hoisted_5 = { class: "flex-1 text-left" };
-const _hoisted_6 = { class: "font-medium" };
-const _hoisted_7 = { class: "text-xs text-surface-500 dark:text-surface-400" };
-const _hoisted_8 = {
+const _hoisted_6$1 = { class: "flex-1 text-left" };
+const _hoisted_7$1 = { class: "font-medium" };
+const _hoisted_8$1 = { class: "text-xs text-surface-500 dark:text-surface-400" };
+const _hoisted_9$1 = {
   key: 0,
   class: "space-y-1"
 };
-const _hoisted_9 = { class: "w-full bg-surface-200 dark:bg-surface-700 rounded-full h-1.5" };
-const _hoisted_10 = { class: "text-xs text-surface-500 dark:text-surface-400 text-center" };
-const _hoisted_11 = {
+const _hoisted_10$1 = { class: "w-full bg-surface-200 dark:bg-surface-700 rounded-full h-1.5" };
+const _hoisted_11$1 = { class: "text-xs text-surface-500 dark:text-surface-400 text-center" };
+const _hoisted_12 = {
   key: 1,
   class: "text-xs text-surface-500 dark:text-surface-400 text-center py-2"
 };
-const _hoisted_12 = {
+const _hoisted_13 = {
   key: 2,
   class: "text-sm text-surface-400 dark:text-surface-500 text-center py-4"
 };
@@ -34530,38 +34540,39 @@ const _sfc_main$3 = {
   props: {
     features: { type: Array, default: () => [] },
     processing: { type: String, default: null },
-    progress: { type: Number, default: 0 }
+    progress: { type: Number, default: 0 },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["ai-action"],
   setup(__props) {
-    const AI_FEATURES = {
-      "background-removal": {
-        id: "background-removal",
-        label: "Rimuovi sfondo",
-        description: "Rimuove lo sfondo direttamente nel browser",
-        icon: "pi-eraser"
-      },
-      "auto-enhance": {
-        id: "auto-enhance",
-        label: "Migliora automaticamente",
-        description: "Ottimizza luminosità, contrasto e nitidezza",
-        icon: "pi-sparkles"
-      }
-    };
     const props = __props;
     const availableFeatures = computed(() => {
-      return props.features.map((id5) => AI_FEATURES[id5]).filter(Boolean);
+      const featuresMap = {
+        "background-removal": {
+          id: "background-removal",
+          label: props.translations.bg_removal_label || "Remove background",
+          description: props.translations.bg_removal_desc || "Removes the background directly in the browser",
+          icon: "pi-eraser"
+        },
+        "auto-enhance": {
+          id: "auto-enhance",
+          label: props.translations.auto_enhance_label || "Auto enhance",
+          description: props.translations.auto_enhance_desc || "Optimizes brightness, contrast and sharpness",
+          icon: "pi-sparkles"
+        }
+      };
+      return props.features.map((id5) => featuresMap[id5]).filter(Boolean);
     });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$3, [
-        _cache[1] || (_cache[1] = createElementVNode(
+        createElementVNode(
           "h4",
-          { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-          "Strumenti AI",
-          -1
-          /* CACHED */
-        )),
-        createElementVNode("div", _hoisted_2$3, [
+          _hoisted_2$3,
+          toDisplayString(__props.translations.ai_tools_title || "AI Tools"),
+          1
+          /* TEXT */
+        ),
+        createElementVNode("div", _hoisted_3$3, [
           (openBlock(true), createElementBlock(
             Fragment$1,
             null,
@@ -34574,7 +34585,7 @@ const _sfc_main$3 = {
                 onClick: ($event) => _ctx.$emit("ai-action", feature.id)
               }, [
                 createCommentVNode(" Loading indicator when processing this feature "),
-                __props.processing === feature.id ? (openBlock(), createElementBlock("i", _hoisted_4$2)) : (openBlock(), createElementBlock(
+                __props.processing === feature.id ? (openBlock(), createElementBlock("i", _hoisted_5$1)) : (openBlock(), createElementBlock(
                   "i",
                   {
                     key: 1,
@@ -34584,31 +34595,31 @@ const _sfc_main$3 = {
                   2
                   /* CLASS */
                 )),
-                createElementVNode("div", _hoisted_5, [
+                createElementVNode("div", _hoisted_6$1, [
                   createElementVNode(
                     "div",
-                    _hoisted_6,
+                    _hoisted_7$1,
                     toDisplayString(feature.label),
                     1
                     /* TEXT */
                   ),
                   createElementVNode(
                     "div",
-                    _hoisted_7,
+                    _hoisted_8$1,
                     toDisplayString(feature.description),
                     1
                     /* TEXT */
                   )
                 ])
-              ], 8, _hoisted_3$3);
+              ], 8, _hoisted_4$2);
             }),
             128
             /* KEYED_FRAGMENT */
           ))
         ]),
         createCommentVNode(" Progress bar during processing "),
-        __props.processing !== null && __props.progress > 0 ? (openBlock(), createElementBlock("div", _hoisted_8, [
-          createElementVNode("div", _hoisted_9, [
+        __props.processing !== null && __props.progress > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, [
+          createElementVNode("div", _hoisted_10$1, [
             createElementVNode(
               "div",
               {
@@ -34622,27 +34633,33 @@ const _sfc_main$3 = {
           ]),
           createElementVNode(
             "p",
-            _hoisted_10,
-            " Elaborazione... " + toDisplayString(__props.progress) + "% ",
+            _hoisted_11$1,
+            toDisplayString(__props.translations.processing || "Processing...") + " " + toDisplayString(__props.progress) + "% ",
             1
             /* TEXT */
           )
         ])) : createCommentVNode("v-if", true),
-        __props.processing !== null && __props.progress === 0 ? (openBlock(), createElementBlock("div", _hoisted_11, [..._cache[0] || (_cache[0] = [
-          createElementVNode(
+        __props.processing !== null && __props.progress === 0 ? (openBlock(), createElementBlock("div", _hoisted_12, [
+          _cache[0] || (_cache[0] = createElementVNode(
             "i",
             { class: "pi pi-spin pi-spinner mr-1" },
             null,
             -1
             /* CACHED */
-          ),
+          )),
           createTextVNode(
-            " Caricamento modello... ",
-            -1
-            /* CACHED */
+            " " + toDisplayString(__props.translations.loading_model || "Loading model..."),
+            1
+            /* TEXT */
           )
-        ])])) : createCommentVNode("v-if", true),
-        availableFeatures.value.length === 0 ? (openBlock(), createElementBlock("div", _hoisted_12, " Nessuna funzionalità AI configurata ")) : createCommentVNode("v-if", true)
+        ])) : createCommentVNode("v-if", true),
+        availableFeatures.value.length === 0 ? (openBlock(), createElementBlock(
+          "div",
+          _hoisted_13,
+          toDisplayString(__props.translations.no_ai_configured || "No AI features configured"),
+          1
+          /* TEXT */
+        )) : createCommentVNode("v-if", true)
       ]);
     };
   }
@@ -34653,10 +34670,17 @@ const _hoisted_3$2 = {
   key: 0,
   class: "space-y-3"
 };
-const _hoisted_4$1 = {
+const _hoisted_4$1 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_5 = { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" };
+const _hoisted_6 = { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" };
+const _hoisted_7 = {
   key: 2,
   class: "space-y-3"
 };
+const _hoisted_8 = { class: "text-sm font-medium text-surface-700 dark:text-surface-300" };
+const _hoisted_9 = { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" };
+const _hoisted_10 = { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" };
+const _hoisted_11 = { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" };
 const _sfc_main$2 = {
   __name: "EditorSidebar",
   props: {
@@ -34668,7 +34692,8 @@ const _sfc_main$2 = {
     aiProcessing: { type: String, default: null },
     aiProgress: { type: Number, default: 0 },
     thumbnailUrl: { type: String, default: null },
-    cropAspectRatio: { type: Number, default: null }
+    cropAspectRatio: { type: Number, default: null },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: [
     "crop-ratio-change",
@@ -34686,56 +34711,93 @@ const _sfc_main$2 = {
         createCommentVNode(" Tool-specific controls "),
         createElementVNode("div", _hoisted_2$2, [
           createCommentVNode(" Move mode info "),
-          __props.activeTool === "move" ? (openBlock(), createElementBlock("div", _hoisted_3$2, [..._cache[8] || (_cache[8] = [
+          __props.activeTool === "move" ? (openBlock(), createElementBlock("div", _hoisted_3$2, [
             createElementVNode(
               "h4",
-              { class: "text-sm font-medium text-surface-700 dark:text-surface-300" },
-              "Sposta",
-              -1
-              /* CACHED */
+              _hoisted_4$1,
+              toDisplayString(__props.translations.move_title || "Move"),
+              1
+              /* TEXT */
             ),
             createElementVNode(
               "p",
-              { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" },
-              " Trascina per spostare l'immagine. ",
-              -1
-              /* CACHED */
+              _hoisted_5,
+              toDisplayString(__props.translations.drag_to_move || "Drag to move the image."),
+              1
+              /* TEXT */
             ),
             createElementVNode(
               "p",
-              { class: "text-xs text-surface-500 dark:text-surface-400 leading-relaxed" },
-              " Usa la rotella del mouse per lo zoom. ",
-              -1
-              /* CACHED */
+              _hoisted_6,
+              toDisplayString(__props.translations.mouse_wheel_zoom || "Use the mouse wheel to zoom."),
+              1
+              /* TEXT */
             )
-          ])])) : createCommentVNode("v-if", true),
+          ])) : createCommentVNode("v-if", true),
           createCommentVNode(" Crop controls "),
           __props.activeTool === "crop" ? (openBlock(), createBlock(_sfc_main$7, {
             key: 1,
             "current-ratio": __props.cropAspectRatio,
             config: __props.config,
+            translations: __props.translations,
             onCropRatioChange: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("crop-ratio-change", $event)),
             onApplyCrop: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("apply-crop"))
-          }, null, 8, ["current-ratio", "config"])) : createCommentVNode("v-if", true),
+          }, null, 8, ["current-ratio", "config", "translations"])) : createCommentVNode("v-if", true),
           createCommentVNode(" Zoom mode info "),
-          __props.activeTool === "zoom" ? (openBlock(), createElementBlock("div", _hoisted_4$1, [..._cache[9] || (_cache[9] = [
-            createStaticVNode('<h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Zoom</h4><p class="text-xs text-surface-500 dark:text-surface-400 leading-relaxed"> Clicca sull&#39;immagine per ingrandire. </p><p class="text-xs text-surface-500 dark:text-surface-400 leading-relaxed"><kbd class="px-1 py-0.5 bg-surface-100 dark:bg-surface-700 rounded text-[10px]">Alt</kbd> + Clicca per ridurre. </p><p class="text-xs text-surface-500 dark:text-surface-400 leading-relaxed"> Rotella del mouse per zoom continuo. </p>', 4)
-          ])])) : createCommentVNode("v-if", true),
+          __props.activeTool === "zoom" ? (openBlock(), createElementBlock("div", _hoisted_7, [
+            createElementVNode(
+              "h4",
+              _hoisted_8,
+              toDisplayString(__props.translations.zoom_title || "Zoom"),
+              1
+              /* TEXT */
+            ),
+            createElementVNode(
+              "p",
+              _hoisted_9,
+              toDisplayString(__props.translations.click_to_zoom_in || "Click on the image to zoom in."),
+              1
+              /* TEXT */
+            ),
+            createElementVNode("p", _hoisted_10, [
+              _cache[8] || (_cache[8] = createElementVNode(
+                "kbd",
+                { class: "px-1 py-0.5 bg-surface-100 dark:bg-surface-700 rounded text-[10px]" },
+                "Alt",
+                -1
+                /* CACHED */
+              )),
+              createTextVNode(
+                " + " + toDisplayString(__props.translations.alt_click_zoom_out || "Click to zoom out."),
+                1
+                /* TEXT */
+              )
+            ]),
+            createElementVNode(
+              "p",
+              _hoisted_11,
+              toDisplayString(__props.translations.mouse_wheel_continuous || "Mouse wheel for continuous zoom."),
+              1
+              /* TEXT */
+            )
+          ])) : createCommentVNode("v-if", true),
           createCommentVNode(" Transform controls "),
           __props.activeTool === "transform" ? (openBlock(), createBlock(_sfc_main$6, {
             key: 3,
             config: __props.config,
+            translations: __props.translations,
             onRotate: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("rotate", $event)),
             onFlip: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("flip", $event))
-          }, null, 8, ["config"])) : createCommentVNode("v-if", true),
+          }, null, 8, ["config", "translations"])) : createCommentVNode("v-if", true),
           createCommentVNode(" Adjustment controls "),
           __props.activeTool === "adjustments" ? (openBlock(), createBlock(_sfc_main$5, {
             key: 4,
             adjustments: __props.adjustments,
             "has-changes": __props.hasAdjustmentChanges,
+            translations: __props.translations,
             onAdjustmentChange: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("adjustment-change", $event)),
             onReset: _cache[5] || (_cache[5] = ($event) => _ctx.$emit("reset-adjustments"))
-          }, null, 8, ["adjustments", "has-changes"])) : createCommentVNode("v-if", true),
+          }, null, 8, ["adjustments", "has-changes", "translations"])) : createCommentVNode("v-if", true),
           createCommentVNode(" Filter controls "),
           __props.activeTool === "filters" ? (openBlock(), createBlock(_sfc_main$4, {
             key: 5,
@@ -34749,8 +34811,9 @@ const _sfc_main$2 = {
             features: __props.config.ai?.features || [],
             processing: __props.aiProcessing,
             progress: __props.aiProgress,
+            translations: __props.translations,
             onAiAction: _cache[7] || (_cache[7] = ($event) => _ctx.$emit("ai-action", $event))
-          }, null, 8, ["features", "processing", "progress"])) : createCommentVNode("v-if", true)
+          }, null, 8, ["features", "processing", "progress", "translations"])) : createCommentVNode("v-if", true)
         ])
       ]);
     };
@@ -34766,7 +34829,8 @@ const _sfc_main$1 = {
   __name: "ImageEditor",
   props: {
     config: { type: Object, default: () => ({}) },
-    statePath: { type: String, required: true }
+    statePath: { type: String, required: true },
+    translations: { type: Object, default: () => ({}) }
   },
   emits: ["save", "close"],
   setup(__props, { expose: __expose, emit: __emit }) {
@@ -34953,7 +35017,7 @@ const _sfc_main$1 = {
         visible: visible.value,
         "onUpdate:visible": _cache[0] || (_cache[0] = ($event) => visible.value = $event),
         modal: "",
-        header: __props.config.modal?.heading || "Modifica immagine",
+        header: __props.config.modal?.heading || __props.translations.edit_image || "Edit image",
         style: normalizeStyle({ width: modalWidth.value }),
         closable: !unref(processing),
         closeOnEscape: !unref(processing),
@@ -34968,17 +35032,17 @@ const _sfc_main$1 = {
         footer: withCtx(() => [
           createElementVNode("div", _hoisted_3$1, [
             createVNode(_component_p_button, {
-              label: "Annulla",
+              label: __props.translations.cancel || "Cancel",
               severity: "secondary",
               onClick: onClose,
               disabled: unref(processing)
-            }, null, 8, ["disabled"]),
+            }, null, 8, ["label", "disabled"]),
             createVNode(_component_p_button, {
-              label: "Applica",
+              label: __props.translations.apply || "Apply",
               icon: "pi pi-check",
               onClick: onApply,
               loading: unref(processing)
-            }, null, 8, ["loading"])
+            }, null, 8, ["label", "loading"])
           ])
         ]),
         default: withCtx(() => [
@@ -35001,8 +35065,9 @@ const _sfc_main$1 = {
               createVNode(_sfc_main$9, {
                 "active-tool": unref(activeTool),
                 config: __props.config,
+                translations: __props.translations,
                 onToolChange: unref(setActiveTool)
-              }, null, 8, ["active-tool", "config", "onToolChange"]),
+              }, null, 8, ["active-tool", "config", "translations", "onToolChange"]),
               createCommentVNode(" Canvas area "),
               createVNode(_sfc_main$8, {
                 ref_key: "canvasRef",
@@ -35025,6 +35090,7 @@ const _sfc_main$1 = {
                 "ai-progress": unref(aiProgress),
                 "thumbnail-url": currentImageUrl.value,
                 "crop-aspect-ratio": numericAspectRatio.value,
+                translations: __props.translations,
                 onCropRatioChange,
                 onApplyCrop,
                 onRotate,
@@ -35033,7 +35099,7 @@ const _sfc_main$1 = {
                 onResetAdjustments: unref(resetAdjustments),
                 onFilterChange: onFilterChange4,
                 onAiAction
-              }, null, 8, ["active-tool", "config", "adjustments", "active-filter", "has-adjustment-changes", "ai-processing", "ai-progress", "thumbnail-url", "crop-aspect-ratio", "onResetAdjustments"])
+              }, null, 8, ["active-tool", "config", "adjustments", "active-filter", "has-adjustment-changes", "ai-processing", "ai-progress", "thumbnail-url", "crop-aspect-ratio", "translations", "onResetAdjustments"])
             ])
           ])
         ]),

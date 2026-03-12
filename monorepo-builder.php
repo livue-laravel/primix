@@ -13,12 +13,12 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorke
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
 
 return static function (MBConfig $mbConfig): void {
-    // Dove cercare i package
+    // Directories to discover packages from
     $mbConfig->packageDirectories([
         __DIR__ . '/packages',
     ]);
 
-    // Sezioni da unire nei composer.json dei package
+    // Sections to merge into package composer.json files
     $mbConfig->dataToAppend([
         'authors' => [
             [
@@ -32,28 +32,28 @@ return static function (MBConfig $mbConfig): void {
         ],
     ]);
 
-    // Dipendenze da rimuovere dal merge (sono gestite singolarmente)
+    // Dependencies to remove from merge (managed individually per package)
     $mbConfig->dataToRemove([
         'require-dev' => [
             'symplify/monorepo-builder' => '*',
         ],
     ]);
 
-    // Worker per il processo di release
+    // Workers for the release process
     $mbConfig->workers([
-        // Prima aggiorna le versioni delle dipendenze interne
+        // First, update internal dependency versions
         SetCurrentMutualDependenciesReleaseWorker::class,
-        // Aggiorna il replace nel root composer.json
+        // Update the replace section in root composer.json
         UpdateReplaceReleaseWorker::class,
-        // Crea il tag
+        // Create the tag
         TagVersionReleaseWorker::class,
-        // Push del tag
+        // Push the tag
         PushTagReleaseWorker::class,
-        // Imposta le versioni dev per il prossimo sviluppo
+        // Set dev versions for next development cycle
         SetNextMutualDependenciesReleaseWorker::class,
-        // Aggiorna il branch alias
+        // Update the branch alias
         UpdateBranchAliasReleaseWorker::class,
-        // Push delle modifiche dev
+        // Push dev changes
         PushNextDevReleaseWorker::class,
     ]);
 };

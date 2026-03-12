@@ -19,12 +19,12 @@ class CreateRecord extends Page
 
         return [
             Action::make('cancel')
-                ->label('Cancel')
+                ->label(__('primix::panel.actions.cancel'))
                 ->color('gray')
                 ->outlined()
                 ->url($resource::getUrl('index')),
             Action::make('create')
-                ->label('Create')
+                ->label(__('primix::panel.actions.create'))
                 ->submit(),
         ];
     }
@@ -94,7 +94,7 @@ class CreateRecord extends Page
         $form->saveRelationships($record, $data);
 
         Notification::make()
-            ->title('Created successfully')
+            ->title(__('primix::panel.notifications.created'))
             ->success()
             ->send();
 
@@ -123,7 +123,7 @@ class CreateRecord extends Page
     {
         $resource = $this->resolveResource();
 
-        return 'Create ' . $resource::getModelLabel();
+        return __('primix::panel.page_titles.create', ['model' => $resource::getModelLabel()]);
     }
 
     protected function render(): string

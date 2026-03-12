@@ -81,12 +81,6 @@ const targets = [
         fileName: 'primix-panels',
         publicVendorDir: 'primix/panels',
     },
-    {
-        label: 'full',
-        entry: 'resources/js/primix.js',
-        outDir: 'packages/panels/dist',
-        fileName: 'primix',
-    },
 ];
 
 /**

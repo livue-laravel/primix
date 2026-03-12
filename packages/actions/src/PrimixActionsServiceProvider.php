@@ -20,6 +20,7 @@ class PrimixActionsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'primix-actions');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'primix-actions');
 
         Blade::anonymousComponentPath(__DIR__ . '/../resources/views', 'primix-actions');
 
@@ -30,6 +31,10 @@ class PrimixActionsServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/primix-actions'),
             ], 'primix-actions-views');
+
+            $this->publishes([
+                __DIR__ . '/../resources/lang' => lang_path('vendor/primix-actions'),
+            ], 'primix-actions-translations');
 
             $assets = [
                 __DIR__ . '/../dist/primix-actions.css' => public_path('vendor/livue/primix/actions/primix-actions.css'),

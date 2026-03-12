@@ -18,12 +18,14 @@ class Register extends SimplePage
 
     protected static ?string $slug = 'register';
 
-    protected ?string $title = 'Create an account';
+    protected ?string $title = null;
 
     public array $data = [];
 
     public function mount(): void
     {
+        $this->title = __('primix::panel.auth.create_account_title');
+
         $panel = Primix::getCurrentPanel();
 
         if (Auth::guard($panel->getAuthGuard())->check()) {
@@ -40,25 +42,25 @@ class Register extends SimplePage
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Name')
+                    ->label(__('primix::panel.auth.name'))
                     ->required()
                     ->maxLength(255)
                     ->autofocus(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label(__('primix::panel.auth.email'))
                     ->email()
                     ->required()
                     ->maxLength(255)
                     ->autocomplete('email'),
                 TextInput::make('password')
-                    ->label('Password')
+                    ->label(__('primix::panel.auth.password'))
                     ->password()
                     ->revealable()
                     ->required()
                     ->minLength(8)
                     ->autocomplete('new-password'),
                 TextInput::make('password_confirmation')
-                    ->label('Confirm password')
+                    ->label(__('primix::panel.auth.confirm_password'))
                     ->password()
                     ->revealable()
                     ->required()
@@ -68,7 +70,7 @@ class Register extends SimplePage
             ->submitAction('register')
             ->submitButton(
                 Action::make('register')
-                    ->label('Sign up')
+                    ->label(__('primix::panel.auth.sign_up_button'))
                     ->submit()
             );
     }

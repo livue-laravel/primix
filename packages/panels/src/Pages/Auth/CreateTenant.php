@@ -17,12 +17,14 @@ class CreateTenant extends SimplePage
 
     protected static ?string $slug = 'create-tenant';
 
-    protected ?string $title = 'Create your organization';
+    protected ?string $title = null;
 
     public array $data = [];
 
     public function mount(): void
     {
+        $this->title = __('primix::panel.auth.create_organization_title');
+
         $panel = Primix::getCurrentPanel();
 
         if (! Auth::guard($panel->getAuthGuard())->check()) {
@@ -39,7 +41,7 @@ class CreateTenant extends SimplePage
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Organization name')
+                    ->label(__('primix::panel.auth.organization_name'))
                     ->required()
                     ->maxLength(255)
                     ->autofocus(),
@@ -48,7 +50,7 @@ class CreateTenant extends SimplePage
             ->submitAction('create')
             ->submitButton(
                 Action::make('create')
-                    ->label('Create')
+                    ->label(__('primix::panel.actions.create'))
                     ->submit()
             );
     }

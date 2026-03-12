@@ -175,7 +175,7 @@ class Repeater extends Field
 
     public function getAddActionLabel(): string
     {
-        return $this->evaluate($this->addActionLabel) ?? 'Add item';
+        return $this->evaluate($this->addActionLabel) ?? __('primix-forms::forms.add_item');
     }
 
     public function getItemLabel(): ?string

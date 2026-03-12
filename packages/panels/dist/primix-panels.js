@@ -1,6 +1,6 @@
 import LiVue from "livue";
 import { ref, onMounted, onBeforeUnmount, openBlock, createElementBlock, renderSlot, createVNode, Transition, withCtx, createCommentVNode, withDirectives, createElementVNode, vShow, createBlock, onUnmounted, TransitionGroup, Fragment, renderList, normalizeClass, toDisplayString, computed, resolveComponent, resolveDynamicComponent, createTextVNode, h, mergeProps, defineComponent, withKeys, withModifiers, vModelText, Teleport, inject, watch, nextTick } from "vue";
-const _hoisted_1$9 = { key: 0 };
+const _hoisted_1$a = { key: 0 };
 const _sfc_main$b = {
   __name: "Dropdown",
   setup(__props) {
@@ -45,7 +45,7 @@ const _sfc_main$b = {
             "leave-to-class": "transform opacity-0 scale-95"
           }, {
             default: withCtx(() => [
-              open.value ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
+              open.value ? (openBlock(), createElementBlock("div", _hoisted_1$a, [
                 renderSlot(_ctx.$slots, "default", { close })
               ])) : createCommentVNode("v-if", true)
             ]),
@@ -135,7 +135,7 @@ const _sfc_main$a = {
     };
   }
 };
-const _hoisted_1$8 = { key: 0 };
+const _hoisted_1$9 = { key: 0 };
 const _sfc_main$9 = {
   __name: "Toast",
   props: {
@@ -165,7 +165,7 @@ const _sfc_main$9 = {
         "leave-to-class": "opacity-0"
       }, {
         default: withCtx(() => [
-          visible.value ? (openBlock(), createElementBlock("div", _hoisted_1$8, [
+          visible.value ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
             renderSlot(_ctx.$slots, "default", { close })
           ])) : createCommentVNode("v-if", true)
         ]),
@@ -175,7 +175,7 @@ const _sfc_main$9 = {
     };
   }
 };
-const _hoisted_1$7 = { class: "p-4" };
+const _hoisted_1$8 = { class: "p-4" };
 const _hoisted_2$7 = { class: "flex items-start" };
 const _hoisted_3$7 = {
   key: 0,
@@ -194,7 +194,7 @@ const _hoisted_7$6 = {
   key: 1,
   class: "ml-4 flex flex-shrink-0"
 };
-const _hoisted_8$5 = ["onClick"];
+const _hoisted_8$6 = ["onClick"];
 const _sfc_main$8 = {
   __name: "NotificationToasts",
   setup(__props) {
@@ -248,7 +248,7 @@ const _sfc_main$8 = {
                 key: notification.id,
                 class: "pointer-events-auto mb-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
               }, [
-                createElementVNode("div", _hoisted_1$7, [
+                createElementVNode("div", _hoisted_1$8, [
                   createElementVNode("div", _hoisted_2$7, [
                     notification.icon ? (openBlock(), createElementBlock("div", _hoisted_3$7, [
                       notification.icon === "heroicon-o-check-circle" ? (openBlock(), createElementBlock(
@@ -403,7 +403,7 @@ const _sfc_main$8 = {
                           -1
                           /* CACHED */
                         )
-                      ])], 8, _hoisted_8$5)
+                      ])], 8, _hoisted_8$6)
                     ])) : createCommentVNode("v-if", true)
                   ])
                 ])
@@ -419,7 +419,7 @@ const _sfc_main$8 = {
     };
   }
 };
-const _hoisted_1$6 = ["onClick"];
+const _hoisted_1$7 = ["onClick"];
 const _hoisted_2$6 = {
   key: 0,
   class: "h-6 w-6",
@@ -560,7 +560,7 @@ const _sfc_main$7 = {
               2112
               /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
             ))
-          ], 8, _hoisted_1$6)
+          ], 8, _hoisted_1$7)
         ]),
         default: withCtx(({ close }) => [
           createElementVNode("div", _hoisted_3$6, [
@@ -598,7 +598,7 @@ const _sfc_main$7 = {
     };
   }
 };
-const _hoisted_1$5 = ["onClick"];
+const _hoisted_1$6 = ["onClick"];
 const _hoisted_2$5 = ["src", "alt"];
 const _hoisted_3$5 = {
   key: 1,
@@ -608,13 +608,13 @@ const _hoisted_4$5 = { class: "hidden lg:flex lg:items-center" };
 const _hoisted_5$5 = { class: "ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
 const _hoisted_6$5 = { class: "absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
 const _hoisted_7$5 = { class: "px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
-const _hoisted_8$4 = { class: "text-sm font-medium text-gray-900 dark:text-white truncate" };
-const _hoisted_9$3 = {
+const _hoisted_8$5 = { class: "text-sm font-medium text-gray-900 dark:text-white truncate" };
+const _hoisted_9$5 = {
   key: 0,
   class: "text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5"
 };
-const _hoisted_10$3 = { class: "py-1" };
-const _hoisted_11$2 = ["href", "onClick"];
+const _hoisted_10$4 = { class: "py-1" };
+const _hoisted_11$3 = ["href", "onClick"];
 const _hoisted_12 = { class: "py-1" };
 const _hoisted_13 = ["onClick"];
 const _sfc_main$6 = {
@@ -719,7 +719,7 @@ const _sfc_main$6 = {
                 /* CACHED */
               ))
             ])
-          ], 8, _hoisted_1$5)
+          ], 8, _hoisted_1$6)
         ]),
         default: withCtx(({ close }) => [
           createElementVNode("div", _hoisted_6$5, [
@@ -727,21 +727,21 @@ const _sfc_main$6 = {
             createElementVNode("div", _hoisted_7$5, [
               createElementVNode(
                 "p",
-                _hoisted_8$4,
+                _hoisted_8$5,
                 toDisplayString(__props.userMenu.userName),
                 1
                 /* TEXT */
               ),
               __props.userMenu.userEmail ? (openBlock(), createElementBlock(
                 "p",
-                _hoisted_9$3,
+                _hoisted_9$5,
                 toDisplayString(__props.userMenu.userEmail),
                 1
                 /* TEXT */
               )) : createCommentVNode("v-if", true)
             ]),
             createCommentVNode(" Menu items "),
-            createElementVNode("div", _hoisted_10$3, [
+            createElementVNode("div", _hoisted_10$4, [
               (openBlock(true), createElementBlock(
                 Fragment,
                 null,
@@ -752,7 +752,7 @@ const _sfc_main$6 = {
                   }, { ref_for: true }, __props.spa ? { "data-livue-navigate": "true" } : {}, {
                     class: "flex w-full items-center gap-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
                     onClick: close
-                  }), toDisplayString(item.label), 17, _hoisted_11$2);
+                  }), toDisplayString(item.label), 17, _hoisted_11$3);
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -801,7 +801,7 @@ const _sfc_main$6 = {
     };
   }
 };
-const _hoisted_1$4 = ["onClick"];
+const _hoisted_1$5 = ["onClick"];
 const _hoisted_2$4 = { class: "hidden lg:flex lg:items-center" };
 const _hoisted_3$4 = { class: "ml-2 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
 const _hoisted_4$4 = { class: "absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
@@ -811,10 +811,10 @@ const _hoisted_7$4 = {
   key: 0,
   class: "py-1"
 };
-const _hoisted_8$3 = ["href", "onClick"];
-const _hoisted_9$2 = { class: "truncate" };
-const _hoisted_10$2 = { class: "py-1" };
-const _hoisted_11$1 = ["href", "onClick"];
+const _hoisted_8$4 = ["href", "onClick"];
+const _hoisted_9$4 = { class: "truncate" };
+const _hoisted_10$3 = { class: "py-1" };
+const _hoisted_11$2 = ["href", "onClick"];
 const _sfc_main$5 = {
   __name: "TenantMenu",
   props: {
@@ -895,7 +895,7 @@ const _sfc_main$5 = {
                 /* CACHED */
               ))
             ])
-          ], 8, _hoisted_1$4)
+          ], 8, _hoisted_1$5)
         ]),
         default: withCtx(({ close }) => [
           createElementVNode("div", _hoisted_4$4, [
@@ -957,12 +957,12 @@ const _sfc_main$5 = {
                     )),
                     createElementVNode(
                       "span",
-                      _hoisted_9$2,
+                      _hoisted_9$4,
                       toDisplayString(tenant.name),
                       1
                       /* TEXT */
                     )
-                  ], 8, _hoisted_8$3);
+                  ], 8, _hoisted_8$4);
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -980,7 +980,7 @@ const _sfc_main$5 = {
                   -1
                   /* CACHED */
                 )),
-                createElementVNode("div", _hoisted_10$2, [
+                createElementVNode("div", _hoisted_10$3, [
                   (openBlock(true), createElementBlock(
                     Fragment,
                     null,
@@ -991,7 +991,7 @@ const _sfc_main$5 = {
                       }, { ref_for: true }, __props.spa ? { "data-livue-navigate": "true" } : {}, {
                         class: "flex w-full items-center gap-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
                         onClick: close
-                      }), toDisplayString(item.label), 17, _hoisted_11$1);
+                      }), toDisplayString(item.label), 17, _hoisted_11$2);
                     }),
                     128
                     /* KEYED_FRAGMENT */
@@ -1260,7 +1260,7 @@ const _sfc_main$4 = {
     };
   }
 };
-const _hoisted_1$3 = { class: "relative flex flex-1 items-center" };
+const _hoisted_1$4 = { class: "relative flex flex-1 items-center" };
 const _hoisted_2$3 = {
   key: 0,
   class: "hidden sm:inline-flex ml-auto items-center gap-x-0.5 rounded border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 text-xs text-gray-400 font-sans"
@@ -1280,13 +1280,13 @@ const _hoisted_7$3 = {
   ref: "spotlightRef",
   class: "relative w-full max-w-xl rounded-xl bg-white dark:bg-gray-800 shadow-2xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden"
 };
-const _hoisted_8$2 = { class: "flex items-center border-b border-gray-200 dark:border-gray-700 px-4" };
-const _hoisted_9$1 = {
+const _hoisted_8$3 = { class: "flex items-center border-b border-gray-200 dark:border-gray-700 px-4" };
+const _hoisted_9$3 = {
   key: 0,
   class: "flex-shrink-0"
 };
-const _hoisted_10$1 = { class: "max-h-80 overflow-y-auto" };
-const _hoisted_11 = {
+const _hoisted_10$2 = { class: "max-h-80 overflow-y-auto" };
+const _hoisted_11$1 = {
   key: 0,
   class: "flex items-center justify-end gap-x-4 border-t border-gray-200 dark:border-gray-700 px-4 py-2 text-xs text-gray-400"
 };
@@ -1297,7 +1297,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     null,
     [
       createCommentVNode(" Trigger button (always visible in topbar) "),
-      createElementVNode("div", _hoisted_1$3, [
+      createElementVNode("div", _hoisted_1$4, [
         createElementVNode("button", {
           type: "button",
           class: "flex flex-1 items-center gap-x-2 rounded-md px-3 py-2 text-sm text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors",
@@ -1429,7 +1429,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                 _hoisted_7$3,
                 [
                   createCommentVNode(" Search input "),
-                  createElementVNode("div", _hoisted_8$2, [
+                  createElementVNode("div", _hoisted_8$3, [
                     _cache[18] || (_cache[18] = createElementVNode(
                       "svg",
                       {
@@ -1468,7 +1468,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     ), [
                       [vModelText, $setup.query]
                     ]),
-                    $setup.loading ? (openBlock(), createElementBlock("div", _hoisted_9$1, [..._cache[17] || (_cache[17] = [
+                    $setup.loading ? (openBlock(), createElementBlock("div", _hoisted_9$3, [..._cache[17] || (_cache[17] = [
                       createElementVNode(
                         "svg",
                         {
@@ -1498,7 +1498,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     ])])) : createCommentVNode("v-if", true)
                   ]),
                   createCommentVNode(" Results "),
-                  createElementVNode("div", _hoisted_10$1, [
+                  createElementVNode("div", _hoisted_10$2, [
                     createVNode(_component_search_results, {
                       groups: $setup.results,
                       loading: $setup.loading,
@@ -1509,7 +1509,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     }, null, 8, ["groups", "loading", "query", "selected-index", "spa", "onSelect"])
                   ]),
                   createCommentVNode(" Footer "),
-                  $setup.results.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_11, [..._cache[19] || (_cache[19] = [
+                  $setup.results.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_11$1, [..._cache[19] || (_cache[19] = [
                     createElementVNode(
                       "span",
                       { class: "flex items-center gap-x-1" },
@@ -1557,7 +1557,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   );
 }
 const GlobalSearch = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render]]);
-const _hoisted_1$2 = { class: "flex-shrink-0 mt-2 w-2" };
+const _hoisted_1$3 = { class: "flex-shrink-0 mt-2 w-2" };
 const _hoisted_2$2 = {
   key: 0,
   class: "w-2 h-2 rounded-full bg-blue-500"
@@ -1576,15 +1576,15 @@ const _hoisted_7$2 = {
   key: 1,
   class: "text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap flex-shrink-0"
 };
-const _hoisted_8$1 = {
+const _hoisted_8$2 = {
   key: 0,
   class: "text-sm text-gray-500 dark:text-gray-400 mt-0.5"
 };
-const _hoisted_9 = {
+const _hoisted_9$2 = {
   key: 1,
   class: "mt-2 flex flex-wrap gap-3"
 };
-const _hoisted_10 = ["href"];
+const _hoisted_10$1 = ["href"];
 const _sfc_main$3 = {
   __name: "NotificationItem",
   props: {
@@ -1649,7 +1649,7 @@ const _sfc_main$3 = {
         },
         [
           createCommentVNode(" Unread dot "),
-          createElementVNode("div", _hoisted_1$2, [
+          createElementVNode("div", _hoisted_1$3, [
             !__props.notification.read_at ? (openBlock(), createElementBlock("div", _hoisted_2$2)) : createCommentVNode("v-if", true)
           ]),
           createCommentVNode(" Icon "),
@@ -1780,12 +1780,12 @@ const _sfc_main$3 = {
             ]),
             __props.notification.body ? (openBlock(), createElementBlock(
               "p",
-              _hoisted_8$1,
+              _hoisted_8$2,
               toDisplayString(__props.notification.body),
               1
               /* TEXT */
             )) : createCommentVNode("v-if", true),
-            __props.notification.actions && __props.notification.actions.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_9, [
+            __props.notification.actions && __props.notification.actions.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$2, [
               (openBlock(true), createElementBlock(
                 Fragment,
                 null,
@@ -1796,7 +1796,7 @@ const _sfc_main$3 = {
                     class: "text-sm font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400",
                     onClick: _cache[0] || (_cache[0] = withModifiers(() => {
                     }, ["stop"]))
-                  }, toDisplayString(action.label), 9, _hoisted_10);
+                  }, toDisplayString(action.label), 9, _hoisted_10$1);
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -1810,7 +1810,7 @@ const _sfc_main$3 = {
     };
   }
 };
-const _hoisted_1$1 = { class: "absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10" };
+const _hoisted_1$2 = { class: "absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10" };
 const _hoisted_2$1 = { class: "flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
 const _hoisted_3$1 = { class: "text-sm font-semibold text-gray-900 dark:text-white" };
 const _hoisted_4$1 = {
@@ -1818,11 +1818,13 @@ const _hoisted_4$1 = {
   class: "ml-1 text-xs font-normal text-gray-500 dark:text-gray-400"
 };
 const _hoisted_5$1 = { class: "max-h-[32rem] overflow-y-auto" };
-const _hoisted_6$1 = {
+const _hoisted_6$1 = { class: "px-4 py-8 text-center" };
+const _hoisted_7$1 = { class: "mt-2 text-sm text-gray-500 dark:text-gray-400" };
+const _hoisted_8$1 = {
   key: 0,
   class: "border-t border-gray-100 dark:border-gray-700"
 };
-const _hoisted_7$1 = ["disabled"];
+const _hoisted_9$1 = ["disabled"];
 const _sfc_main$2 = {
   __name: "NotificationPopup",
   props: {
@@ -1841,20 +1843,24 @@ const _sfc_main$2 = {
     loading: {
       type: Boolean,
       default: false
+    },
+    translations: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ["load-more", "mark-read", "mark-all-read", "navigate"],
   setup(__props) {
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$1, [
+      return openBlock(), createElementBlock("div", _hoisted_1$2, [
         createCommentVNode(" Header "),
         createElementVNode("div", _hoisted_2$1, [
           createElementVNode("h3", _hoisted_3$1, [
-            _cache[4] || (_cache[4] = createTextVNode(
-              " Notifiche ",
-              -1
-              /* CACHED */
-            )),
+            createTextVNode(
+              toDisplayString(__props.translations.title || "Notifications") + " ",
+              1
+              /* TEXT */
+            ),
             __props.unreadCount > 0 ? (openBlock(), createElementBlock(
               "span",
               _hoisted_4$1,
@@ -1863,12 +1869,18 @@ const _sfc_main$2 = {
               /* TEXT */
             )) : createCommentVNode("v-if", true)
           ]),
-          __props.unreadCount > 0 ? (openBlock(), createElementBlock("button", {
-            key: 0,
-            type: "button",
-            class: "text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium",
-            onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("mark-all-read"))
-          }, " Segna tutte come lette ")) : createCommentVNode("v-if", true)
+          __props.unreadCount > 0 ? (openBlock(), createElementBlock(
+            "button",
+            {
+              key: 0,
+              type: "button",
+              class: "text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium",
+              onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("mark-all-read"))
+            },
+            toDisplayString(__props.translations.mark_all_read || "Mark all as read"),
+            1
+            /* TEXT */
+          )) : createCommentVNode("v-if", true)
         ]),
         createCommentVNode(" Notification list "),
         createElementVNode("div", _hoisted_5$1, [
@@ -1890,48 +1902,54 @@ const _sfc_main$2 = {
             { key: 1 },
             [
               createCommentVNode(" Empty state "),
-              _cache[5] || (_cache[5] = createElementVNode(
-                "div",
-                { class: "px-4 py-8 text-center" },
-                [
-                  createElementVNode("svg", {
+              createElementVNode("div", _hoisted_6$1, [
+                _cache[4] || (_cache[4] = createElementVNode(
+                  "svg",
+                  {
                     class: "mx-auto h-8 w-8 text-gray-300 dark:text-gray-600",
                     xmlns: "http://www.w3.org/2000/svg",
                     fill: "none",
                     viewBox: "0 0 24 24",
                     "stroke-width": "1.5",
                     stroke: "currentColor"
-                  }, [
+                  },
+                  [
                     createElementVNode("path", {
                       "stroke-linecap": "round",
                       "stroke-linejoin": "round",
                       d: "M9.143 17.082a24.248 24.248 0 0 0 5.714 0m-5.714 0a2.25 2.25 0 0 1-2.244-2.077L6.394 5.694a6.001 6.001 0 0 1 11.212 0l-.505 9.311a2.25 2.25 0 0 1-2.244 2.077m-5.714 0a3 3 0 0 0 5.714 0"
                     })
-                  ]),
-                  createElementVNode("p", { class: "mt-2 text-sm text-gray-500 dark:text-gray-400" }, "Nessuna notifica")
-                ],
-                -1
-                /* CACHED */
-              ))
+                  ],
+                  -1
+                  /* CACHED */
+                )),
+                createElementVNode(
+                  "p",
+                  _hoisted_7$1,
+                  toDisplayString(__props.translations.no_notifications || "No notifications"),
+                  1
+                  /* TEXT */
+                )
+              ])
             ],
             2112
             /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
           ))
         ]),
         createCommentVNode(" Load more "),
-        __props.hasMore ? (openBlock(), createElementBlock("div", _hoisted_6$1, [
+        __props.hasMore ? (openBlock(), createElementBlock("div", _hoisted_8$1, [
           createElementVNode("button", {
             type: "button",
             class: "w-full px-4 py-2 text-xs text-center text-primary-600 hover:bg-gray-50 dark:text-primary-400 dark:hover:bg-gray-700/50 font-medium",
             disabled: __props.loading,
             onClick: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("load-more"))
-          }, toDisplayString(__props.loading ? "Caricamento..." : "Carica altre"), 9, _hoisted_7$1)
+          }, toDisplayString(__props.loading ? __props.translations.loading || "Loading..." : __props.translations.load_more || "Load more"), 9, _hoisted_9$1)
         ])) : createCommentVNode("v-if", true)
       ]);
     };
   }
 };
-const _hoisted_1 = {
+const _hoisted_1$1 = {
   key: 0,
   class: "fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-gray-800 shadow-xl flex flex-col"
 };
@@ -1942,12 +1960,15 @@ const _hoisted_4 = {
   class: "ml-1 text-sm font-normal text-gray-500 dark:text-gray-400"
 };
 const _hoisted_5 = { class: "flex items-center gap-3" };
-const _hoisted_6 = { class: "flex-1 overflow-y-auto" };
-const _hoisted_7 = {
+const _hoisted_6 = { class: "sr-only" };
+const _hoisted_7 = { class: "flex-1 overflow-y-auto" };
+const _hoisted_8 = { class: "px-4 py-12 text-center" };
+const _hoisted_9 = { class: "mt-3 text-sm text-gray-500 dark:text-gray-400" };
+const _hoisted_10 = {
   key: 0,
   class: "border-t border-gray-200 dark:border-gray-700"
 };
-const _hoisted_8 = ["disabled"];
+const _hoisted_11 = ["disabled"];
 const _sfc_main$1 = {
   __name: "NotificationDrawer",
   props: {
@@ -1970,6 +1991,10 @@ const _sfc_main$1 = {
     loading: {
       type: Boolean,
       default: false
+    },
+    translations: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ["close", "load-more", "mark-read", "mark-all-read", "navigate"],
@@ -2017,15 +2042,15 @@ const _sfc_main$1 = {
           "leave-to-class": "translate-x-full"
         }, {
           default: withCtx(() => [
-            __props.open ? (openBlock(), createElementBlock("div", _hoisted_1, [
+            __props.open ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
               createCommentVNode(" Header "),
               createElementVNode("div", _hoisted_2, [
                 createElementVNode("h2", _hoisted_3, [
-                  _cache[6] || (_cache[6] = createTextVNode(
-                    " Notifiche ",
-                    -1
-                    /* CACHED */
-                  )),
+                  createTextVNode(
+                    toDisplayString(__props.translations.title || "Notifications") + " ",
+                    1
+                    /* TEXT */
+                  ),
                   __props.unreadCount > 0 ? (openBlock(), createElementBlock(
                     "span",
                     _hoisted_4,
@@ -2035,25 +2060,31 @@ const _sfc_main$1 = {
                   )) : createCommentVNode("v-if", true)
                 ]),
                 createElementVNode("div", _hoisted_5, [
-                  __props.unreadCount > 0 ? (openBlock(), createElementBlock("button", {
-                    key: 0,
-                    type: "button",
-                    class: "text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium",
-                    onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("mark-all-read"))
-                  }, " Segna tutte come lette ")) : createCommentVNode("v-if", true),
+                  __props.unreadCount > 0 ? (openBlock(), createElementBlock(
+                    "button",
+                    {
+                      key: 0,
+                      type: "button",
+                      class: "text-xs text-primary-600 hover:text-primary-500 dark:text-primary-400 font-medium",
+                      onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("mark-all-read"))
+                    },
+                    toDisplayString(__props.translations.mark_all_read || "Mark all as read"),
+                    1
+                    /* TEXT */
+                  )) : createCommentVNode("v-if", true),
                   createElementVNode("button", {
                     type: "button",
                     class: "rounded-md text-gray-400 hover:text-gray-500 dark:hover:text-gray-300",
                     onClick: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("close"))
-                  }, [..._cache[7] || (_cache[7] = [
+                  }, [
                     createElementVNode(
                       "span",
-                      { class: "sr-only" },
-                      "Chiudi",
-                      -1
-                      /* CACHED */
+                      _hoisted_6,
+                      toDisplayString(__props.translations.close || "Close"),
+                      1
+                      /* TEXT */
                     ),
-                    createElementVNode(
+                    _cache[6] || (_cache[6] = createElementVNode(
                       "svg",
                       {
                         class: "h-5 w-5",
@@ -2069,12 +2100,12 @@ const _sfc_main$1 = {
                       ],
                       -1
                       /* CACHED */
-                    )
-                  ])])
+                    ))
+                  ])
                 ])
               ]),
               createCommentVNode(" Notification list "),
-              createElementVNode("div", _hoisted_6, [
+              createElementVNode("div", _hoisted_7, [
                 __props.notifications.length > 0 ? (openBlock(true), createElementBlock(
                   Fragment,
                   { key: 0 },
@@ -2093,42 +2124,48 @@ const _sfc_main$1 = {
                   { key: 1 },
                   [
                     createCommentVNode(" Empty state "),
-                    _cache[8] || (_cache[8] = createElementVNode(
-                      "div",
-                      { class: "px-4 py-12 text-center" },
-                      [
-                        createElementVNode("svg", {
+                    createElementVNode("div", _hoisted_8, [
+                      _cache[7] || (_cache[7] = createElementVNode(
+                        "svg",
+                        {
                           class: "mx-auto h-10 w-10 text-gray-300 dark:text-gray-600",
                           xmlns: "http://www.w3.org/2000/svg",
                           fill: "none",
                           viewBox: "0 0 24 24",
                           "stroke-width": "1.5",
                           stroke: "currentColor"
-                        }, [
+                        },
+                        [
                           createElementVNode("path", {
                             "stroke-linecap": "round",
                             "stroke-linejoin": "round",
                             d: "M9.143 17.082a24.248 24.248 0 0 0 5.714 0m-5.714 0a2.25 2.25 0 0 1-2.244-2.077L6.394 5.694a6.001 6.001 0 0 1 11.212 0l-.505 9.311a2.25 2.25 0 0 1-2.244 2.077m-5.714 0a3 3 0 0 0 5.714 0"
                           })
-                        ]),
-                        createElementVNode("p", { class: "mt-3 text-sm text-gray-500 dark:text-gray-400" }, "Nessuna notifica")
-                      ],
-                      -1
-                      /* CACHED */
-                    ))
+                        ],
+                        -1
+                        /* CACHED */
+                      )),
+                      createElementVNode(
+                        "p",
+                        _hoisted_9,
+                        toDisplayString(__props.translations.no_notifications || "No notifications"),
+                        1
+                        /* TEXT */
+                      )
+                    ])
                   ],
                   2112
                   /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
                 ))
               ]),
               createCommentVNode(" Load more footer "),
-              __props.hasMore ? (openBlock(), createElementBlock("div", _hoisted_7, [
+              __props.hasMore ? (openBlock(), createElementBlock("div", _hoisted_10, [
                 createElementVNode("button", {
                   type: "button",
                   class: "w-full px-4 py-3 text-sm text-center text-primary-600 hover:bg-gray-50 dark:text-primary-400 dark:hover:bg-gray-700/50 font-medium",
                   disabled: __props.loading,
                   onClick: _cache[5] || (_cache[5] = ($event) => _ctx.$emit("load-more"))
-                }, toDisplayString(__props.loading ? "Caricamento..." : "Carica altre"), 9, _hoisted_8)
+                }, toDisplayString(__props.loading ? __props.translations.loading || "Loading..." : __props.translations.load_more || "Load more"), 9, _hoisted_11)
               ])) : createCommentVNode("v-if", true)
             ])) : createCommentVNode("v-if", true)
           ]),
@@ -2139,6 +2176,7 @@ const _sfc_main$1 = {
     };
   }
 };
+const _hoisted_1 = { class: "sr-only" };
 const _sfc_main = {
   __name: "NotificationBell",
   props: {
@@ -2149,6 +2187,10 @@ const _sfc_main = {
     pollingInterval: {
       type: Number,
       default: 30
+    },
+    translations: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(__props) {
@@ -2271,14 +2313,14 @@ const _sfc_main = {
             class: "relative rounded-full p-1 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none",
             onClick: togglePanel
           }, [
-            _cache[0] || (_cache[0] = createElementVNode(
+            createElementVNode(
               "span",
-              { class: "sr-only" },
-              "Notifiche",
-              -1
-              /* CACHED */
-            )),
-            _cache[1] || (_cache[1] = createElementVNode(
+              _hoisted_1,
+              toDisplayString(__props.translations.bell_label || "Notifications"),
+              1
+              /* TEXT */
+            ),
+            _cache[0] || (_cache[0] = createElementVNode(
               "svg",
               {
                 class: "h-6 w-6",
@@ -2329,11 +2371,12 @@ const _sfc_main = {
                 "unread-count": unreadCount.value,
                 "has-more": hasMore.value,
                 loading: loading.value,
+                translations: __props.translations,
                 onLoadMore: loadMore,
                 onMarkRead: markAsRead,
                 onMarkAllRead: markAllAsRead,
                 onNavigate: handleNavigate
-              }, null, 8, ["notifications", "unread-count", "has-more", "loading"])) : createCommentVNode("v-if", true)
+              }, null, 8, ["notifications", "unread-count", "has-more", "loading", "translations"])) : createCommentVNode("v-if", true)
             ]),
             _: 1
             /* STABLE */
@@ -2346,12 +2389,13 @@ const _sfc_main = {
             "unread-count": unreadCount.value,
             "has-more": hasMore.value,
             loading: loading.value,
+            translations: __props.translations,
             onClose: closePanel,
             onLoadMore: loadMore,
             onMarkRead: markAsRead,
             onMarkAllRead: markAllAsRead,
             onNavigate: handleNavigate
-          }, null, 8, ["open", "notifications", "unread-count", "has-more", "loading"])) : createCommentVNode("v-if", true)
+          }, null, 8, ["open", "notifications", "unread-count", "has-more", "loading", "translations"])) : createCommentVNode("v-if", true)
         ],
         512
         /* NEED_PATCH */

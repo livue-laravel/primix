@@ -160,7 +160,7 @@ class RelationManagerComponent extends Component
         $manager = $this->managerClass;
 
         $action->modal(true);
-        $action->modalHeading('Create record');
+        $action->modalHeading(__('primix::panel.headings.create_record'));
         $action->form(fn (Form $form) => $manager::form($form));
         $action->action(function (array $data): void {
             $relation = $this->getRelation();
@@ -174,7 +174,7 @@ class RelationManagerComponent extends Component
             }
 
             Notification::make()
-                ->title('Created successfully')
+                ->title(__('primix::panel.notifications.created'))
                 ->success()
                 ->send();
         });
@@ -185,7 +185,7 @@ class RelationManagerComponent extends Component
         $manager = $this->managerClass;
 
         $action->modal(true);
-        $action->modalHeading('Edit record');
+        $action->modalHeading(__('primix::panel.headings.edit_record'));
 
         $action->form(function (Form $form, ?Model $record) use ($manager) {
             $form = $manager::form($form);
@@ -203,7 +203,7 @@ class RelationManagerComponent extends Component
             $record?->update($data);
 
             Notification::make()
-                ->title('Saved successfully')
+                ->title(__('primix::panel.notifications.saved'))
                 ->success()
                 ->send();
         });
@@ -225,7 +225,7 @@ class RelationManagerComponent extends Component
             }
 
             Notification::make()
-                ->title('Deleted successfully')
+                ->title(__('primix::panel.notifications.deleted'))
                 ->success()
                 ->send();
         });
@@ -238,7 +238,7 @@ class RelationManagerComponent extends Component
         $action->modal(true);
         $action->form(fn (Form $form) => $form->schema([
             \Primix\Forms\Components\Fields\Select::make('ids')
-                ->label('Select records')
+                ->label(__('primix::panel.actions.select_records'))
                 ->multiple()
                 ->options(function () use ($manager): array {
                     $relation = $this->getRelation();
@@ -256,7 +256,7 @@ class RelationManagerComponent extends Component
             $relation->attach($data['ids'] ?? []);
 
             Notification::make()
-                ->title('Attached successfully')
+                ->title(__('primix::panel.notifications.attached'))
                 ->success()
                 ->send();
         });
@@ -274,7 +274,7 @@ class RelationManagerComponent extends Component
             $relation->detach($record->getKey());
 
             Notification::make()
-                ->title('Detached successfully')
+                ->title(__('primix::panel.notifications.detached'))
                 ->success()
                 ->send();
         });
@@ -285,14 +285,14 @@ class RelationManagerComponent extends Component
         $manager = $this->managerClass;
 
         $action->modal(true);
-        $action->modalHeading('Add record');
+        $action->modalHeading(__('primix::panel.headings.add_record'));
         $action->form(fn (Form $form) => $manager::form($form));
         $action->action(function (array $data): void {
             $this->embeddedItems[] = $data;
             $this->resetTableCache();
 
             Notification::make()
-                ->title('Added successfully')
+                ->title(__('primix::panel.notifications.added'))
                 ->success()
                 ->send();
         });
@@ -303,7 +303,7 @@ class RelationManagerComponent extends Component
         $manager = $this->managerClass;
 
         $action->modal(true);
-        $action->modalHeading('Edit record');
+        $action->modalHeading(__('primix::panel.headings.edit_record'));
         $action->form(fn (Form $form) => $manager::form($form));
         $action->fillForm(fn ($record): array => $record instanceof \Illuminate\Support\Fluent ? $record->toArray() : ($record !== null ? (array) $record : []));
         $action->action(function (array $data, $record): void {
@@ -314,7 +314,7 @@ class RelationManagerComponent extends Component
             $this->resetTableCache();
 
             Notification::make()
-                ->title('Saved successfully')
+                ->title(__('primix::panel.notifications.saved'))
                 ->success()
                 ->send();
         });
@@ -330,7 +330,7 @@ class RelationManagerComponent extends Component
             $this->resetTableCache();
 
             Notification::make()
-                ->title('Deleted successfully')
+                ->title(__('primix::panel.notifications.deleted'))
                 ->success()
                 ->send();
         });
@@ -351,7 +351,7 @@ class RelationManagerComponent extends Component
             $this->resetTableCache();
 
             Notification::make()
-                ->title('Removed')
+                ->title(__('primix::panel.notifications.removed'))
                 ->success()
                 ->send();
         });

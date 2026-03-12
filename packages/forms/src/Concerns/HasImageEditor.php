@@ -193,7 +193,7 @@ trait HasImageEditor
             ],
             'modal' => [
                 'width' => $this->evaluate($this->imageEditorModalWidth),
-                'heading' => $this->evaluate($this->imageEditorModalHeading) ?? 'Modifica immagine',
+                'heading' => $this->evaluate($this->imageEditorModalHeading) ?? __('primix-forms::forms.edit_image'),
             ],
         ];
     }

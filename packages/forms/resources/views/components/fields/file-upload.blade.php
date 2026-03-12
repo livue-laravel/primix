@@ -74,7 +74,7 @@
                 ></div>
             </div>
             <p class="text-sm text-surface-500 mt-2">
-                Caricamento... @{{ livue.uploadProgress }}%
+                {{ __('primix-forms::forms.file_upload.uploading') }} @{{ livue.uploadProgress }}%
             </p>
         </div>
 
@@ -83,20 +83,20 @@
             <i class="pi pi-cloud-upload text-4xl text-surface-400 mb-3 block"></i>
             <p class="text-surface-600 dark:text-surface-400 mb-2">
                 @if($isImage)
-                    Trascina un'immagine qui oppure
+                    {{ __('primix-forms::forms.file_upload.drag_image') }}
                 @else
-                    Trascina un file qui oppure
+                    {{ __('primix-forms::forms.file_upload.drag_file') }}
                 @endif
-                <span class="text-primary-500 hover:text-primary-600 font-medium">sfoglia</span>
+                <span class="text-primary-500 hover:text-primary-600 font-medium">{{ __('primix-forms::forms.file_upload.browse') }}</span>
             </p>
             @if($maxSizeForHumans)
                 <p class="text-xs text-surface-400">
-                    Dimensione massima: {{ $maxSizeForHumans }}
+                    {{ __('primix-forms::forms.file_upload.max_size', ['size' => $maxSizeForHumans]) }}
                 </p>
             @endif
             @if($accept)
                 <p class="text-xs text-surface-400 mt-1">
-                    Tipi accettati: {{ str_replace(',', ', ', $accept) }}
+                    {{ __('primix-forms::forms.file_upload.accepted_types', ['types' => str_replace(',', ', ', $accept)]) }}
                 </p>
             @endif
         </div>
@@ -160,7 +160,7 @@
                     @if($hasImageEditor)
                         @php
                             $editUploadedImageAction = \Primix\Actions\Action::make('editUploadedImage')
-                                ->label('Modifica')
+                                ->label(__('primix-forms::forms.file_upload.edit'))
                                 ->icon('pi pi-pencil')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -168,11 +168,11 @@
                                 ->extraAttributes([
                                     'v-if' => "typeof file === 'object' && file.previewUrl",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Modifica',
+                                    'title' => __('primix-forms::forms.file_upload.edit'),
                                 ]);
 
                             $editSavedImageAction = \Primix\Actions\Action::make('editSavedImage')
-                                ->label('Modifica')
+                                ->label(__('primix-forms::forms.file_upload.edit'))
                                 ->icon('pi pi-pencil')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -180,7 +180,7 @@
                                 ->extraAttributes([
                                     'v-else-if' => "typeof file === 'string'",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Modifica',
+                                    'title' => __('primix-forms::forms.file_upload.edit'),
                                 ]);
                         @endphp
                         {{ $editUploadedImageAction }}
@@ -213,14 +213,14 @@
                     @endif
                     @php
                         $removeUploadedFileAction = \Primix\Actions\Action::make('removeUploadedFile')
-                            ->label('Rimuovi')
+                            ->label(__('primix-forms::forms.file_upload.remove'))
                             ->icon('pi pi-times')
                             ->iconButton(true, false)
                             ->color('danger')
                             ->jsAction("\$event.stopPropagation(); livue.removeUpload('{$statePath}', index)")
                             ->extraAttributes([
                                 'class' => 'p-2 text-surface-400 hover:text-red-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                'title' => 'Rimuovi',
+                                'title' => __('primix-forms::forms.file_upload.remove'),
                                 'disabled' => $disabled,
                             ]);
                     @endphp
@@ -233,7 +233,7 @@
         @if($maxFiles)
             <p v-if="{{ $vueStatePath }} && {{ $vueStatePath }}.length >= {{ $maxFiles }}" class="text-sm text-amber-600 mt-2">
                 <i class="pi pi-info-circle mr-1"></i>
-                Hai raggiunto il numero massimo di file ({{ $maxFiles }})
+                {{ __('primix-forms::forms.file_upload.max_files_reached', ['max' => $maxFiles]) }}
             </p>
         @endif
     @else
@@ -275,7 +275,7 @@
                     @if($hasImageEditor)
                         @php
                             $editSingleUploadedImageAction = \Primix\Actions\Action::make('editSingleUploadedImage')
-                                ->label('Modifica')
+                                ->label(__('primix-forms::forms.file_upload.edit'))
                                 ->icon('pi pi-pencil')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -283,11 +283,11 @@
                                 ->extraAttributes([
                                     'v-if' => "typeof {$vueStatePath} === 'object' && {$vueStatePath}.previewUrl",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Modifica',
+                                    'title' => __('primix-forms::forms.file_upload.edit'),
                                 ]);
 
                             $editSingleSavedImageAction = \Primix\Actions\Action::make('editSingleSavedImage')
-                                ->label('Modifica')
+                                ->label(__('primix-forms::forms.file_upload.edit'))
                                 ->icon('pi pi-pencil')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -295,7 +295,7 @@
                                 ->extraAttributes([
                                     'v-else-if' => "typeof {$vueStatePath} === 'string'",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Modifica',
+                                    'title' => __('primix-forms::forms.file_upload.edit'),
                                 ]);
                         @endphp
                         {{ $editSingleUploadedImageAction }}
@@ -328,14 +328,14 @@
                     @endif
                     @php
                         $removeSingleUploadedFileAction = \Primix\Actions\Action::make('removeSingleUploadedFile')
-                            ->label('Rimuovi')
+                            ->label(__('primix-forms::forms.file_upload.remove'))
                             ->icon('pi pi-times')
                             ->iconButton(true, false)
                             ->color('danger')
                             ->jsAction("\$event.stopPropagation(); livue.removeUpload('{$statePath}')")
                             ->extraAttributes([
                                 'class' => 'p-2 text-surface-400 hover:text-red-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                'title' => 'Rimuovi',
+                                'title' => __('primix-forms::forms.file_upload.remove'),
                                 'disabled' => $disabled,
                             ]);
                     @endphp
@@ -363,14 +363,14 @@
                 </div>
                 @php
                     $dismissUploadErrorAction = \Primix\Actions\Action::make('dismissUploadError')
-                        ->label('Chiudi')
+                        ->label(__('primix-forms::forms.file_upload.close'))
                         ->icon('pi pi-times')
                         ->iconButton(true, false)
                         ->color('danger')
                         ->jsAction('delete livue.errors[errorKey]')
                         ->extraAttributes([
                             'class' => 'p-2 text-red-400 hover:text-red-600 dark:hover:text-red-300 rounded-full hover:bg-red-100 dark:hover:bg-red-900/40 flex-shrink-0',
-                            'title' => 'Chiudi',
+                            'title' => __('primix-forms::forms.file_upload.close'),
                         ]);
                 @endphp
                 {{ $dismissUploadErrorAction }}
@@ -392,14 +392,14 @@
             </div>
             @php
                 $dismissSingleUploadErrorAction = \Primix\Actions\Action::make('dismissSingleUploadError')
-                    ->label('Chiudi')
+                    ->label(__('primix-forms::forms.file_upload.close'))
                     ->icon('pi pi-times')
                     ->iconButton(true, false)
                     ->color('danger')
                     ->jsAction("delete livue.errors['{$statePath}']")
                     ->extraAttributes([
                         'class' => 'p-2 text-red-400 hover:text-red-600 dark:hover:text-red-300 rounded-full hover:bg-red-100 dark:hover:bg-red-900/40 flex-shrink-0',
-                        'title' => 'Chiudi',
+                        'title' => __('primix-forms::forms.file_upload.close'),
                     ]);
             @endphp
             {{ $dismissSingleUploadErrorAction }}
@@ -411,6 +411,43 @@
         <primix-image-editor
             ref="{{ $imageEditorRef }}"
             :config='@json($imageEditorConfig)'
+            :translations='@json([
+                "edit_image" => __("primix-forms::forms.edit_image"),
+                "cancel" => __("primix-forms::forms.cancel"),
+                "apply" => __("primix-forms::forms.image_editor.apply"),
+                "tool_move" => __("primix-forms::forms.image_editor.tool_move"),
+                "tool_crop" => __("primix-forms::forms.image_editor.tool_crop"),
+                "tool_zoom" => __("primix-forms::forms.image_editor.tool_zoom"),
+                "tool_transform" => __("primix-forms::forms.image_editor.tool_transform"),
+                "tool_adjustments" => __("primix-forms::forms.image_editor.tool_adjustments"),
+                "tool_filters" => __("primix-forms::forms.image_editor.tool_filters"),
+                "tool_ai" => __("primix-forms::forms.image_editor.tool_ai"),
+                "rotation_title" => __("primix-forms::forms.image_editor.rotation_title"),
+                "rotate_ccw" => __("primix-forms::forms.image_editor.rotate_ccw"),
+                "rotate_cw" => __("primix-forms::forms.image_editor.rotate_cw"),
+                "free_rotation" => __("primix-forms::forms.image_editor.free_rotation"),
+                "flip_title" => __("primix-forms::forms.image_editor.flip_title"),
+                "flip_horizontal" => __("primix-forms::forms.image_editor.flip_horizontal"),
+                "flip_vertical" => __("primix-forms::forms.image_editor.flip_vertical"),
+                "crop_aspect_ratio" => __("primix-forms::forms.image_editor.crop_aspect_ratio"),
+                "crop_free" => __("primix-forms::forms.image_editor.crop_free"),
+                "apply_crop" => __("primix-forms::forms.image_editor.apply_crop"),
+                "move_title" => __("primix-forms::forms.image_editor.move_title"),
+                "drag_to_move" => __("primix-forms::forms.image_editor.drag_to_move"),
+                "mouse_wheel_zoom" => __("primix-forms::forms.image_editor.mouse_wheel_zoom"),
+                "zoom_title" => __("primix-forms::forms.image_editor.zoom_title"),
+                "click_to_zoom_in" => __("primix-forms::forms.image_editor.click_to_zoom_in"),
+                "alt_click_zoom_out" => __("primix-forms::forms.image_editor.alt_click_zoom_out"),
+                "mouse_wheel_continuous" => __("primix-forms::forms.image_editor.mouse_wheel_continuous"),
+                "ai_tools_title" => __("primix-forms::forms.image_editor.ai_tools_title"),
+                "processing" => __("primix-forms::forms.image_editor.processing"),
+                "loading_model" => __("primix-forms::forms.image_editor.loading_model"),
+                "no_ai_configured" => __("primix-forms::forms.image_editor.no_ai_configured"),
+                "bg_removal_label" => __("primix-forms::forms.image_editor.bg_removal_label"),
+                "bg_removal_desc" => __("primix-forms::forms.image_editor.bg_removal_desc"),
+                "auto_enhance_label" => __("primix-forms::forms.image_editor.auto_enhance_label"),
+                "auto_enhance_desc" => __("primix-forms::forms.image_editor.auto_enhance_desc"),
+            ])'
             state-path="{{ $statePath }}"
             @save="(function(payload) {
                 var file = payload.file;

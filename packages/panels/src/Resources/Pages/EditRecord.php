@@ -51,12 +51,12 @@ class EditRecord extends Page
 
         return [
             Action::make('cancel')
-                ->label('Cancel')
+                ->label(__('primix::panel.actions.cancel'))
                 ->color('gray')
                 ->outlined()
                 ->url($resource::getUrl('index')),
             Action::make('save')
-                ->label('Save')
+                ->label(__('primix::panel.actions.save'))
                 ->submit(),
         ];
     }
@@ -134,7 +134,7 @@ class EditRecord extends Page
         );
 
         Notification::make()
-            ->title('Saved successfully')
+            ->title(__('primix::panel.notifications.saved'))
             ->success()
             ->send();
     }
@@ -143,7 +143,7 @@ class EditRecord extends Page
     {
         $resource = $this->resolveResource();
 
-        return 'Edit ' . $resource::getModelLabel();
+        return __('primix::panel.page_titles.edit', ['model' => $resource::getModelLabel()]);
     }
 
     protected function render(): string

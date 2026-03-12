@@ -16,7 +16,7 @@ class ViewAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('View');
+        $this->label(__('primix::panel.actions.view'));
         $this->icon('heroicon-o-eye');
         $this->color('gray');
 
@@ -29,7 +29,9 @@ class ViewAction extends Action
         $this->modalHeading(function () {
             $class = $this->getResourceClass();
 
-            return 'View' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+            return $class !== null
+                ? __('primix::panel.headings.view_model', ['model' => $class::getModelLabel()])
+                : __('primix::panel.actions.view');
         });
 
         $this->modalWidth('lg');

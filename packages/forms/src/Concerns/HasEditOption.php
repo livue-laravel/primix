@@ -57,7 +57,7 @@ trait HasEditOption
     {
         $action = Action::make('edit')
             ->modal()
-            ->modalHeading(__('Edit') . ' ' . ($this->getLabel() ?? 'Option'))
+            ->modalHeading(__('Edit') . ' ' . ($this->getLabel() ?? __('primix-forms::forms.option')))
             ->modalSubmitActionLabel(__('Save'))
             ->modalCancelActionLabel(__('Cancel'))
             ->form($this->getEditOptionFormSchema());

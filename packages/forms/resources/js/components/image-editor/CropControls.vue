@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-4">
-        <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Proporzioni</h4>
+        <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ translations.crop_aspect_ratio || 'Aspect ratio' }}</h4>
 
         <div class="grid grid-cols-2 gap-2">
             <!-- Free crop (always available) -->
@@ -13,7 +13,7 @@
                 @click="$emit('crop-ratio-change', null)"
             >
                 <i class="pi pi-arrows-alt text-xs"></i>
-                <span>Libero</span>
+                <span>{{ translations.crop_free || 'Free' }}</span>
             </button>
 
             <!-- Configured aspect ratios -->
@@ -40,7 +40,7 @@
         <!-- Apply crop button -->
         <div class="pt-2 border-t border-surface-200 dark:border-surface-700">
             <p-button
-                label="Applica ritaglio"
+                :label="translations.apply_crop || 'Apply crop'"
                 icon="pi pi-check"
                 class="w-full"
                 size="small"
@@ -54,6 +54,7 @@
 const props = defineProps({
     currentRatio: { type: Number, default: null },
     config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) },
 });
 
 defineEmits(['crop-ratio-change', 'apply-crop']);

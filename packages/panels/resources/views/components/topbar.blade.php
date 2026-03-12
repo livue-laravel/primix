@@ -73,6 +73,15 @@
                 <primix-notification-bell
                     mode="{{ $databaseNotificationsMode }}"
                     :polling-interval="{{ $databaseNotificationsPollingInterval }}"
+                    :translations='@json([
+                        "title" => __("primix::panel.notifications_panel.title"),
+                        "bell_label" => __("primix::panel.notifications_panel.bell_label"),
+                        "mark_all_read" => __("primix::panel.notifications_panel.mark_all_read"),
+                        "no_notifications" => __("primix::panel.notifications_panel.no_notifications"),
+                        "loading" => __("primix::panel.notifications_panel.loading"),
+                        "load_more" => __("primix::panel.notifications_panel.load_more"),
+                        "close" => __("primix::panel.actions.close"),
+                    ])'
                 ></primix-notification-bell>
                 @renderHook(\Primix\Enums\PanelsRenderHook::DATABASE_NOTIFICATIONS_AFTER)
 

@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-4">
-        <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Strumenti AI</h4>
+        <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ translations.ai_tools_title || 'AI Tools' }}</h4>
 
         <div class="space-y-2">
             <button
@@ -38,17 +38,17 @@
                 ></div>
             </div>
             <p class="text-xs text-surface-500 dark:text-surface-400 text-center">
-                Elaborazione... {{ progress }}%
+                {{ translations.processing || 'Processing...' }} {{ progress }}%
             </p>
         </div>
 
         <div v-if="processing !== null && progress === 0" class="text-xs text-surface-500 dark:text-surface-400 text-center py-2">
             <i class="pi pi-spin pi-spinner mr-1"></i>
-            Caricamento modello...
+            {{ translations.loading_model || 'Loading model...' }}
         </div>
 
         <div v-if="availableFeatures.length === 0" class="text-sm text-surface-400 dark:text-surface-500 text-center py-4">
-            Nessuna funzionalità AI configurata
+            {{ translations.no_ai_configured || 'No AI features configured' }}
         </div>
     </div>
 </template>
@@ -56,32 +56,33 @@
 <script setup>
 import { computed } from 'vue';
 
-const AI_FEATURES = {
-    'background-removal': {
-        id: 'background-removal',
-        label: 'Rimuovi sfondo',
-        description: 'Rimuove lo sfondo direttamente nel browser',
-        icon: 'pi-eraser',
-    },
-    'auto-enhance': {
-        id: 'auto-enhance',
-        label: 'Migliora automaticamente',
-        description: 'Ottimizza luminosità, contrasto e nitidezza',
-        icon: 'pi-sparkles',
-    },
-};
-
 const props = defineProps({
     features: { type: Array, default: () => [] },
     processing: { type: String, default: null },
     progress: { type: Number, default: 0 },
+    translations: { type: Object, default: () => ({}) },
 });
 
 defineEmits(['ai-action']);
 
 const availableFeatures = computed(() => {
+    const featuresMap = {
+        'background-removal': {
+            id: 'background-removal',
+            label: props.translations.bg_removal_label || 'Remove background',
+            description: props.translations.bg_removal_desc || 'Removes the background directly in the browser',
+            icon: 'pi-eraser',
+        },
+        'auto-enhance': {
+            id: 'auto-enhance',
+            label: props.translations.auto_enhance_label || 'Auto enhance',
+            description: props.translations.auto_enhance_desc || 'Optimizes brightness, contrast and sharpness',
+            icon: 'pi-sparkles',
+        },
+    };
+
     return props.features
-        .map(id => AI_FEATURES[id])
+        .map(id => featuresMap[id])
         .filter(Boolean);
 });
 </script>

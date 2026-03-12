@@ -1,0 +1,103 @@
+<?php
+
+return [
+    'dashboard' => 'Dashboard',
+
+    'actions' => [
+        'new' => 'New',
+        'view' => 'View',
+        'edit' => 'Edit',
+        'save' => 'Save',
+        'delete' => 'Delete',
+        'force_delete' => 'Force delete',
+        'restore' => 'Restore',
+        'restore_selected' => 'Restore selected',
+        'delete_selected' => 'Delete selected',
+        'force_delete_selected' => 'Force delete selected',
+        'attach' => 'Attach',
+        'detach' => 'Detach',
+        'cancel' => 'Cancel',
+        'create' => 'Create',
+        'profile' => 'Profile',
+        'sign_out' => 'Sign out',
+        'billing' => 'Billing',
+        'create_organization' => 'Create organization',
+        'close' => 'Close',
+        'select_records' => 'Select records',
+    ],
+
+    'notifications' => [
+        'created' => 'Created successfully',
+        'saved' => 'Saved successfully',
+        'deleted' => 'Record deleted successfully',
+        'force_deleted' => 'Record permanently deleted',
+        'restored' => 'Record restored successfully',
+        'detached' => 'Record detached successfully',
+        'deleted_relation' => 'Deleted successfully',
+        'added' => 'Added successfully',
+        'attached' => 'Attached successfully',
+        'detached_relation' => 'Detached successfully',
+        'removed' => 'Removed',
+        'bulk_deleted' => 'Record(s) deleted successfully',
+        'bulk_restored' => 'Record(s) restored successfully',
+        'bulk_force_deleted' => 'Record(s) permanently deleted',
+    ],
+
+    'headings' => [
+        'create_record' => 'Create record',
+        'edit_record' => 'Edit record',
+        'add_record' => 'Add record',
+        'attach_record' => 'Attach record',
+        'create_model' => 'Create :model',
+        'edit_model' => 'Edit :model',
+        'view_model' => 'View :model',
+    ],
+
+    'page_titles' => [
+        'create' => 'Create :model',
+        'edit' => 'Edit :model',
+        'view' => 'View :model',
+    ],
+
+    'breadcrumbs' => [
+        'list' => 'List',
+        'create' => 'Create',
+        'edit' => 'Edit',
+        'view' => 'View',
+    ],
+
+    'messages' => [
+        'save_first' => 'Save the record first to manage related records.',
+    ],
+
+    'auth' => [
+        'sign_in_title' => 'Sign in to your account',
+        'create_account_title' => 'Create an account',
+        'reset_password_title' => 'Reset your password',
+        'verify_email_title' => 'Verify your email address',
+        'create_organization_title' => 'Create your organization',
+        'email' => 'Email address',
+        'password' => 'Password',
+        'remember_me' => 'Remember me',
+        'sign_in_button' => 'Sign in',
+        'name' => 'Name',
+        'confirm_password' => 'Confirm password',
+        'sign_up_button' => 'Sign up',
+        'send_reset_link' => 'Send reset link',
+        'new_password' => 'New password',
+        'reset_password_button' => 'Reset password',
+        'resend_verification' => 'Resend verification email',
+        'organization_name' => 'Organization name',
+        'forgot_password_title' => 'Forgot your password?',
+        'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    ],
+
+    'notifications_panel' => [
+        'title' => 'Notifications',
+        'bell_label' => 'Notifications',
+        'mark_all_read' => 'Mark all as read',
+        'no_notifications' => 'No notifications',
+        'loading' => 'Loading...',
+        'load_more' => 'Load more',
+    ],
+];

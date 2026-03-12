@@ -26,6 +26,18 @@ composer require primix/multi-tenant:^0.1.0
 3. Each `packages/*` directory is pushed to its split repository in `livue-laravel/*`.
 4. Register split repositories on Packagist so Composer resolves package-by-package installs (Filament-style `vendor/primix/*` layout).
 
+### Required GitHub setup
+
+- Create repositories in `livue-laravel` for:
+  - `actions`, `details`, `forms`, `multi-tenant`, `notifications`, `panels`, `support`, `tables`, `widgets`
+- Add repository secret `GH_ACCESS_TOKEN` with push access to those repositories.
+
+You can bootstrap repositories with the provided script (requires authenticated `gh` CLI):
+
+```bash
+bash scripts/create-split-repos.sh --execute --yes
+```
+
 ## LiVue Integration Pattern
 
 Primix packages should follow a single pattern for assets + Vue registration.

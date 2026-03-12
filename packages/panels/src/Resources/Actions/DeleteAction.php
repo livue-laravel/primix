@@ -13,11 +13,11 @@ class DeleteAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('Delete');
+        $this->label(__('primix::panel.actions.delete'));
         $this->icon('heroicon-o-trash');
         $this->color('danger');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record deleted successfully');
+        $this->successNotificationTitle(__('primix::panel.notifications.deleted'));
         $this->iconButton();
 
         $this->visible(function (mixed $record): bool {

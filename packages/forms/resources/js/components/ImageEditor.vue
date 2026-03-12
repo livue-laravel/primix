@@ -2,7 +2,7 @@
     <p-dialog
         v-model:visible="visible"
         modal
-        :header="config.modal?.heading || 'Modifica immagine'"
+        :header="config.modal?.heading || translations.edit_image || 'Edit image'"
         :style="{ width: modalWidth }"
         :closable="!processing"
         :closeOnEscape="!processing"
@@ -34,6 +34,7 @@
                 <editor-tool-panel
                     :active-tool="activeTool"
                     :config="config"
+                    :translations="translations"
                     @tool-change="setActiveTool"
                 />
 
@@ -59,6 +60,7 @@
                     :ai-progress="aiProgress"
                     :thumbnail-url="currentImageUrl"
                     :crop-aspect-ratio="numericAspectRatio"
+                    :translations="translations"
                     @crop-ratio-change="onCropRatioChange"
                     @apply-crop="onApplyCrop"
                     @rotate="onRotate"
@@ -74,13 +76,13 @@
         <template #footer>
             <div class="flex items-center justify-end gap-2">
                 <p-button
-                    label="Annulla"
+                    :label="translations.cancel || 'Cancel'"
                     severity="secondary"
                     @click="onClose"
                     :disabled="processing"
                 />
                 <p-button
-                    label="Applica"
+                    :label="translations.apply || 'Apply'"
                     icon="pi pi-check"
                     @click="onApply"
                     :loading="processing"
@@ -103,6 +105,7 @@ import EditorSidebar from './image-editor/EditorSidebar.vue';
 const props = defineProps({
     config: { type: Object, default: () => ({}) },
     statePath: { type: String, required: true },
+    translations: { type: Object, default: () => ({}) },
 });
 
 const emit = defineEmits(['save', 'close']);

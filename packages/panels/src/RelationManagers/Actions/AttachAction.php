@@ -13,12 +13,12 @@ class AttachAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('Attach');
+        $this->label(__('primix::panel.actions.attach'));
         $this->icon('heroicon-o-link');
         $this->color('primary');
         $this->modal();
-        $this->modalHeading('Attach record');
+        $this->modalHeading(__('primix::panel.headings.attach_record'));
         $this->modalWidth('lg');
-        $this->modalSubmitActionLabel('Attach');
+        $this->modalSubmitActionLabel(__('primix::panel.actions.attach'));
     }
 }

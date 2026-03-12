@@ -99,7 +99,7 @@ class Wizard extends LayoutComponent
 
     public function getSubmitLabel(): string
     {
-        return $this->evaluate($this->submitLabel) ?? 'Submit';
+        return $this->evaluate($this->submitLabel) ?? __('primix-forms::forms.submit');
     }
 
     public function submitIcon(string|Closure|null $icon): static
@@ -123,7 +123,7 @@ class Wizard extends LayoutComponent
 
     public function getPreviousLabel(): string
     {
-        return $this->evaluate($this->previousLabel) ?? 'Previous';
+        return $this->evaluate($this->previousLabel) ?? __('primix-forms::forms.previous');
     }
 
     public function previousIcon(string|Closure|null $icon): static
@@ -147,7 +147,7 @@ class Wizard extends LayoutComponent
 
     public function getNextLabel(): string
     {
-        return $this->evaluate($this->nextLabel) ?? 'Next';
+        return $this->evaluate($this->nextLabel) ?? __('primix-forms::forms.next');
     }
 
     public function nextIcon(string|Closure|null $icon): static
@@ -183,7 +183,7 @@ class Wizard extends LayoutComponent
 
     public function getCancelLabel(): string
     {
-        return $this->evaluate($this->cancelLabel) ?? 'Cancel';
+        return $this->evaluate($this->cancelLabel) ?? __('primix-forms::forms.cancel');
     }
 
     public function validateOnStepChange(bool|Closure $condition = true): static

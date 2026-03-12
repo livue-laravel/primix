@@ -18,7 +18,7 @@ class RequestPasswordReset extends SimplePage
 
     protected static ?string $slug = 'password-reset';
 
-    protected ?string $title = 'Forgot your password?';
+    protected ?string $title = null;
 
     protected string|\Closure|\Illuminate\Contracts\Support\Htmlable|null $subheading = 'Enter your email and we will send you a reset link.';
 
@@ -26,6 +26,8 @@ class RequestPasswordReset extends SimplePage
 
     public function mount(): void
     {
+        $this->title = __('primix::panel.auth.forgot_password_title');
+
         $panel = Primix::getCurrentPanel();
 
         if (Auth::guard($panel->getAuthGuard())->check()) {
@@ -42,7 +44,7 @@ class RequestPasswordReset extends SimplePage
         return $form
             ->schema([
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label(__('primix::panel.auth.email'))
                     ->email()
                     ->required()
                     ->autocomplete('email')
@@ -52,7 +54,7 @@ class RequestPasswordReset extends SimplePage
             ->submitAction('sendResetLink')
             ->submitButton(
                 Action::make('sendResetLink')
-                    ->label('Send reset link')
+                    ->label(__('primix::panel.auth.send_reset_link'))
                     ->submit()
             );
     }

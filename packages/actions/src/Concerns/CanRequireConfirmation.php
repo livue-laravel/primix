@@ -68,11 +68,11 @@ trait CanRequireConfirmation
 
     public function getConfirmationButtonLabel(): string
     {
-        return $this->evaluate($this->confirmationButtonLabel) ?? 'Confirm';
+        return $this->evaluate($this->confirmationButtonLabel) ?? __('primix-actions::actions.confirm');
     }
 
     public function getCancelButtonLabel(): string
     {
-        return $this->evaluate($this->cancelButtonLabel) ?? 'Cancel';
+        return $this->evaluate($this->cancelButtonLabel) ?? __('primix-actions::actions.cancel');
     }
 }

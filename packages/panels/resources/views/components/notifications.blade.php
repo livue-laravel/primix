@@ -33,7 +33,7 @@
                         <div class="ml-4 flex flex-shrink-0">
                             @php
                                 $closeNotificationAction = \Primix\Actions\Action::make('closeNotification')
-                                    ->label('Close')
+                                    ->label(__('primix::panel.actions.close'))
                                     ->icon('pi pi-times')
                                     ->iconButton(true, false)
                                     ->color('gray')

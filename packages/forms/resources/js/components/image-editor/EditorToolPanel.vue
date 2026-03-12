@@ -30,26 +30,27 @@ import { computed } from 'vue';
 const props = defineProps({
     activeTool: { type: String, required: true },
     config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) },
 });
 
 defineEmits(['tool-change']);
 
-const allTools = [
+const allTools = computed(() => [
     // Canvas interaction tools
-    { id: 'move', label: 'Sposta', icon: 'pi-arrows-alt' },
-    { id: 'crop', label: 'Ritaglia', icon: 'pi-objects-column', configKey: 'crop' },
-    { id: 'zoom', label: 'Zoom', icon: 'pi-search-plus' },
+    { id: 'move', label: props.translations.tool_move || 'Move', icon: 'pi-arrows-alt' },
+    { id: 'crop', label: props.translations.tool_crop || 'Crop', icon: 'pi-objects-column', configKey: 'crop' },
+    { id: 'zoom', label: props.translations.tool_zoom || 'Zoom', icon: 'pi-search-plus' },
     // Separator
     { type: 'separator' },
     // Panel tools
-    { id: 'transform', label: 'Trasforma', icon: 'pi-sync' },
-    { id: 'adjustments', label: 'Regolazioni', icon: 'pi-sliders-h', configKey: 'adjustments' },
-    { id: 'filters', label: 'Filtri', icon: 'pi-palette', configKey: 'filters' },
-    { id: 'ai', label: 'AI', icon: 'pi-sparkles', configKey: 'ai' },
-];
+    { id: 'transform', label: props.translations.tool_transform || 'Transform', icon: 'pi-sync' },
+    { id: 'adjustments', label: props.translations.tool_adjustments || 'Adjustments', icon: 'pi-sliders-h', configKey: 'adjustments' },
+    { id: 'filters', label: props.translations.tool_filters || 'Filters', icon: 'pi-palette', configKey: 'filters' },
+    { id: 'ai', label: props.translations.tool_ai || 'AI', icon: 'pi-sparkles', configKey: 'ai' },
+]);
 
 const visibleTools = computed(() => {
-    return allTools.filter(item => {
+    return allTools.value.filter(item => {
         if (item.type === 'separator') return true;
 
         // Transform: visible if rotate or flip enabled

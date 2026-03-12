@@ -90,10 +90,10 @@ abstract class Page extends BasePage
     {
         if ($name !== null) {
             $knownName = match ($name) {
-                'index' => 'List',
-                'create' => 'Create',
-                'edit' => 'Edit',
-                'view' => 'View',
+                'index' => __('primix::panel.breadcrumbs.list'),
+                'create' => __('primix::panel.breadcrumbs.create'),
+                'edit' => __('primix::panel.breadcrumbs.edit'),
+                'view' => __('primix::panel.breadcrumbs.view'),
                 default => null,
             };
 
@@ -105,7 +105,7 @@ abstract class Page extends BasePage
         $normalizedRoute = trim((string) $route, '/');
 
         if ($normalizedRoute === '') {
-            return 'List';
+            return __('primix::panel.breadcrumbs.list');
         }
 
         $segments = array_values(array_filter(
@@ -114,7 +114,7 @@ abstract class Page extends BasePage
         ));
 
         if (empty($segments)) {
-            return 'View';
+            return __('primix::panel.breadcrumbs.view');
         }
 
         return str(str_replace(['-', '_'], ' ', end($segments)))->headline()->toString();

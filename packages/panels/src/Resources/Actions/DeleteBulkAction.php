@@ -13,11 +13,11 @@ class DeleteBulkAction extends BulkAction
 
     protected function setUp(): void
     {
-        $this->label('Delete selected');
+        $this->label(__('primix::panel.actions.delete_selected'));
         $this->icon('heroicon-o-trash');
         $this->color('danger');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record(s) deleted successfully');
+        $this->successNotificationTitle(__('primix::panel.notifications.bulk_deleted'));
 
         $this->action(function (): void {
             $records = $this->getRecords();

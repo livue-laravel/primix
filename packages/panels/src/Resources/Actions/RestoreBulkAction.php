@@ -13,11 +13,11 @@ class RestoreBulkAction extends BulkAction
 
     protected function setUp(): void
     {
-        $this->label('Restore selected');
+        $this->label(__('primix::panel.actions.restore_selected'));
         $this->icon('heroicon-o-arrow-uturn-left');
         $this->color('success');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record(s) restored successfully');
+        $this->successNotificationTitle(__('primix::panel.notifications.bulk_restored'));
 
         $this->action(function (): void {
             $records = $this->getRecords();

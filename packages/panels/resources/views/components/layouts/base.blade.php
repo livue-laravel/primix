@@ -30,7 +30,6 @@
 
     @livueStyles
     @php(\Primix\Support\ViteHot::prepare())
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full bg-gray-100 dark:bg-gray-900">
     {{ $slot }}

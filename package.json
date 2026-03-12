@@ -3,13 +3,7 @@
     "version": "0.1.0",
     "description": "Admin panel framework for Laravel based on LiVue and PrimeVue",
     "type": "module",
-    "main": "dist/primix.js",
-    "module": "dist/primix.js",
     "exports": {
-        ".": {
-            "import": "./dist/primix.js",
-            "default": "./dist/primix.js"
-        },
         "./support": {
             "import": "./dist/primix-support.js",
             "default": "./dist/primix-support.js"

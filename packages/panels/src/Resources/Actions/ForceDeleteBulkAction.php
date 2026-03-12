@@ -13,11 +13,11 @@ class ForceDeleteBulkAction extends BulkAction
 
     protected function setUp(): void
     {
-        $this->label('Force delete selected');
+        $this->label(__('primix::panel.actions.force_delete_selected'));
         $this->icon('heroicon-o-trash');
         $this->color('danger');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record(s) permanently deleted');
+        $this->successNotificationTitle(__('primix::panel.notifications.bulk_force_deleted'));
 
         $this->action(function (): void {
             $records = $this->getRecords();

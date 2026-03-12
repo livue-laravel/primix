@@ -17,7 +17,7 @@ class EmailVerificationPrompt extends SimplePage
 
     protected static ?string $slug = 'email-verification';
 
-    protected ?string $title = 'Verify your email address';
+    protected ?string $title = null;
 
     protected string|\Closure|\Illuminate\Contracts\Support\Htmlable|null $subheading = 'Please verify your email address by clicking the link we sent you.';
 
@@ -25,6 +25,8 @@ class EmailVerificationPrompt extends SimplePage
 
     public function mount(): void
     {
+        $this->title = __('primix::panel.auth.verify_email_title');
+
         $panel = Primix::getCurrentPanel();
         $user = Auth::guard($panel->getAuthGuard())->user();
 
@@ -51,7 +53,7 @@ class EmailVerificationPrompt extends SimplePage
             ->submitAction('resendNotification')
             ->submitButton(
                 Action::make('resendNotification')
-                    ->label('Resend verification email')
+                    ->label(__('primix::panel.auth.resend_verification'))
                     ->submit()
             );
     }
@@ -60,7 +62,7 @@ class EmailVerificationPrompt extends SimplePage
     {
         return [
             Action::make('signOut')
-                ->label('Sign out')
+                ->label(__('primix::panel.actions.sign_out'))
                 ->submit()
                 ->link()
                 ->extraAttributes([
@@ -87,7 +89,7 @@ class EmailVerificationPrompt extends SimplePage
         $user->sendEmailVerificationNotification();
 
         Notification::make()
-            ->title('A new verification link has been sent to your email address.')
+            ->title(__('primix::panel.auth.verification_link_sent'))
             ->success()
             ->send();
     }

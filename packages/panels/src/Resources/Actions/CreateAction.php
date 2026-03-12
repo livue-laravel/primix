@@ -16,7 +16,7 @@ class CreateAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('New');
+        $this->label(__('primix::panel.actions.new'));
         $this->icon('heroicon-o-plus');
         $this->color('primary');
 
@@ -25,12 +25,14 @@ class CreateAction extends Action
         $this->modalHeading(function () {
             $class = $this->getResourceClass();
 
-            return 'Create' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+            return $class !== null
+                ? __('primix::panel.headings.create_model', ['model' => $class::getModelLabel()])
+                : __('primix::panel.actions.create');
         });
 
         $this->modalWidth('lg');
 
-        $this->modalSubmitActionLabel('Create');
+        $this->modalSubmitActionLabel(__('primix::panel.actions.create'));
     }
 
     public function getUrl(): ?string

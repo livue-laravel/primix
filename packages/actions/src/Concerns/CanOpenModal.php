@@ -119,12 +119,12 @@ trait CanOpenModal
 
     public function getModalSubmitActionLabel(): string
     {
-        return $this->evaluate($this->modalSubmitActionLabel) ?? 'Submit';
+        return $this->evaluate($this->modalSubmitActionLabel) ?? __('primix-actions::actions.submit');
     }
 
     public function getModalCancelActionLabel(): string
     {
-        return $this->evaluate($this->modalCancelActionLabel) ?? 'Cancel';
+        return $this->evaluate($this->modalCancelActionLabel) ?? __('primix-actions::actions.cancel');
     }
 
     public function shouldCloseModalOnClickAway(): bool

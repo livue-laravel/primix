@@ -115,7 +115,7 @@ trait HasTenantMenu
             if ($billingUrl) {
                 $menu->addItem(
                     TenantMenuItem::make()
-                        ->label('Billing')
+                        ->label(__('primix::panel.actions.billing'))
                         ->icon('heroicon-o-credit-card')
                         ->url($billingUrl)
                         ->sort(PHP_INT_MAX - 2)
@@ -127,7 +127,7 @@ trait HasTenantMenu
         if ($this->hasTenantCreation()) {
             $menu->addItem(
                 TenantMenuItem::make()
-                    ->label('Create organization')
+                    ->label(__('primix::panel.actions.create_organization'))
                     ->icon('heroicon-o-plus-circle')
                     ->url($this->getTenantCreationUrl())
                     ->sort(PHP_INT_MAX - 1)

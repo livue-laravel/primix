@@ -12,7 +12,12 @@ class Dashboard extends Page
 
     protected static ?string $slug = '';
 
-    protected ?string $title = 'Dashboard';
+    protected ?string $title = null;
+
+    public function mount(): void
+    {
+        $this->title = __('primix::panel.dashboard');
+    }
 
     protected function getHeaderWidgets(): array
     {

@@ -16,7 +16,7 @@ class EditAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('Edit');
+        $this->label(__('primix::panel.actions.edit'));
         $this->icon('heroicon-o-pencil-square');
         $this->color('primary');
         $this->iconButton();
@@ -26,12 +26,14 @@ class EditAction extends Action
         $this->modalHeading(function () {
             $class = $this->getResourceClass();
 
-            return 'Edit' . ($class !== null ? ' ' . $class::getModelLabel() : '');
+            return $class !== null
+                ? __('primix::panel.headings.edit_model', ['model' => $class::getModelLabel()])
+                : __('primix::panel.actions.edit');
         });
 
         $this->modalWidth('lg');
 
-        $this->modalSubmitActionLabel('Save');
+        $this->modalSubmitActionLabel(__('primix::panel.actions.save'));
     }
 
     public function getUrl(): ?string

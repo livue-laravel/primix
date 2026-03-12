@@ -50,6 +50,7 @@ class PrimixFormsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'primix-forms');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'primix-forms');
 
         $this->registerAssets();
         $this->registerRoutes();
@@ -59,6 +60,10 @@ class PrimixFormsServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/primix-forms'),
             ], 'primix-forms-views');
+
+            $this->publishes([
+                __DIR__ . '/../resources/lang' => lang_path('vendor/primix-forms'),
+            ], 'primix-forms-translations');
 
             $assets = [
                 __DIR__ . '/../dist/primix-forms.css' => public_path('vendor/livue/primix/forms/primix-forms.css'),

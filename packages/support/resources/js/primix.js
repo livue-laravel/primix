@@ -5,9 +5,9 @@
  * Import this file in your app.js to enable PrimeVue components.
  *
  * Usage:
- *   import './vendor/primix/primix.js';
+ *   import './vendor/livue/primix/support/primix-support.js';
  *   // or if using a build alias:
- *   import 'primix';
+ *   import '@primix/support';
  */
 
 import LiVue from 'livue';

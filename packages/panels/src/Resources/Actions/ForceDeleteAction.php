@@ -13,11 +13,11 @@ class ForceDeleteAction extends Action
 
     protected function setUp(): void
     {
-        $this->label('Force delete');
+        $this->label(__('primix::panel.actions.force_delete'));
         $this->icon('heroicon-o-trash');
         $this->color('danger');
         $this->requiresConfirmation();
-        $this->successNotificationTitle('Record permanently deleted');
+        $this->successNotificationTitle(__('primix::panel.notifications.force_deleted'));
 
         $this->visible(function (mixed $record): bool {
             if ($record === null) {

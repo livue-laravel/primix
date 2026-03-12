@@ -24,8 +24,6 @@ export default defineConfig({
     build: {
         lib: {
             entry: {
-                // Main entry (includes everything)
-                'primix': path.resolve(__dirname, 'resources/js/primix.js'),
                 // Individual package entries
                 'primix-support': path.resolve(__dirname, 'packages/support/resources/js/index.js'),
                 'primix-forms': path.resolve(__dirname, 'packages/forms/resources/js/index.js'),

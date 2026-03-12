@@ -20,8 +20,8 @@ use Primix\Tables\Filters\SelectFilter;
 use Primix\Tables\Filters\TernaryFilter;
 use Primix\Support\SchemaValidator;
 
-it('simula un form PostResource completo via schema', function () {
-    // ---- Schema JSON-like (potrebbe venire da DB, API, file config) ----
+it('simulates a complete PostResource form via schema', function () {
+    // ---- JSON-like schema (could come from DB, API, config file) ----
     $formSchema = [
         ['type' => 'tabs', 'label' => 'Post', 'tabs' => [
             [
@@ -60,44 +60,44 @@ it('simula un form PostResource completo via schema', function () {
         ]],
     ];
 
-    // ---- Callbacks PHP per logica dinamica ----
+    // ---- PHP callbacks for dynamic logic ----
     $callbacks = [
         'getCategories' => fn () => ['1' => 'Tech', '2' => 'Design', '3' => 'Business'],
     ];
 
-    // ---- Validazione schema ----
+    // ---- Schema validation ----
     $validator = app(SchemaValidator::class);
     $errors = $validator->validateFormSchema($formSchema);
     expect($errors)->toBeEmpty("Schema validation errors: " . implode(', ', $errors));
 
-    // ---- Build del form ----
+    // ---- Build the form ----
     $form = Form::make()->fromSchema($formSchema, $callbacks);
 
-    // ---- Verifiche struttura ----
+    // ---- Structure assertions ----
     $topLevel = $form->getComponents();
-    expect($topLevel)->toHaveCount(1, 'Deve avere un solo componente top-level (Tabs)');
+    expect($topLevel)->toHaveCount(1, 'Should have a single top-level component (Tabs)');
     expect($topLevel[0])->toBeInstanceOf(Tabs::class);
     expect($topLevel[0]->getLabel())->toBe('Post');
 
-    // 3 tab
+    // 3 tabs
     $tabs = $topLevel[0]->getSchema();
     expect($tabs)->toHaveCount(3);
     expect($tabs[0]->getLabel())->toBe('Contenuto');
     expect($tabs[1]->getLabel())->toBe('Metadati');
     expect($tabs[2]->getLabel())->toBe('SEO');
 
-    // Tab "Contenuto" ha 5 field
+    // Tab "Contenuto" has 5 fields
     $contenutoFields = $tabs[0]->getSchema();
     expect($contenutoFields)->toHaveCount(5);
     expect($contenutoFields[0])->toBeInstanceOf(TextInput::class);
     expect($contenutoFields[0]->getName())->toBe('title');
     expect($contenutoFields[0]->isRequired())->toBeTrue();
 
-    // Slug ha hidden (closure da espressione dichiarativa)
+    // Slug has hidden (closure from declarative expression)
     expect($contenutoFields[1])->toBeInstanceOf(TextInput::class);
     expect($contenutoFields[1]->getName())->toBe('slug');
 
-    // Select status con opzioni
+    // Select status with options
     expect($contenutoFields[2])->toBeInstanceOf(Select::class);
     expect($contenutoFields[2]->getOptions())->toBe([
         'draft' => 'Bozza',
@@ -105,7 +105,7 @@ it('simula un form PostResource completo via schema', function () {
         'published' => 'Pubblicato',
     ]);
 
-    // Tab "Metadati" ha Grid + TagsInput + Toggle
+    // Tab "Metadati" has Grid + TagsInput + Toggle
     $metadatiFields = $tabs[1]->getSchema();
     expect($metadatiFields)->toHaveCount(3);
     expect($metadatiFields[0])->toBeInstanceOf(Grid::class);
@@ -113,13 +113,13 @@ it('simula un form PostResource completo via schema', function () {
     expect($metadatiFields[2])->toBeInstanceOf(Toggle::class);
     expect($metadatiFields[2]->getLabel())->toBe('In evidenza');
 
-    // Grid contiene 2 field
+    // Grid contains 2 fields
     $gridFields = $metadatiFields[0]->getSchema();
     expect($gridFields)->toHaveCount(2);
     expect($gridFields[0])->toBeInstanceOf(DatePicker::class);
     expect($gridFields[1])->toBeInstanceOf(Select::class);
 
-    // Tutti i leaf field accessibili via getFields()
+    // All leaf fields accessible via getFields()
     $allFields = $form->getFields();
     $fieldNames = array_keys($allFields);
     expect($fieldNames)->toContain('title');
@@ -133,10 +133,10 @@ it('simula un form PostResource completo via schema', function () {
     expect($fieldNames)->toContain('meta_description');
     expect($fieldNames)->toContain('published_at');
     expect($fieldNames)->toContain('category_id');
-    expect($allFields)->toHaveCount(11, 'Deve avere 11 field foglia totali');
+    expect($allFields)->toHaveCount(11, 'Should have 11 total leaf fields');
 });
 
-it('simula una table PostResource completa via schema', function () {
+it('simulates a complete PostResource table via schema', function () {
     $tableSchema = [
         'columns' => [
             ['type' => 'text-column', 'name' => 'title', 'searchable' => true, 'sortable' => true],
@@ -167,7 +167,7 @@ it('simula una table PostResource completa via schema', function () {
         'striped' => true,
     ];
 
-    // Validazione
+    // Validation
     $validator = app(SchemaValidator::class);
     $errors = $validator->validateTableSchema($tableSchema);
     expect($errors)->toBeEmpty("Schema validation errors: " . implode(', ', $errors));
@@ -175,7 +175,7 @@ it('simula una table PostResource completa via schema', function () {
     // Build
     $table = Table::make()->fromSchema($tableSchema);
 
-    // Colonne
+    // Columns
     $columns = $table->getColumns();
     expect($columns)->toHaveCount(5);
     expect($columns[0])->toBeInstanceOf(TextColumn::class);
@@ -186,23 +186,23 @@ it('simula una table PostResource completa via schema', function () {
     expect($columns[1]->getName())->toBe('status');
     expect($columns[3])->toBeInstanceOf(ToggleColumn::class);
 
-    // Filtri
+    // Filters
     $filters = $table->getFilters();
     expect($filters)->toHaveCount(2);
     expect($filters[0])->toBeInstanceOf(SelectFilter::class);
     expect($filters[1])->toBeInstanceOf(TernaryFilter::class);
 
-    // Azioni
+    // Actions
     expect($table->getActions())->toHaveCount(3);
     expect($table->getBulkActions())->toHaveCount(1);
 
-    // Proprieta' table-level
+    // Table-level properties
     expect($table->getDefaultPerPage())->toBe(25);
     expect($table->isStriped())->toBeTrue();
 });
 
-it('lo schema produce gli stessi componenti del codice PHP equivalente', function () {
-    // ---- Versione Schema ----
+it('schema produces the same components as equivalent PHP code', function () {
+    // ---- Schema version ----
     $schemaForm = Form::make()->fromSchema([
         ['type' => 'section', 'label' => 'Informazioni', 'collapsible' => true, 'schema' => [
             ['type' => 'text-input', 'name' => 'name', 'required' => true],
@@ -214,7 +214,7 @@ it('lo schema produce gli stessi componenti del codice PHP equivalente', functio
         ]],
     ]);
 
-    // ---- Versione PHP Fluent ----
+    // ---- PHP Fluent version ----
     $phpForm = Form::make()->schema([
         Section::make('Informazioni')->collapsible()->schema([
             TextInput::make('name')->required(),
@@ -226,30 +226,30 @@ it('lo schema produce gli stessi componenti del codice PHP equivalente', functio
         ]),
     ]);
 
-    // ---- Confronto struttura ----
+    // ---- Structure comparison ----
 
-    // Stesso numero di componenti top-level
+    // Same number of top-level components
     expect($schemaForm->getComponents())->toHaveCount(count($phpForm->getComponents()));
 
-    // Stessi tipi
+    // Same types
     $schemaTypes = array_map(fn ($c) => get_class($c), $schemaForm->getComponents());
     $phpTypes = array_map(fn ($c) => get_class($c), $phpForm->getComponents());
     expect($schemaTypes)->toBe($phpTypes);
 
-    // Stessi field foglia
+    // Same leaf fields
     $schemaFields = array_keys($schemaForm->getFields());
     $phpFields = array_keys($phpForm->getFields());
     sort($schemaFields);
     sort($phpFields);
     expect($schemaFields)->toBe($phpFields);
 
-    // Stessi required
+    // Same required flags
     foreach ($schemaForm->getFields() as $name => $field) {
         $phpField = $phpForm->getFields()[$name];
         expect($field->isRequired())->toBe($phpField->isRequired(), "Field '{$name}' required mismatch");
     }
 
-    // Stessi tipi field
+    // Same field types
     foreach ($schemaForm->getFields() as $name => $field) {
         $phpField = $phpForm->getFields()[$name];
         expect(get_class($field))->toBe(get_class($phpField), "Field '{$name}' type mismatch");

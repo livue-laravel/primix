@@ -2,7 +2,7 @@
     <div class="space-y-5">
         <!-- Rotation -->
         <div class="space-y-3">
-            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Rotazione</h4>
+            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ translations.rotation_title || 'Rotation' }}</h4>
 
             <div class="flex items-center gap-2">
                 <p-button
@@ -11,7 +11,7 @@
                     outlined
                     size="small"
                     @click="onRotate(-90)"
-                    v-tooltip.bottom="'Ruota -90°'"
+                    v-tooltip.bottom="translations.rotate_ccw || 'Rotate -90°'"
                 />
                 <p-button
                     icon="pi pi-replay"
@@ -19,14 +19,14 @@
                     outlined
                     size="small"
                     @click="onRotate(90)"
-                    v-tooltip.bottom="'Ruota +90°'"
+                    v-tooltip.bottom="translations.rotate_cw || 'Rotate +90°'"
                 />
             </div>
 
             <!-- Free rotation slider -->
             <div class="space-y-1">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs text-surface-500 dark:text-surface-400">Rotazione libera</span>
+                    <span class="text-xs text-surface-500 dark:text-surface-400">{{ translations.free_rotation || 'Free rotation' }}</span>
                     <span class="text-xs text-surface-500 dark:text-surface-400 tabular-nums">{{ freeRotation }}°</span>
                 </div>
                 <p-slider
@@ -42,7 +42,7 @@
 
         <!-- Flip -->
         <div class="space-y-3">
-            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Ribalta</h4>
+            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ translations.flip_title || 'Flip' }}</h4>
 
             <div class="flex items-center gap-2">
                 <p-button
@@ -51,7 +51,7 @@
                     outlined
                     size="small"
                     @click="onFlipHorizontal"
-                    v-tooltip.bottom="'Ribalta orizzontale'"
+                    v-tooltip.bottom="translations.flip_horizontal || 'Flip horizontal'"
                     :class="{ 'ring-2 ring-primary-400': flippedH }"
                 />
                 <p-button
@@ -60,7 +60,7 @@
                     outlined
                     size="small"
                     @click="onFlipVertical"
-                    v-tooltip.bottom="'Ribalta verticale'"
+                    v-tooltip.bottom="translations.flip_vertical || 'Flip vertical'"
                     :class="{ 'ring-2 ring-primary-400': flippedV }"
                 />
             </div>
@@ -73,6 +73,7 @@ import { ref } from 'vue';
 
 defineProps({
     config: { type: Object, default: () => ({}) },
+    translations: { type: Object, default: () => ({}) },
 });
 
 const emit = defineEmits(['rotate', 'flip']);

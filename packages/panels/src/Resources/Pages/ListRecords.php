@@ -116,7 +116,7 @@ class ListRecords extends Page
             $form->saveRelationships($record, $data);
 
             Notification::make()
-                ->title('Created successfully')
+                ->title(__('primix::panel.notifications.created'))
                 ->success()
                 ->send();
         });
@@ -176,7 +176,7 @@ class ListRecords extends Page
             $form->saveRelationships($record, $data);
 
             Notification::make()
-                ->title('Saved successfully')
+                ->title(__('primix::panel.notifications.saved'))
                 ->success()
                 ->send();
         });

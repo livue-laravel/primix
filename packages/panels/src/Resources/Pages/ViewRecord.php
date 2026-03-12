@@ -40,7 +40,7 @@ class ViewRecord extends Page
 
         return [
             Action::make('edit')
-                ->label('Edit')
+                ->label(__('primix::panel.actions.edit'))
                 ->url(fn () => $resource::getUrl('edit', ['record' => $this->record])),
             DeleteAction::make(),
             ForceDeleteAction::make(),
@@ -185,7 +185,7 @@ class ViewRecord extends Page
         $resource = $this->resolveResource();
         $title = $resource::getRecordTitle($this->record);
 
-        return $title ?? ('View ' . $resource::getModelLabel());
+        return $title ?? __('primix::panel.page_titles.view', ['model' => $resource::getModelLabel()]);
     }
 
     protected function render(): string

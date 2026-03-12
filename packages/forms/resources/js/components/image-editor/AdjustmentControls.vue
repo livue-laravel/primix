@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-4">
         <div class="flex items-center justify-between">
-            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">Regolazioni</h4>
+            <h4 class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ translations.tool_adjustments || 'Adjustments' }}</h4>
             <p-button
                 v-if="hasChanges"
                 label="Reset"
@@ -46,6 +46,7 @@ import { ADJUSTMENT_RANGES } from '../../composables/useAdjustments.js';
 defineProps({
     adjustments: { type: Object, required: true },
     hasChanges: Boolean,
+    translations: { type: Object, default: () => ({}) },
 });
 
 const emit = defineEmits(['adjustment-change', 'reset']);

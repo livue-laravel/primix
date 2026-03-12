@@ -45,7 +45,7 @@ trait HasUserMenu
             $profileClass = $this->getProfilePage();
             $menu->addItem(
                 UserMenuItem::make()
-                    ->label('Profile')
+                    ->label(__('primix::panel.actions.profile'))
                     ->icon('heroicon-o-user-circle')
                     ->url(route("primix.{$this->getId()}.{$profileClass::getSlug()}"))
                     ->sort(-100)
@@ -61,7 +61,7 @@ trait HasUserMenu
         if ($this->hasLogin()) {
             $menu->addItem(
                 UserMenuItem::make()
-                    ->label('Sign out')
+                    ->label(__('primix::panel.actions.sign_out'))
                     ->icon('heroicon-o-arrow-left-on-rectangle')
                     ->url(url($this->getPath() . '/logout'))
                     ->color('danger')
