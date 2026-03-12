@@ -33,7 +33,7 @@ export default defineConfig({
                 'primix-actions': path.resolve(__dirname, 'packages/actions/resources/js/index.js'),
                 'primix-notifications': path.resolve(__dirname, 'packages/notifications/resources/js/index.js'),
                 'primix-widgets': path.resolve(__dirname, 'packages/widgets/resources/js/index.js'),
-                'primix-panels': path.resolve(__dirname, 'packages/primix/resources/js/index.js'),
+                'primix-panels': path.resolve(__dirname, 'packages/panels/resources/js/index.js'),
             },
             name: 'Primix',
             formats: ['es'],
@@ -89,7 +89,7 @@ export default defineConfig({
             '@primix/actions': path.resolve(__dirname, 'packages/actions/resources/js'),
             '@primix/notifications': path.resolve(__dirname, 'packages/notifications/resources/js'),
             '@primix/widgets': path.resolve(__dirname, 'packages/widgets/resources/js'),
-            '@primix/panels': path.resolve(__dirname, 'packages/primix/resources/js'),
+            '@primix/panels': path.resolve(__dirname, 'packages/panels/resources/js'),
         },
     },
 });

@@ -45,9 +45,9 @@ class PrimixServiceProvider extends ServiceProvider
             ], 'primix-views');
 
             $assets = [
-                __DIR__ . '/../dist/primix-panels.css' => public_path('vendor/livue/primix/primix/primix-panels.css'),
-                __DIR__ . '/../dist/primix-panels.js' => public_path('vendor/livue/primix/primix/primix-panels.js'),
-                __DIR__ . '/../dist/primix-panels.js.map' => public_path('vendor/livue/primix/primix/primix-panels.js.map'),
+                __DIR__ . '/../dist/primix-panels.css' => public_path('vendor/livue/primix/panels/primix-panels.css'),
+                __DIR__ . '/../dist/primix-panels.js' => public_path('vendor/livue/primix/panels/primix-panels.js'),
+                __DIR__ . '/../dist/primix-panels.js.map' => public_path('vendor/livue/primix/panels/primix-panels.js.map'),
             ];
 
             $this->publishes($assets, 'primix-assets');
@@ -83,9 +83,9 @@ class PrimixServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-panels', "{$assetsBasePath}/primix/primix/primix-panels.css")->version($assetVersion),
-            Js::make('primix-panels', "{$assetsBasePath}/primix/primix/primix-panels.js")->module()->version($assetVersion),
-        ], 'primix/primix');
+            Css::make('primix-panels', "{$assetsBasePath}/primix/panels/primix-panels.css")->version($assetVersion),
+            Js::make('primix-panels', "{$assetsBasePath}/primix/panels/primix-panels.js")->module()->version($assetVersion),
+        ], 'primix/panels');
     }
 
     protected function registerBladeComponents(): void

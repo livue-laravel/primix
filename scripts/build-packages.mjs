@@ -28,7 +28,7 @@ const aliases = {
     '@primix/actions': path.resolve(rootDir, 'packages/actions/resources/js'),
     '@primix/notifications': path.resolve(rootDir, 'packages/notifications/resources/js'),
     '@primix/widgets': path.resolve(rootDir, 'packages/widgets/resources/js'),
-    '@primix/panels': path.resolve(rootDir, 'packages/primix/resources/js'),
+    '@primix/panels': path.resolve(rootDir, 'packages/panels/resources/js'),
 };
 
 const targets = [
@@ -76,15 +76,15 @@ const targets = [
     },
     {
         label: 'panels',
-        entry: 'packages/primix/resources/js/index.js',
-        outDir: 'packages/primix/dist',
+        entry: 'packages/panels/resources/js/index.js',
+        outDir: 'packages/panels/dist',
         fileName: 'primix-panels',
-        publicVendorDir: 'primix/primix',
+        publicVendorDir: 'primix/panels',
     },
     {
         label: 'full',
         entry: 'resources/js/primix.js',
-        outDir: 'packages/primix/dist',
+        outDir: 'packages/panels/dist',
         fileName: 'primix',
     },
 ];
