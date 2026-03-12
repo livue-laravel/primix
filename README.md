@@ -14,6 +14,18 @@ Optional multi-tenant package:
 composer require primix/multi-tenant:^0.1.0
 ```
 
+## Monorepo Publishing Model
+
+- Primary install target: `primix/primix` (root monorepo package).
+- Component packages: `primix/actions`, `primix/details`, `primix/forms`, `primix/multi-tenant`, `primix/notifications`, `primix/panels`, `primix/support`, `primix/tables`, `primix/widgets`.
+
+### Release flow
+
+1. Run monorepo release (`vendor/bin/monorepo-builder release ...`) to tag the monorepo.
+2. Tag push triggers `.github/workflows/monorepo-split.yml`.
+3. Each `packages/*` directory is pushed to its split repository in `livue-laravel/*`.
+4. Register split repositories on Packagist so Composer resolves package-by-package installs (Filament-style `vendor/primix/*` layout).
+
 ## LiVue Integration Pattern
 
 Primix packages should follow a single pattern for assets + Vue registration.

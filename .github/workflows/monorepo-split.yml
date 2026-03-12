@@ -1,0 +1,50 @@
+name: monorepo-split
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  split-monorepo:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - directory: actions
+            repository: actions
+          - directory: details
+            repository: details
+          - directory: forms
+            repository: forms
+          - directory: multi-tenant
+            repository: multi-tenant
+          - directory: notifications
+            repository: notifications
+          - directory: panels
+            repository: panels
+          - directory: support
+            repository: support
+          - directory: tables
+            repository: tables
+          - directory: widgets
+            repository: widgets
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Monorepo split of ${{ matrix.package.directory }}
+        uses: danharrin/monorepo-split-github-action@v2.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        with:
+          package_directory: packages/${{ matrix.package.directory }}
+          repository_organization: livue-laravel
+          repository_name: ${{ matrix.package.repository }}
+          branch: main
+          tag: ${{ github.ref_name }}
+          user_name: cCast
+          user_email: software@ccast.it

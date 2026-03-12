@@ -99,8 +99,8 @@ it('prefers panelId property when present', function () {
 });
 
 it('renders branding with panelConfig and v-html in core templates', function () {
-    $topbarTemplate = file_get_contents(base_path('packages/primix/packages/primix/resources/views/components/topbar.blade.php'));
-    $simpleLayoutTemplate = file_get_contents(base_path('packages/primix/packages/primix/resources/views/components/layouts/simple.blade.php'));
+    $topbarTemplate = file_get_contents(base_path('packages/primix/packages/panels/resources/views/components/topbar.blade.php'));
+    $simpleLayoutTemplate = file_get_contents(base_path('packages/primix/packages/panels/resources/views/components/layouts/simple.blade.php'));
 
     expect($topbarTemplate)->toContain('v-html="panelConfig.brandName"')
         ->and($topbarTemplate)->toContain('v-html="panelConfig.brandLogo"')

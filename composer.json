@@ -1,5 +1,5 @@
 {
-    "name": "livue/primix",
+    "name": "primix/primix",
     "description": "Primix - Admin panel framework for Laravel based on LiVue",
     "license": "MIT",
     "authors": [
@@ -26,7 +26,7 @@
         "primix/forms": "self.version",
         "primix/multi-tenant": "self.version",
         "primix/notifications": "self.version",
-        "primix/panel": "self.version",
+        "primix/panels": "self.version",
         "primix/support": "self.version",
         "primix/tables": "self.version",
         "primix/widgets": "self.version"
@@ -35,7 +35,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Primix\\": "packages/panel/src/",
+            "Primix\\": "packages/panels/src/",
             "Primix\\Actions\\": "packages/actions/src/",
             "Primix\\Details\\": "packages/details/src/",
             "Primix\\Forms\\": "packages/forms/src/",
