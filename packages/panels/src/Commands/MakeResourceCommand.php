@@ -4,11 +4,10 @@ namespace Primix\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Input\InputOption;
 
 class MakeResourceCommand extends GeneratorCommand
 {
-    protected $signature = 'make:primix-resource {name* : Resource name (e.g. Post, PostResource, post-resource, Product Variant)} {--M|model : Also create the related model} {--simple}';
+    protected $signature = 'make:primix-resource {name* : Resource name (e.g. Post, PostResource, post-resource, Product Variant)} {--M|model : Also create the related model} {--simple} {--generate : Deprecated alias of --model}';
 
     protected $description = 'Create a new Primix resource class';
 
@@ -196,10 +195,4 @@ class MakeResourceCommand extends GeneratorCommand
         return $normalized;
     }
 
-    protected function getOptions(): array
-    {
-        return array_merge(parent::getOptions(), [
-            ['generate', null, InputOption::VALUE_NONE, 'Deprecated: Also create the related model and migration'],
-        ]);
-    }
 }

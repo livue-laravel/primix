@@ -57,7 +57,7 @@
                 <div class="flex flex-col items-start gap-0.5 whitespace-nowrap">
                     <span class="inline-flex items-center gap-2 font-medium">
                         @if($step->getIcon())
-                            <i class="{{ $step->getIcon() }}"></i>
+                            {!! app(\Primix\Support\Icons\IconManager::class)->render($step->getIcon()) !!}
                         @else
                             <p-badge
                                 value="{{ $index + 1 }}"

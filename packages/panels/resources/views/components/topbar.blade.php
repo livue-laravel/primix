@@ -1,4 +1,15 @@
 @persist
+@php
+    $notificationTranslations = [
+        'title' => __('primix::panel.notifications_panel.title'),
+        'bell_label' => __('primix::panel.notifications_panel.bell_label'),
+        'mark_all_read' => __('primix::panel.notifications_panel.mark_all_read'),
+        'no_notifications' => __('primix::panel.notifications_panel.no_notifications'),
+        'loading' => __('primix::panel.notifications_panel.loading'),
+        'load_more' => __('primix::panel.notifications_panel.load_more'),
+        'close' => __('primix::panel.actions.close'),
+    ];
+@endphp
 <div class="{{ $fixedTopbar ? 'fixed' : 'sticky' }} top-0 left-0 right-0 z-50">
     {{-- === NAVIGATION BAR (topbar mode only) === --}}
     @if($topBarNavigation)
@@ -13,18 +24,13 @@
         @renderHook(\Primix\Enums\PanelsRenderHook::TOPBAR_START)
 
         <div class="mr-6 flex-shrink-0">
-            <template v-if="panelConfig.brandLogoDark">
-                <span class="dark:hidden" v-html="panelConfig.brandLogo"></span>
-                <span class="hidden dark:inline" v-html="panelConfig.brandLogoDark"></span>
-            </template>
-            <template v-else-if="panelConfig.brandLogo">
-                <span v-html="panelConfig.brandLogo"></span>
-            </template>
-            <span
-                v-else-if="panelConfig.brandName"
-                class="text-lg font-bold text-gray-900 dark:text-white"
-                v-html="panelConfig.brandName"
-            ></span>
+            <x-primix::brand
+                :brandLogo="$brandLogo"
+                :brandLogoDark="$brandLogoDark"
+                :brandName="$brandName"
+                inlineClass="inline-block"
+                textClasses="text-lg font-bold text-gray-900 dark:text-white"
+            />
         </div>
 
         @if(!$topBarNavigation)
@@ -73,15 +79,7 @@
                 <primix-notification-bell
                     mode="{{ $databaseNotificationsMode }}"
                     :polling-interval="{{ $databaseNotificationsPollingInterval }}"
-                    :translations='@json([
-                        "title" => __("primix::panel.notifications_panel.title"),
-                        "bell_label" => __("primix::panel.notifications_panel.bell_label"),
-                        "mark_all_read" => __("primix::panel.notifications_panel.mark_all_read"),
-                        "no_notifications" => __("primix::panel.notifications_panel.no_notifications"),
-                        "loading" => __("primix::panel.notifications_panel.loading"),
-                        "load_more" => __("primix::panel.notifications_panel.load_more"),
-                        "close" => __("primix::panel.actions.close"),
-                    ])'
+                    :translations='@json($notificationTranslations)'
                 ></primix-notification-bell>
                 @renderHook(\Primix\Enums\PanelsRenderHook::DATABASE_NOTIFICATIONS_AFTER)
 

@@ -47,3 +47,9 @@ it('normalizes resource names with laravel studly conventions', function (string
     'multiple words as separate args' => [['product', 'variant'], 'ProductVariant'],
     'multiple words including resource suffix' => [['product', 'variant', 'resource'], 'ProductVariant'],
 ]);
+
+it('keeps deprecated --generate option available for backward compatibility', function () {
+    $command = new MakeResourceCommand(app('files'));
+
+    expect($command->getDefinition()->hasOption('generate'))->toBeTrue();
+});

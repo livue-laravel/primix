@@ -30,6 +30,7 @@
 
     <div class="primix-action-group inline-flex">
         <p-button
+            class="primix-action-button"
             type="button"
             @if($label) label="{{ $label }}" @endif
             @if($severity) severity="{{ $severity }}" @endif
@@ -38,7 +39,7 @@
             rounded
             @click="{{ $jsRefName }}.toggle($event)"
             aria-haspopup="true"
-        >@if($icon)<template #icon>{!! app(\Primix\Support\Icons\IconManager::class)->render($icon, 'w-5 h-5') !!}</template>@endif</p-button>
+        >@if($icon)<template #icon>{!! app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') !!}</template>@endif</p-button>
 
         <p-menu
             ref="{{ $jsRefName }}"

@@ -13,12 +13,12 @@ class PrimeIconSet implements IconSet
 
     public function canRender(string $icon): bool
     {
-        return str_starts_with($icon, 'pi ');
+        return str_starts_with($icon, 'pi ') || str_starts_with($icon, 'pi-');
     }
 
     public function render(string $icon, ?string $class = null, ?string $size = null, ?string $style = null): string
     {
-        $classes = $icon;
+        $classes = str_starts_with($icon, 'pi-') ? 'pi ' . $icon : $icon;
 
         if ($size) {
             $sizeClass = match ($size) {

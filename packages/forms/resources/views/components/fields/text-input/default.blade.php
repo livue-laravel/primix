@@ -30,7 +30,7 @@
                 @endif
                 @if($prefixIcon)
                     <p-input-group-addon @if($prefixAddonPt) :pt="{!! \Illuminate\Support\Js::from($prefixAddonPt) !!}" @endif>
-                        <i class="{{ $prefixIcon }}"></i>
+                        {!! app(\Primix\Support\Icons\IconManager::class)->render($prefixIcon) !!}
                     </p-input-group-addon>
                 @endif
                 @foreach($prefixActions as $action)
@@ -50,7 +50,7 @@
                 @endforeach
                 @if($suffixIcon)
                     <p-input-group-addon @if($suffixAddonPt) :pt="{!! \Illuminate\Support\Js::from($suffixAddonPt) !!}" @endif>
-                        <i class="{{ $suffixIcon }}"></i>
+                        {!! app(\Primix\Support\Icons\IconManager::class)->render($suffixIcon) !!}
                     </p-input-group-addon>
                 @endif
                 @if($suffix)

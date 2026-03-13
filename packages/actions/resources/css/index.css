@@ -3,3 +3,34 @@
  */
 
 .primix-actions-css-marker {}
+
+.primix-action-button {
+    align-items: center;
+}
+
+.primix-action-button .p-button-label {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+}
+
+.primix-action-button .p-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.primix-action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.primix-action-icon::before {
+    line-height: 1;
+}

@@ -8,7 +8,7 @@
     <span class="text-surface-500 dark:text-surface-400">{{ $placeholder }}</span>
 @else
     <span class="inline-flex items-center gap-2">
-        <i class="{{ $icon }}"></i>
+        {!! app(\Primix\Support\Icons\IconManager::class)->render($icon) !!}
 
         @if($component->shouldShowClassName())
             <span class="text-xs text-surface-500 dark:text-surface-400">{{ $icon }}</span>

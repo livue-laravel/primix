@@ -17,7 +17,7 @@
         'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-200' => ! $isTrue,
     ])>
         @if($icon)
-            <i class="{{ $icon }}"></i>
+            {!! app(\Primix\Support\Icons\IconManager::class)->render($icon) !!}
         @endif
 
         {{ $label }}

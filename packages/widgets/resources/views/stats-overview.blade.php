@@ -1,10 +1,10 @@
 @php
     $stats = collect($this->getStats())->map(fn ($stat) => $stat->toArray())->all();
-    $columns = count($stats);
+    $gridStyle = $this->getGridStyle();
 @endphp
 
 <div>
-    <div class="primix-stats-overview primix-grid" style="--cols: {{ $columns }};">
+    <div class="primix-stats-overview primix-grid" style="{{ $gridStyle }}">
         @foreach($stats as $stat)
             <div class="primix-stat-card primix-grid-item p-4 pt-5 pb-0 rounded-lg border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 overflow-hidden flex flex-col gap-3"
                 @if(isset($stat['columnSpan'])) style="--col-span: {{ $stat['columnSpan'] }}" @endif
@@ -16,7 +16,7 @@
                 @if($stat['description'])
                     <p class="text-sm mt-1 text-surface-600 dark:text-surface-300" @if($stat['descriptionColor']) style="color: {{ $stat['descriptionColor'] }}" @endif>
                         @if($stat['descriptionIcon'])
-                            <i class="{{ $stat['descriptionIcon'] }} mr-1"></i>
+                            {!! app(\Primix\Support\Icons\IconManager::class)->render($stat['descriptionIcon'], 'mr-1') !!}
                         @endif
                         {{ $stat['description'] }}
                     </p>

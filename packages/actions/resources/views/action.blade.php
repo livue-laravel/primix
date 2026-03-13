@@ -19,13 +19,14 @@
     $hasTooltipLabel = $tooltipLabel !== null && $tooltipLabel !== '';
 
     $recordKeyArg = isset($recordKey) && $recordKey !== null ? ", recordKey: '" . addslashes($recordKey) . "'" : '';
-    $iconHtml = $icon ? app(\Primix\Support\Icons\IconManager::class)->render($icon, 'w-5 h-5') : null;
+    $iconHtml = $icon ? app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') : null;
     $extraAttributes = $component->getExtraAttributes();
 @endphp
 
 @if($isSubmit)
     {{-- Submit button for forms --}}
     <p-button
+        class="primix-action-button"
         type="submit"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
@@ -45,6 +46,7 @@
 @elseif($url && !$requiresConfirmation)
     {{-- Simple link button --}}
     <p-button
+        class="primix-action-button"
         as="a"
         href="{{ $url }}"
         @if(!$openUrlInNewTab && ($spa ?? false)) :pt="{ root: { 'data-livue-navigate': 'true' } }" @endif
@@ -67,6 +69,7 @@
 @elseif($requiresConfirmation)
     {{-- Button with confirmation dialog --}}
     <p-button
+        class="primix-action-button"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -86,6 +89,7 @@
 @elseif($isModal)
     {{-- Button that opens modal --}}
     <p-button
+        class="primix-action-button"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -105,6 +109,7 @@
 @elseif($jsAction)
     {{-- Client-side JavaScript action --}}
     <p-button
+        class="primix-action-button"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -124,6 +129,7 @@
 @else
     {{-- Simple action button --}}
     <p-button
+        class="primix-action-button"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif

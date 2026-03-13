@@ -31,7 +31,7 @@
                 <p-accordion-panel value="{{ $tab->getName() }}">
                     <p-accordion-header>
                         @if($tab->getIcon())
-                            <i class="{{ $tab->getIcon() }} mr-2"></i>
+                            {!! app(\Primix\Support\Icons\IconManager::class)->render($tab->getIcon(), 'mr-2') !!}
                         @endif
                         {{ $tab->getLabel() }}
                         @if($tab->getBadge())
@@ -73,7 +73,7 @@
                     @if($tabPt) :pt="{!! \Illuminate\Support\Js::from($tabPt) !!}" @endif
                 >
                     @if($tab->getIcon())
-                        <i class="{{ $tab->getIcon() }} mr-2"></i>
+                        {!! app(\Primix\Support\Icons\IconManager::class)->render($tab->getIcon(), 'mr-2') !!}
                     @endif
                     {{ $tab->getLabel() }}
                     @if($tabHasErrors)

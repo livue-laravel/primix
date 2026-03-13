@@ -50,10 +50,46 @@ class HeroiconSet implements IconSet
             }
         }
 
-        // Fallback: render as <i> tag
+        // Fallback: map heroicons to PrimeIcons to avoid missing icon glyphs
+        $mappedIcon = $this->mapToPrimeIcon($icon);
         $classAttr = $classes ? ' ' . $classes : '';
         $styleAttr = $style ? ' style="' . e($style) . '"' : '';
 
-        return '<i class="' . e(trim($icon . $classAttr)) . '"' . $styleAttr . '></i>';
+        return '<i class="' . e(trim($mappedIcon . $classAttr)) . '"' . $styleAttr . '></i>';
+    }
+
+    protected function mapToPrimeIcon(string $icon): string
+    {
+        $normalized = str($icon)
+            ->replaceStart('heroicon-o-', '')
+            ->replaceStart('heroicon-s-', '')
+            ->replaceStart('heroicon-m-', '')
+            ->toString();
+
+        $map = [
+            'home' => 'pi pi-home',
+            'rectangle-stack' => 'pi pi-table',
+            'plus' => 'pi pi-plus',
+            'plus-circle' => 'pi pi-plus-circle',
+            'pencil-square' => 'pi pi-pencil',
+            'trash' => 'pi pi-trash',
+            'eye' => 'pi pi-eye',
+            'x-mark' => 'pi pi-times',
+            'x-circle' => 'pi pi-times-circle',
+            'check-circle' => 'pi pi-check-circle',
+            'exclamation-triangle' => 'pi pi-exclamation-triangle',
+            'information-circle' => 'pi pi-info-circle',
+            'arrow-uturn-left' => 'pi pi-replay',
+            'arrow-down-tray' => 'pi pi-download',
+            'arrow-up-tray' => 'pi pi-upload',
+            'arrow-left-on-rectangle' => 'pi pi-sign-out',
+            'credit-card' => 'pi pi-credit-card',
+            'user-circle' => 'pi pi-user',
+            'envelope' => 'pi pi-envelope',
+            'magnifying-glass' => 'pi pi-search',
+            'link' => 'pi pi-link',
+        ];
+
+        return $map[$normalized] ?? 'pi pi-circle';
     }
 }

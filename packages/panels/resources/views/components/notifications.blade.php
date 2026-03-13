@@ -8,10 +8,41 @@
                     @if($notification['icon'] ?? null)
                         <div class="flex-shrink-0">
                             @php
+                                $icon = $notification['icon'];
+                                $isClassIcon = is_string($icon) && str_contains($icon, ' ');
+                                $heroiconKey = preg_replace('/^heroicon-[os]-/', '', (string) $icon);
+                                $heroiconFallbacks = [
+                                    'home' => 'pi pi-home',
+                                    'rectangle-stack' => 'pi pi-table',
+                                    'shopping-bag' => 'pi pi-shopping-bag',
+                                    'plus' => 'pi pi-plus',
+                                    'plus-circle' => 'pi pi-plus-circle',
+                                    'pencil' => 'pi pi-pencil',
+                                    'pencil-square' => 'pi pi-pencil',
+                                    'eye' => 'pi pi-eye',
+                                    'trash' => 'pi pi-trash',
+                                    'arrow-uturn-left' => 'pi pi-replay',
+                                    'arrow-left-on-rectangle' => 'pi pi-sign-out',
+                                    'link' => 'pi pi-link',
+                                    'x-mark' => 'pi pi-times',
+                                    'credit-card' => 'pi pi-credit-card',
+                                    'user' => 'pi pi-user',
+                                    'user-circle' => 'pi pi-user',
+                                    'cog' => 'pi pi-cog',
+                                    'document' => 'pi pi-file',
+                                    'star' => 'pi pi-star',
+                                ];
+                                $fallbackPrimeIcon = $heroiconFallbacks[$heroiconKey] ?? 'pi pi-circle';
                                 $colorClasses = app(\Primix\Support\Colors\ColorManager::class)
                                     ->toTailwindClass($notification['color'] ?? 'gray', 'text', 400);
                             @endphp
-                            <x-dynamic-component :component="$notification['icon']" class="h-6 w-6 {{ $colorClasses }}" />
+                            @if(is_string($icon) && str_starts_with($icon, 'heroicon-'))
+                                <i class="{{ $fallbackPrimeIcon }} h-6 w-6 {{ $colorClasses }}"></i>
+                            @elseif($isClassIcon)
+                                <i class="{{ $icon }} h-6 w-6 {{ $colorClasses }}"></i>
+                            @else
+                                <x-dynamic-component :component="$icon" class="h-6 w-6 {{ $colorClasses }}" />
+                            @endif
                         </div>
                     @endif
 

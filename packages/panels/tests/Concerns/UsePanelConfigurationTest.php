@@ -98,12 +98,13 @@ it('prefers panelId property when present', function () {
         ->and($payload['brandName'])->toBe('Admin');
 });
 
-it('renders branding with panelConfig and v-html in core templates', function () {
+it('renders branding in core templates with expected strategy', function () {
     $topbarTemplate = file_get_contents(base_path('packages/primix/packages/panels/resources/views/components/topbar.blade.php'));
     $simpleLayoutTemplate = file_get_contents(base_path('packages/primix/packages/panels/resources/views/components/layouts/simple.blade.php'));
 
-    expect($topbarTemplate)->toContain('v-html="panelConfig.brandName"')
-        ->and($topbarTemplate)->toContain('v-html="panelConfig.brandLogo"')
+    expect($topbarTemplate)->toContain('<x-primix::brand')
+        ->and($topbarTemplate)->toContain(':brandName="$brandName"')
+        ->and($topbarTemplate)->toContain(':brandLogo="$brandLogo"')
         ->and($simpleLayoutTemplate)->toContain('v-html="panelConfig.brandName"')
         ->and($simpleLayoutTemplate)->toContain('v-html="panelConfig.brandLogoDark"')
         ->and($simpleLayoutTemplate)->not->toContain('<x-primix::brand');
