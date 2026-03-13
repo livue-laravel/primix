@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Contracts\Support\Arrayable;
 use LiVue\Component;
 use Primix\Support\UI\HasTopbar;
 use Primix\Support\UI\Topbar;
@@ -11,6 +12,44 @@ class TestClassTopbar extends Topbar
         $this->mergeViewData([
             'source' => 'class',
         ]);
+    }
+}
+
+class TestArrayableNavigationItem implements Arrayable
+{
+    public function __construct(
+        protected string $label,
+        protected ?string $route = null,
+        protected ?string $url = null,
+        protected array|string $active = [],
+    ) {}
+
+    public function toArray(): array
+    {
+        return array_filter([
+            'label' => $this->label,
+            'route' => $this->route,
+            'url' => $this->url,
+            'active' => $this->active,
+        ], static fn ($value) => $value !== null);
+    }
+}
+
+class TestObjectNavigationGroup
+{
+    public function __construct(
+        protected string $label,
+        protected array $items,
+    ) {}
+
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    public function getItems(): array
+    {
+        return $this->items;
     }
 }
 
@@ -97,4 +136,67 @@ it('resets topbar cache on hydration', function () {
     expect($second)->toBeInstanceOf(Topbar::class)
         ->and($second)->not->toBe($first)
         ->and($component->buildCount)->toBe(2);
+});
+
+it('normalizes link and grouped navigation payloads', function () {
+    $topbar = Topbar::make()
+        ->mergeViewData([
+            'navigation' => [
+                [
+                    'url' => '/dashboard',
+                    'label' => 'Dashboard',
+                    'isActive' => true,
+                ],
+                [
+                    'label' => 'Settings',
+                    'items' => [
+                        [
+                            'type' => 'sub-group',
+                            'label' => 'General',
+                            'items' => [
+                                [
+                                    'url' => '/settings',
+                                    'label' => 'Preferences',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+    $navigation = $topbar->getViewData()['navigation'];
+
+    expect($navigation)->toHaveCount(2)
+        ->and($navigation[0]['type'])->toBe('link')
+        ->and($navigation[0]['url'])->toBe('/dashboard')
+        ->and($navigation[0]['isActive'])->toBeTrue()
+        ->and($navigation[1]['type'])->toBe('group')
+        ->and($navigation[1]['items'][0]['type'])->toBe('sub-group')
+        ->and($navigation[1]['items'][0]['items'][0]['url'])->toBe('/settings');
+});
+
+it('normalizes object based navigation payloads', function () {
+    $topbar = Topbar::make()
+        ->mergeViewData([
+            'navigation' => [
+                new TestObjectNavigationGroup('Account', [
+                    new TestArrayableNavigationItem(
+                        label: 'Profile',
+                        url: '/account',
+                    ),
+                ]),
+            ],
+        ]);
+
+    $navigation = $topbar->getViewData()['navigation'];
+    $html = $topbar->toHtml();
+
+    expect($navigation)->toHaveCount(1)
+        ->and($navigation[0]['type'])->toBe('group')
+        ->and($navigation[0]['items'][0]['type'])->toBe('link')
+        ->and($navigation[0]['items'][0]['url'])->toBe('/account')
+        ->and($html)->toContain('Account')
+        ->and($html)->toContain('Profile')
+        ->and($html)->toContain('/account');
 });
