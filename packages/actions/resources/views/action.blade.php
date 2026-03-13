@@ -20,13 +20,15 @@
 
     $recordKeyArg = isset($recordKey) && $recordKey !== null ? ", recordKey: '" . addslashes($recordKey) . "'" : '';
     $iconHtml = $icon ? app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') : null;
-    $extraAttributes = $component->getExtraAttributes();
+    $renderableAttributes = $component->getRenderableExtraAttributes('primix-action-button');
+    $buttonClass = $renderableAttributes['class'];
+    $extraAttributes = $renderableAttributes['attributes'];
 @endphp
 
 @if($isSubmit)
     {{-- Submit button for forms --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         type="submit"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
@@ -46,7 +48,7 @@
 @elseif($url && !$requiresConfirmation)
     {{-- Simple link button --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         as="a"
         href="{{ $url }}"
         @if(!$openUrlInNewTab && ($spa ?? false)) :pt="{ root: { 'data-livue-navigate': 'true' } }" @endif
@@ -69,7 +71,7 @@
 @elseif($requiresConfirmation)
     {{-- Button with confirmation dialog --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -89,7 +91,7 @@
 @elseif($isModal)
     {{-- Button that opens modal --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -109,7 +111,7 @@
 @elseif($jsAction)
     {{-- Client-side JavaScript action --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -129,7 +131,7 @@
 @else
     {{-- Simple action button --}}
     <p-button
-        class="primix-action-button"
+        class="{{ $buttonClass }}"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif

@@ -18,10 +18,10 @@ class HeroiconSet implements IconSet
 
     public function render(string $icon, ?string $class = null, ?string $size = null, ?string $style = null): string
     {
-        $classes = '';
+        $sizeClasses = null;
 
         if ($size) {
-            $classes = match ($size) {
+            $sizeClasses = match ($size) {
                 'xs' => 'w-3 h-3',
                 'sm' => 'w-4 h-4',
                 'md' => 'w-5 h-5',
@@ -29,13 +29,12 @@ class HeroiconSet implements IconSet
                 'xl' => 'w-8 h-8',
                 default => 'w-5 h-5',
             };
+        } elseif (! $this->hasDimensionClass($class)) {
+            // Keep heroicons readable by default when only utility classes like "mr-1" are passed.
+            $sizeClasses = 'w-5 h-5';
         }
 
-        if ($class) {
-            $classes .= ($classes ? ' ' : '') . $class;
-        }
-
-        $classes = trim($classes);
+        $classes = trim(implode(' ', array_filter([$sizeClasses, $class])));
 
         // Use blade-icons svg() helper if available (blade-heroicons package)
         if (function_exists('svg')) {
@@ -56,6 +55,15 @@ class HeroiconSet implements IconSet
         $styleAttr = $style ? ' style="' . e($style) . '"' : '';
 
         return '<i class="' . e(trim($mappedIcon . $classAttr)) . '"' . $styleAttr . '></i>';
+    }
+
+    protected function hasDimensionClass(?string $class): bool
+    {
+        if (! is_string($class) || $class === '') {
+            return false;
+        }
+
+        return preg_match('/(?:^|\s)(?:w-|h-|size-)\S+/', $class) === 1;
     }
 
     protected function mapToPrimeIcon(string $icon): string

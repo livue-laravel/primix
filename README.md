@@ -4,11 +4,19 @@ Primix is an admin panel framework for Laravel built on top of LiVue.
 
 ## Installation
 
+Recommended (full Primix framework):
+
 ```bash
 composer require primix/primix:^0.1.0
 ```
 
-Optional multi-tenant package:
+Standalone module installation (advanced / modular setup):
+
+```bash
+composer require primix/panels:^0.1.0
+```
+
+Optional standalone module:
 
 ```bash
 composer require primix/multi-tenant:^0.1.0

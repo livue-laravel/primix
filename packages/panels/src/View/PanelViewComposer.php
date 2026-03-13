@@ -5,7 +5,7 @@ namespace Primix\View;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\View;
 use Illuminate\View\View as ViewInstance;
-use Primix\Navigation\NavigationBuilder;
+use Primix\Layouts\Shell;
 use Primix\PanelRegistry;
 use Primix\Support\Theme\ThemeManager;
 
@@ -31,63 +31,61 @@ class PanelViewComposer
             session(['primix.current_panel' => $panelId]);
         }
 
-        $builder = new NavigationBuilder($panel);
-        $view->with('navigation', $builder->build());
+        $topbarData = app(PanelTopbarDataResolver::class)->resolve($panel, $registry);
+        $navigation = $topbarData['navigation'] ?? [];
         $brandName = $panel->getBrandName();
-        $view->with('brandName', $brandName instanceof Htmlable ? $brandName->toHtml() : ($brandName === null ? null : e($brandName)));
+        $resolvedBrandName = $brandName instanceof Htmlable ? $brandName->toHtml() : ($brandName === null ? null : e($brandName));
+        $topBarNavigation = (bool) ($topbarData['topBarNavigation'] ?? false);
+        $fixedTopbar = (bool) ($topbarData['fixedTopbar'] ?? true);
+        $hasDarkMode = (bool) ($topbarData['hasDarkMode'] ?? true);
+        $userMenu = $topbarData['userMenu'] ?? [];
+
+        $view->with('navigation', $navigation);
+        $view->with('brandName', $resolvedBrandName);
         $view->with('brandLogo', $panel->getBrandLogo());
         $view->with('brandLogoDark', $panel->getBrandLogoDark());
-        $view->with('topBarNavigation', $panel->hasTopBarNavigation());
-        $view->with('fixedTopbar', $panel->hasFixedTopbar());
-        $view->with('hasDarkMode', $panel->hasDarkMode());
-        $view->with('userMenu', $panel->buildUserMenu()->toArray());
+        $view->with('topBarNavigation', $topBarNavigation);
+        $view->with('fixedTopbar', $fixedTopbar);
+        $view->with('hasDarkMode', $hasDarkMode);
+        $view->with('userMenu', $userMenu);
         $view->with('panelId', $panelId);
         $view->with('favicon', $panel->getFavicon());
 
-        // Tenant menu
-        $hasTenantMenu = false;
-        $tenantMenu = [];
+        $view->with('showPanelSwitcher', $topbarData['showPanelSwitcher'] ?? true);
+        $view->with('showUserMenu', $topbarData['showUserMenu'] ?? true);
+        $view->with('hasTenantMenu', $topbarData['hasTenantMenu'] ?? false);
+        $view->with('tenantMenu', $topbarData['tenantMenu'] ?? []);
+        $view->with('hasGlobalSearch', $topbarData['hasGlobalSearch'] ?? false);
+        $view->with('globalSearchMode', $topbarData['globalSearchMode'] ?? 'spotlight');
+        $view->with('hasDatabaseNotifications', $topbarData['hasDatabaseNotifications'] ?? false);
+        $view->with('databaseNotificationsMode', $topbarData['databaseNotificationsMode'] ?? 'popup');
+        $view->with('databaseNotificationsPollingInterval', $topbarData['databaseNotificationsPollingInterval'] ?? 30);
 
-        if ($panel->hasTenantMenu()) {
-            if (app()->bound(\Primix\MultiTenant\Contracts\TenancyManagerContract::class)) {
-                $tenancy = app(\Primix\MultiTenant\Contracts\TenancyManagerContract::class);
-                if ($tenancy->initialized()) {
-                    $hasTenantMenu = true;
-                    $tenantMenu = $panel->buildTenantMenu()->toArray();
-                }
-            }
-        }
-
-        $view->with('hasTenantMenu', $hasTenantMenu);
-        $view->with('tenantMenu', $tenantMenu);
-
-        // Global search
-        $hasSearchableResources = count(array_filter(
-            $panel->getResources(),
-            fn (string $resource) => $resource::isGloballySearchable()
-        )) > 0;
-
-        $hasCrossPanelSearchable = false;
-        if ($panel->hasCrossPanelSearch() || $registry->isCrossPanelSearchEnabled()) {
-            foreach ($registry->all() as $otherPanel) {
-                if ($otherPanel->getId() === $panel->getId()) continue;
-
-                foreach ($otherPanel->getResources() as $resource) {
-                    if ($resource::isGloballySearchable()) {
-                        $hasCrossPanelSearchable = true;
-                        break 2;
-                    }
-                }
-            }
-        }
-
-        $view->with('hasGlobalSearch', $panel->hasGlobalSearch() && ($hasSearchableResources || $hasCrossPanelSearchable));
-        $view->with('globalSearchMode', $panel->getGlobalSearchMode()->value);
-
-        // Database notifications
-        $view->with('hasDatabaseNotifications', $panel->hasDatabaseNotifications());
-        $view->with('databaseNotificationsMode', $panel->getDatabaseNotificationsMode()->value);
-        $view->with('databaseNotificationsPollingInterval', $panel->getDatabaseNotificationsPollingInterval());
+        $view->with('shell', Shell::make()
+            ->navigation($navigation)
+            ->brandName($brandName)
+            ->brandLogo($panel->getBrandLogo())
+            ->brandLogoDark($panel->getBrandLogoDark())
+            ->topbar()
+            ->sidebar()
+            ->panelSwitcher($topbarData['showPanelSwitcher'] ?? true)
+            ->userMenu($userMenu, $topbarData['showUserMenu'] ?? true)
+            ->topBarNavigation($topBarNavigation)
+            ->fixedTopbar($fixedTopbar)
+            ->darkMode($hasDarkMode)
+            ->spa($panel->hasSpa())
+            ->globalSearch($topbarData['hasGlobalSearch'] ?? false, $topbarData['globalSearchMode'] ?? 'spotlight')
+            ->panelId($panelId)
+            ->tenantMenu($topbarData['tenantMenu'] ?? [], $topbarData['hasTenantMenu'] ?? false)
+            ->databaseNotifications(
+                $topbarData['hasDatabaseNotifications'] ?? false,
+                $topbarData['databaseNotificationsMode'] ?? 'popup',
+                $topbarData['databaseNotificationsPollingInterval'] ?? 30
+            )
+            ->maxContentWidth($panel->getMaxContentWidth())
+            ->notifications()
+            ->notificationManager()
+            ->favicon($panel->getFavicon()));
 
         View::share('spa', $panel->hasSpa());
 

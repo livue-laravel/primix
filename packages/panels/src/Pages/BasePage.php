@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use LiVue\Component;
+use Primix\Concerns\HasLayout;
 use Primix\Concerns\HasRenderHooks;
 use Primix\Concerns\UseDatabaseNotifications;
 use Primix\PanelRegistry;
@@ -13,6 +14,7 @@ use Primix\PanelRegistry;
 abstract class BasePage extends Component
 {
     use UseDatabaseNotifications;
+    use HasLayout;
     use HasRenderHooks;
 
     protected static ?string $slug = null;

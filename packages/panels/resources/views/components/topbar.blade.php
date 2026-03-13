@@ -56,10 +56,12 @@
 
         {{-- Right side: panel switcher + dark mode + profile --}}
         <div class="flex items-center gap-x-4 lg:gap-x-6">
-            <x-primix::panel-switcher
-                :panels="app(\Primix\PanelRegistry::class)->all()"
-                :currentPanelId="app(\Primix\PanelRegistry::class)->getCurrentPanelId()"
-            />
+            @if($showPanelSwitcher)
+                <x-primix::panel-switcher
+                    :panels="app(\Primix\PanelRegistry::class)->all()"
+                    :currentPanelId="app(\Primix\PanelRegistry::class)->getCurrentPanelId()"
+                />
+            @endif
 
             {{-- Tenant menu --}}
             @if($hasTenantMenu)
@@ -95,7 +97,9 @@
 
             {{-- User menu dropdown --}}
             @renderHook(\Primix\Enums\PanelsRenderHook::USER_MENU_BEFORE)
-            <primix-user-menu :user-menu="userMenu" :spa="spa" csrf-token="{{ csrf_token() }}"></primix-user-menu>
+            @if($showUserMenu)
+                <primix-user-menu :user-menu="userMenu" :spa="spa" csrf-token="{{ csrf_token() }}"></primix-user-menu>
+            @endif
             @renderHook(\Primix\Enums\PanelsRenderHook::USER_MENU_AFTER)
         </div>
 

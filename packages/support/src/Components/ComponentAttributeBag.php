@@ -80,6 +80,18 @@ class ComponentAttributeBag implements Stringable
         return $this->attributes;
     }
 
+    public function except(string|array $keys): static
+    {
+        $keys = is_array($keys) ? $keys : [$keys];
+        $keys = array_fill_keys($keys, true);
+
+        return new static(array_filter(
+            $this->attributes,
+            fn (mixed $value, mixed $key): bool => ! isset($keys[$key]),
+            ARRAY_FILTER_USE_BOTH
+        ));
+    }
+
     public function toHtml(): string
     {
         return collect($this->attributes)

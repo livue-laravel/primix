@@ -38,6 +38,10 @@ class Topbar extends Component
 
     public array $userMenu = [];
 
+    public bool $showPanelSwitcher = true;
+
+    public bool $showUserMenu = true;
+
     public bool $hasGlobalSearch = false;
 
     public string $globalSearchMode = 'spotlight';

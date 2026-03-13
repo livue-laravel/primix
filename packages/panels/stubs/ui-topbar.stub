@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Support\UI\Topbar;
+
+class {{ class }} extends Topbar
+{
+    protected function setUp(): void
+    {
+        $this->view('{{ topbarView }}');
+    }
+}

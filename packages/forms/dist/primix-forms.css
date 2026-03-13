@@ -93,6 +93,7 @@
 /* Grid items - column span (using longhand to not conflict with column-start) */
 
 .primix-grid > .primix-grid-item {
+    min-width: 0;
     grid-column-end: span var(--col-span, 1);
 }
 

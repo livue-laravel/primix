@@ -38,4 +38,33 @@ trait HasExtraAttributes
 
         return new ComponentAttributeBag($attributes);
     }
+
+    /**
+     * @return array{class: string, attributes: ComponentAttributeBag}
+     */
+    public function getRenderableExtraAttributes(string $baseClass = ''): array
+    {
+        return $this->prepareRenderableAttributes($this->getExtraAttributes(), $baseClass);
+    }
+
+    /**
+     * @return array{class: string, attributes: ComponentAttributeBag}
+     */
+    public function getRenderableExtraWrapperAttributes(string $baseClass = ''): array
+    {
+        return $this->prepareRenderableAttributes($this->getExtraWrapperAttributes(), $baseClass);
+    }
+
+    /**
+     * @return array{class: string, attributes: ComponentAttributeBag}
+     */
+    protected function prepareRenderableAttributes(ComponentAttributeBag $attributes, string $baseClass = ''): array
+    {
+        $class = trim($baseClass . ' ' . (string) ($attributes->get('class') ?? ''));
+
+        return [
+            'class' => $class,
+            'attributes' => $attributes->except('class'),
+        ];
+    }
 }

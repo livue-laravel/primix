@@ -11,7 +11,7 @@ it('sidebar template keeps full viewport height under topbar and enables interna
 });
 
 it('panel layout keeps a minimum screen height for sidebar/content shell', function () {
-    $template = file_get_contents(dirname(__DIR__, 2) . '/resources/views/components/layouts/panel.blade.php');
+    $template = file_get_contents(dirname(__DIR__, 2) . '/resources/views/components/layouts/shell.blade.php');
 
     expect($template)->toContain("'flex w-full min-h-screen'");
 });

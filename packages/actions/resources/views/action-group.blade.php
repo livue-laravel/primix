@@ -3,6 +3,13 @@
 
     $uniqueId = 'action_group_' . ($component->getId() ?? uniqid());
     $jsRefName = \Illuminate\Support\Str::camel($uniqueId);
+    $renderableAttributes = $component->getRenderableExtraAttributes('primix-action-button');
+    $buttonClass = $renderableAttributes['class'];
+    $buttonAttributes = $renderableAttributes['attributes'];
+
+    $renderableWrapperAttributes = $component->getRenderableExtraWrapperAttributes('primix-action-group');
+    $wrapperClass = $renderableWrapperAttributes['class'];
+    $wrapperAttributes = $renderableWrapperAttributes['attributes'];
 @endphp
 
 @if($component->isSpeedDial())
@@ -16,10 +23,12 @@
         })->values()->all();
     @endphp
     <p-speed-dial
+        class="{{ $wrapperClass }}"
         :model="{!! \Illuminate\Support\Js::from($speedDialItems) !!}"
         direction="{{ $component->getSpeedDialDirection() }}"
         type="{{ $component->getSpeedDialType() }}"
         @if($icon) :button-props="{ icon: '{{ $icon }}', severity: '{{ $severity ?? 'secondary' }}' }" @endif
+        {!! $wrapperAttributes !!}
     ></p-speed-dial>
 @elseif($isDropdown)
     {{-- Dropdown menu with button --}}
@@ -28,9 +37,9 @@
         return { {{ $jsRefName }}: {{ $jsRefName }} };
     </script>
 
-    <div class="primix-action-group inline-flex">
+    <div class="{{ trim($wrapperClass . ' inline-flex') }}" {!! $wrapperAttributes !!}>
         <p-button
-            class="primix-action-button"
+            class="{{ $buttonClass }}"
             type="button"
             @if($label) label="{{ $label }}" @endif
             @if($severity) severity="{{ $severity }}" @endif
@@ -39,6 +48,7 @@
             rounded
             @click="{{ $jsRefName }}.toggle($event)"
             aria-haspopup="true"
+            {!! $buttonAttributes !!}
         >@if($icon)<template #icon>{!! app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') !!}</template>@endif</p-button>
 
         <p-menu
@@ -70,7 +80,7 @@
     </div>
 @else
     {{-- Button group (inline) --}}
-    <p-button-group class="primix-action-group">
+    <p-button-group class="{{ $wrapperClass }}" {!! $wrapperAttributes !!}>
         @foreach($actions as $action)
             {{ $action }}
         @endforeach
