@@ -1,0 +1,14 @@
+<?php
+
+namespace {{ namespace }};
+
+use Primix\Support\UI\Sidebar;
+
+class {{ class }} extends Sidebar
+{
+    protected function setUp(): void
+    {
+        $this->view('{{ sidebarView }}');
+    }
+}
+

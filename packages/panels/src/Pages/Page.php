@@ -8,14 +8,18 @@ use Primix\Concerns\HasWidgets;
 use Primix\Facades\Primix;
 use Primix\PanelRegistry;
 use Primix\Support\Enums\Width;
+use Primix\Support\UI\HasSidebar;
 use Primix\Support\UI\HasTopbar;
+use Primix\Support\UI\Sidebar;
 use Primix\Support\UI\Topbar;
+use Primix\View\PanelSidebarDataResolver;
 use Primix\View\PanelTopbarDataResolver;
 
 #[Layout('primix::components.layouts.panel')]
 abstract class Page extends SimplePage
 {
     use HasPageActions;
+    use HasSidebar;
     use HasTopbar;
     use HasWidgets;
 
@@ -79,8 +83,24 @@ abstract class Page extends SimplePage
     {
         return [
             'maxContentWidth' => $this->getMaxContentWidth(),
+            'sidebar' => $this->sidebar,
             'topbar' => $this->topbar,
         ];
+    }
+
+    public function sidebar(Sidebar $sidebar): Sidebar
+    {
+        $panel = Primix::getCurrentPanel();
+
+        if ($panel === null) {
+            return $sidebar->view(null);
+        }
+
+        $payload = app(PanelSidebarDataResolver::class)->resolve($panel);
+
+        return $sidebar
+            ->view('primix::ui.panel-sidebar')
+            ->viewData($payload);
     }
 
     public function topbar(Topbar $topbar): Topbar

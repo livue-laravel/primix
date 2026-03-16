@@ -34,6 +34,13 @@ function buildMakeUiTopbarCommand(array $input): MakeUiTopbarCommand
 {
     $command = new MakeUiTopbarCommand(new \Illuminate\Filesystem\Filesystem());
     $app = new FakeConsoleApplication();
+    $app->instance('config', new \Illuminate\Config\Repository([
+        'auth' => [
+            'defaults' => ['guard' => 'web'],
+            'guards' => ['web' => ['provider' => 'users']],
+            'providers' => ['users' => ['model' => 'App\\Models\\User']],
+        ],
+    ]));
 
     Container::setInstance($app);
     $command->setLaravel($app);

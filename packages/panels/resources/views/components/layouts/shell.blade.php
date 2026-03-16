@@ -1,5 +1,6 @@
 @props([
     'layout' => null,
+    'sidebar' => null,
     'topbar' => null,
 ])
 
@@ -38,6 +39,7 @@
     $maxContentWidth = $layoutConfig['maxContentWidth'] ?? ($maxContentWidth ?? \Primix\Support\Enums\Width::SevenExtraLarge);
     $resolvedTitle = $layoutConfig['title'] ?? ($title ?? null);
     $resolvedFavicon = $layoutConfig['favicon'] ?? ($favicon ?? null);
+    $resolvedSidebar = $layoutConfig['sidebar'] ?? ($sidebar ?? null);
     $resolvedTopbar = $layoutConfig['topbar'] ?? ($topbar ?? null);
 @endphp
 
@@ -59,14 +61,18 @@
         $topbarPt => $showTopbar && $fixedTopbar,
     ])>
         @if($showSidebar && ! $topBarNavigation)
-            @livue('primix-sidebar', [
-                'navigation' => $navigation,
-                'brandName' => $brandName,
-                'brandLogo' => $brandLogo,
-                'brandLogoDark' => $brandLogoDark,
-                'spa' => $spa,
-                'panelId' => $panelId,
-            ])
+            @if($resolvedSidebar instanceof \Illuminate\Contracts\Support\Htmlable)
+                {{ $resolvedSidebar }}
+            @else
+                @livue('primix-sidebar', [
+                    'navigation' => $navigation,
+                    'brandName' => $brandName,
+                    'brandLogo' => $brandLogo,
+                    'brandLogoDark' => $brandLogoDark,
+                    'spa' => $spa,
+                    'panelId' => $panelId,
+                ])
+            @endif
         @endif
 
         <div class="flex w-full flex-grow">

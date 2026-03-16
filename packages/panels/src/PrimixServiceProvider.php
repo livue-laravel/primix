@@ -72,6 +72,7 @@ class PrimixServiceProvider extends ServiceProvider
                 Commands\MakePluginCommand::class,
                 Commands\MakePolicyCommand::class,
                 Commands\MakeDashboardCommand::class,
+                Commands\MakeUiSidebarCommand::class,
                 Commands\MakeUiTopbarCommand::class,
             ]);
         }
