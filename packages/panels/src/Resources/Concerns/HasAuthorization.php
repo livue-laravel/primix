@@ -87,4 +87,17 @@ trait HasAuthorization
 
         return Gate::allows('restoreAny', static::getModel());
     }
+
+    public static function canClone(Model $record): bool
+    {
+        if (Gate::getPolicyFor($record) === null) {
+            return static::canCreate();
+        }
+
+        if (Gate::has('replicate', $record)) {
+            return Gate::allows('replicate', $record);
+        }
+
+        return static::canCreate();
+    }
 }
