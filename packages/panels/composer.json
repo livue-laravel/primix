@@ -1,5 +1,5 @@
 {
-    "name": "primix/panels",
+    "name": "primix/primix",
     "description": "Primix - Admin panel framework for Laravel based on LiVue",
     "type": "library",
     "license": "MIT",

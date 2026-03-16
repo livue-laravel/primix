@@ -20,17 +20,6 @@
         "illuminate/support": "^12.0",
         "livue/livue": "^1.5.0"
     },
-    "replace": {
-        "primix/actions": "self.version",
-        "primix/details": "self.version",
-        "primix/forms": "self.version",
-        "primix/multi-tenant": "self.version",
-        "primix/notifications": "self.version",
-        "primix/panels": "self.version",
-        "primix/support": "self.version",
-        "primix/tables": "self.version",
-        "primix/widgets": "self.version"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {

@@ -10,7 +10,6 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\TagVersionReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
-use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
 
 return static function (MBConfig $mbConfig): void {
     // Directories to discover packages from
@@ -43,8 +42,6 @@ return static function (MBConfig $mbConfig): void {
     $mbConfig->workers([
         // First, update internal dependency versions
         SetCurrentMutualDependenciesReleaseWorker::class,
-        // Update the replace section in root composer.json
-        UpdateReplaceReleaseWorker::class,
         // Create the tag
         TagVersionReleaseWorker::class,
         // Push the tag
