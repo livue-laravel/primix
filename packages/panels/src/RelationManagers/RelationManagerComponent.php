@@ -102,8 +102,9 @@ class RelationManagerComponent extends Component
             $table = $manager::table($table->query($this->getRelationQuery()));
         }
 
-        // Enable inline create by default unless explicitly configured
-        if (! $table->isInlineCreateExplicitlyConfigured()) {
+        // In embedded mode, enable inline create by default unless explicitly disabled.
+        // In detached mode (standalone on page), leave the manager's own configuration intact.
+        if ($this->embedded && ! $table->isInlineCreateExplicitlyConfigured()) {
             $table->inlineCreate();
         }
 

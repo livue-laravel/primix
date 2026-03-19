@@ -11,6 +11,8 @@ abstract class RelationManager
 
     protected static ?string $recordTitleAttribute = null;
 
+    protected static ?string $title = null;
+
     abstract public static function form(Form $form): Form;
 
     abstract public static function table(Table $table): Table;
@@ -23,5 +25,14 @@ abstract class RelationManager
     public static function getRecordTitleAttribute(): ?string
     {
         return static::$recordTitleAttribute;
+    }
+
+    public static function getTitle(): string
+    {
+        return static::$title ?? str(class_basename(static::class))
+            ->beforeLast('RelationManager')
+            ->plural()
+            ->headline()
+            ->toString();
     }
 }

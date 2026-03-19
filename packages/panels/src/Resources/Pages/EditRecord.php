@@ -11,11 +11,13 @@ use Primix\Notifications\Notification;
 use Primix\Resources\Actions\DeleteAction;
 use Primix\Resources\Actions\ForceDeleteAction;
 use Primix\Resources\Actions\RestoreAction;
+use Primix\Resources\Concerns\HasRelationManagers;
 
 class EditRecord extends Page
 {
     use HandlesRelationTableModals;
     use HasForms;
+    use HasRelationManagers;
 
     protected function getHeaderActions(): array
     {

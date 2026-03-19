@@ -159,6 +159,11 @@ abstract class Resource
         return [];
     }
 
+    public static function getRelationManagers(): array
+    {
+        return [];
+    }
+
     abstract public static function getPages(): array;
 
     public static function hasPage(string $name): bool

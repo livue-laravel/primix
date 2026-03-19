@@ -29,10 +29,12 @@ use Primix\Resources\Resource;
 use Primix\Resources\Actions\DeleteAction;
 use Primix\Resources\Actions\ForceDeleteAction;
 use Primix\Resources\Actions\RestoreAction;
+use Primix\Resources\Concerns\HasRelationManagers;
 
 class ViewRecord extends Page
 {
     use HasDetails;
+    use HasRelationManagers;
 
     protected function getHeaderActions(): array
     {
