@@ -15,6 +15,15 @@ abstract class IdentificationMiddleware
 
     public function handle(Request $request, Closure $next): Response
     {
+        $tenant = $this->resolveTenant($request);
+
+        Tenancy::initialize($tenant);
+
+        return $next($request);
+    }
+
+    protected function resolveTenant(Request $request): \Primix\MultiTenant\Contracts\TenantContract
+    {
         try {
             $tenant = $this->getResolver()->resolve($request);
         } catch (\Throwable) {
@@ -25,9 +34,7 @@ abstract class IdentificationMiddleware
             throw new NotFoundHttpException('Tenant not found.');
         }
 
-        Tenancy::initialize($tenant);
-
-        return $next($request);
+        return $tenant;
     }
 
     public function terminate(Request $request, Response $response): void

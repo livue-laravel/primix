@@ -9,7 +9,6 @@ use Primix\MultiTenant\Contracts\TenantResolver;
 use Primix\MultiTenant\Facades\Tenancy;
 use Primix\MultiTenant\Resolvers\PathTenantResolver;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class InitializeTenancyByPath extends IdentificationMiddleware
 {
@@ -20,11 +19,7 @@ class InitializeTenancyByPath extends IdentificationMiddleware
 
     public function handle(Request $request, Closure $next): Response
     {
-        $tenant = $this->getResolver()->resolve($request);
-
-        if ($tenant === null) {
-            throw new NotFoundHttpException('Tenant not found.');
-        }
+        $tenant = $this->resolveTenant($request);
 
         Tenancy::initialize($tenant);
 
