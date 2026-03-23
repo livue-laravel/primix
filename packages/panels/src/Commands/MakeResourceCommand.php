@@ -25,6 +25,8 @@ class MakeResourceCommand extends GeneratorCommand
         return $rootNamespace . '\\Primix\\Resources';
     }
 
+    protected bool $withView = false;
+
     protected function buildClass($name): string
     {
         $stub = parent::buildClass($name);
@@ -37,7 +39,13 @@ class MakeResourceCommand extends GeneratorCommand
         $stub = str_replace('{{ listPage }}', "List{$modelPlural}", $stub);
         $stub = str_replace('{{ createPage }}', "Create{$model}", $stub);
         $stub = str_replace('{{ editPage }}', "Edit{$model}", $stub);
-        $stub = str_replace('{{ viewPage }}', "View{$model}", $stub);
+
+        $viewEntry = $this->withView
+            ? "\n            'view' => {{ class }}\\Pages\\View{$model}::route('/{record}'),"
+            : '';
+
+        $stub = str_replace('{{ viewPageEntry }}', $viewEntry, $stub);
+        $stub = str_replace('{{ class }}', $name, $stub);
 
         return $stub;
     }
@@ -46,6 +54,10 @@ class MakeResourceCommand extends GeneratorCommand
     {
         if ($this->option('generate')) {
             $this->components->warn('The --generate option is deprecated. Use --model / -M instead.');
+        }
+
+        if (! $this->option('simple')) {
+            $this->withView = $this->confirm('Would you like to generate a ViewRecord page?', false);
         }
 
         $result = parent::handle();
@@ -137,10 +149,13 @@ class MakeResourceCommand extends GeneratorCommand
 
         $pages = [
             "List{$modelPlural}" => 'resource-page-list.stub',
-            "Create{$model}" => 'resource-page-create.stub',
-            "Edit{$model}" => 'resource-page-edit.stub',
-            "View{$model}" => 'resource-page-view.stub',
+            "Create{$model}"     => 'resource-page-create.stub',
+            "Edit{$model}"       => 'resource-page-edit.stub',
         ];
+
+        if ($this->withView) {
+            $pages["View{$model}"] = 'resource-page-view.stub';
+        }
 
         foreach ($pages as $className => $stubFile) {
             $stubPath = __DIR__ . '/../../stubs/' . $stubFile;

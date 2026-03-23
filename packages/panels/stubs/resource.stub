@@ -37,8 +37,7 @@ class {{ class }} extends Resource
         return [
             'index' => {{ class }}\Pages\{{ listPage }}::route('/'),
             'create' => {{ class }}\Pages\{{ createPage }}::route('/create'),
-            'edit' => {{ class }}\Pages\{{ editPage }}::route('/{record}/edit'),
-            'view' => {{ class }}\Pages\{{ viewPage }}::route('/{record}'),
+            'edit' => {{ class }}\Pages\{{ editPage }}::route('/{record}/edit'),{{ viewPageEntry }}
         ];
     }
 }
