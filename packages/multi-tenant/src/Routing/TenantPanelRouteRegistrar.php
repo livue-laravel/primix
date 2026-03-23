@@ -53,7 +53,7 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         }
 
         // Landing route: redirects to first tenant or creation page (central domain only)
-        $landingRoute = Route::get($panel->getPath(), function () use ($panel) {
+        $landingRoute = Route::get($panel->getPath(), function () use ($panel, $identification) {
             $user = auth()->guard($panel->getAuthGuard())->user();
 
             if ($user && method_exists($user, 'tenants')) {
@@ -100,6 +100,18 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
                 ->group(function () use ($panel, $panelId) {
                     if ($panel->hasLogin()) {
                         $this->registerPageRoute($panel->getLoginPage(), $panelId);
+
+                        // Logout under tenant prefix so URL::defaults is set when
+                        // getLoginUrl() generates the post-logout redirect URL.
+                        Route::post('logout', function () use ($panel) {
+                            auth()->guard($panel->getAuthGuard())->logout();
+                            session()->invalidate();
+                            session()->regenerateToken();
+
+                            return redirect($panel->getLoginUrl());
+                        })
+                            ->name('logout')
+                            ->middleware($panel->getAuthMiddleware());
                     }
 
                     if ($panel->hasRegistration()) {
