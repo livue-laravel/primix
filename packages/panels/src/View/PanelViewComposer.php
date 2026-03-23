@@ -51,7 +51,7 @@ class PanelViewComposer
         $view->with('panelId', $panelId);
         $view->with('favicon', $panel->getFavicon());
 
-        $view->with('showPanelSwitcher', $topbarData['showPanelSwitcher'] ?? true);
+        $view->with('showPanelSwitcher', $topbarData['showPanelSwitcher'] ?? false);
         $view->with('showUserMenu', $topbarData['showUserMenu'] ?? true);
         $view->with('hasTenantMenu', $topbarData['hasTenantMenu'] ?? false);
         $view->with('tenantMenu', $topbarData['tenantMenu'] ?? []);
@@ -68,7 +68,7 @@ class PanelViewComposer
             ->brandLogoDark($panel->getBrandLogoDark())
             ->topbar()
             ->sidebar()
-            ->panelSwitcher($topbarData['showPanelSwitcher'] ?? true)
+            ->panelSwitcher($topbarData['showPanelSwitcher'] ?? false)
             ->userMenu($userMenu, $topbarData['showUserMenu'] ?? true)
             ->topBarNavigation($topBarNavigation)
             ->fixedTopbar($fixedTopbar)

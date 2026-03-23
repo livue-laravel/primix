@@ -68,7 +68,7 @@ class PanelTopbarDataResolver
             'spa' => $panel->hasSpa(),
             'hasDarkMode' => $panel->hasDarkMode(),
             'userMenu' => $panel->buildUserMenu()->toArray(),
-            'showPanelSwitcher' => true,
+            'showPanelSwitcher' => false,
             'showUserMenu' => true,
             'hasGlobalSearch' => $hasGlobalSearch,
             'globalSearchMode' => $panel->getGlobalSearchMode()->value,
