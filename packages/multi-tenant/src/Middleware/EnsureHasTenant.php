@@ -28,7 +28,7 @@ class EnsureHasTenant
         $tenant = $tenancy->tenant();
 
         $belongs = $user->tenants()
-            ->where($tenant->getTenantKeyName(), $tenant->getTenantKey())
+            ->where($tenant->getTable() . '.' . $tenant->getTenantKeyName(), $tenant->getTenantKey())
             ->exists();
 
         if (! $belongs) {
