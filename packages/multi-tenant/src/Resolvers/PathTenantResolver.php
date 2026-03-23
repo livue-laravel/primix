@@ -10,7 +10,7 @@ class PathTenantResolver implements TenantResolver
 {
     public function resolve(Request $request): ?TenantContract
     {
-        $parameter = config('multi-tenant.identification.path_parameter', 'tenant');
+        $parameter = config('multi-tenant.panel.route_parameter', 'tenant');
         $tenantKey = $request->route($parameter);
 
         if ($tenantKey === null) {
