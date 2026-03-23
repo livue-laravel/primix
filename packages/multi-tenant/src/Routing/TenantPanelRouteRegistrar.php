@@ -18,6 +18,8 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         parent::registerAuthRoutes($panel);
 
         $panelId = $panel->getId();
+        $identification = $panel->getTenantIdentification()
+            ?? config('multi-tenant.identification.default', 'path');
 
         // Auth middleware without tenancy and without EnsureHasTenant (to avoid redirect loops)
         $authMiddleware = $panel->getMiddleware();
@@ -51,9 +53,6 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         }
 
         // Landing route: redirects to first tenant or creation page (central domain only)
-        $identification = $panel->getTenantIdentification()
-            ?? config('multi-tenant.identification.default', 'path');
-
         $landingRoute = Route::get($panel->getPath(), function () use ($panel) {
             $user = auth()->guard($panel->getAuthGuard())->user();
 
@@ -85,6 +84,34 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
                 $landingRoute->domain($centralDomain);
             }
         }
+
+        // For path identification: also register auth routes under /{tenant}/{panel} prefix.
+        // These override the central route names so that route() generates tenant-aware URLs
+        // (e.g. /apple/admin/login instead of /admin/login). They carry InitializeTenancyByPath
+        // for tenant context but NOT Authenticate (to avoid redirect loops).
+        if ($identification === 'path') {
+            $routeParameter = config('multi-tenant.panel.route_parameter', 'tenant');
+            $tenantPrefix = '{' . $routeParameter . '}/' . $panel->getPath();
+            $webMiddleware = array_merge($panel->getMiddleware(), [InitializeTenancyByPath::class]);
+
+            Route::prefix($tenantPrefix)
+                ->middleware($webMiddleware)
+                ->name("primix.{$panelId}.")
+                ->group(function () use ($panel, $panelId) {
+                    if ($panel->hasLogin()) {
+                        $this->registerPageRoute($panel->getLoginPage(), $panelId);
+                    }
+
+                    if ($panel->hasRegistration()) {
+                        $this->registerPageRoute($panel->getRegistrationPage(), $panelId);
+                    }
+
+                    if ($panel->hasPasswordReset()) {
+                        $this->registerPageRoute($panel->getRequestPasswordResetPage(), $panelId);
+                        $this->registerPageRoute($panel->getResetPasswordPage(), $panelId);
+                    }
+                });
+        }
     }
 
     public function registerPanelRoutes(Panel $panel): void
@@ -93,12 +120,13 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         $identification = $panel->getTenantIdentification()
             ?? config('multi-tenant.identification.default', 'path');
 
-        $middleware = array_merge(
-            $panel->getMiddleware(),
-            $panel->getAuthMiddleware(),
-        );
+        $tenancyMiddleware = $this->resolveMiddleware($identification);
 
-        $middleware[] = $this->resolveMiddleware($identification);
+        // For path identification, InitializeTenancyByPath must run BEFORE Authenticate
+        // so that URL::defaults is set when Authenticate generates the login redirect URL.
+        $middleware = $identification === 'path'
+            ? array_merge($panel->getMiddleware(), [$tenancyMiddleware], $panel->getAuthMiddleware())
+            : array_merge($panel->getMiddleware(), $panel->getAuthMiddleware(), [$tenancyMiddleware]);
 
         $prefix = $this->resolvePrefix($panel, $identification);
 
@@ -153,7 +181,7 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         if ($identification === 'path') {
             $routeParameter = config('multi-tenant.panel.route_parameter', 'tenant');
 
-            return $panel->getPath() . '/{' . $routeParameter . '}';
+            return '{' . $routeParameter . '}/' . $panel->getPath();
         }
 
         // For domain/subdomain/request_data, no tenant segment in the path
