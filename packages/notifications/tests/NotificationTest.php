@@ -1,7 +1,5 @@
 <?php
 
-uses(Tests\TestCase::class);
-
 use Primix\Notifications\Notification;
 
 // ============================================================

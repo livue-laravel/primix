@@ -181,6 +181,30 @@ it('closure returning false keeps spa disabled', function () {
 });
 
 // ============================================================
+// Core Properties — workspace
+// ============================================================
+
+it('uses global workspace configuration when panel setting is not defined', function () {
+    app()->instance('config', new \Illuminate\Config\Repository([
+        'primix.workspace.enabled' => true,
+    ]));
+
+    expect(Panel::make('test')->hasWorkspace())->toBeTrue()
+        ->and(Panel::make('test')->hasWorkspaceSetting())->toBeFalse();
+});
+
+it('can enable workspace on panel', function () {
+    $panel = Panel::make('test')->workspace();
+
+    expect($panel->hasWorkspace())->toBeTrue()
+        ->and($panel->hasWorkspaceSetting())->toBeTrue();
+});
+
+it('supports closure for workspace', function () {
+    expect(Panel::make('test')->workspace(fn () => false)->hasWorkspace())->toBeFalse();
+});
+
+// ============================================================
 // Core Properties — darkMode
 // ============================================================
 

@@ -27,9 +27,9 @@ it('has empty slug for root url', function () {
     expect($prop->getDefaultValue())->toBe('');
 });
 
-it('has Dashboard as title', function () {
-    $ref = new ReflectionClass(Dashboard::class);
-    $prop = $ref->getProperty('title');
+it('has Dashboard as title set in mount', function () {
+    $dashboard = new Dashboard();
+    $dashboard->mount();
 
-    expect($prop->getDefaultValue())->toBe('Dashboard');
+    expect($dashboard->title)->toBe('Dashboard');
 });

@@ -69,6 +69,13 @@ it('spa queues entry', function () {
         ->and($entry['args'])->toBe([true]);
 });
 
+it('workspace queues entry', function () {
+    $entry = PanelConfiguration::make()->workspace(true)->getEntries()[0];
+
+    expect($entry['method'])->toBe('workspace')
+        ->and($entry['args'])->toBe([true]);
+});
+
 // ============================================================
 // Auth Pages
 // ============================================================

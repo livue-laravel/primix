@@ -3,6 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Primix\Details\Details;
 use Primix\Forms\Form;
+use Primix\Panel;
+use Primix\PanelRegistry;
 use Primix\Pages\PageRegistration;
 use Primix\Tables\Table;
 
@@ -43,6 +45,44 @@ class NoModelTestResource extends \Primix\Resources\Resource
 class ProductVariantTestResource extends \Primix\Resources\Resource
 {
     protected static ?string $model = ProductVariant::class;
+
+    public static function getPages(): array
+    {
+        return [];
+    }
+}
+
+class WorkspaceEnabledTestResource extends \Primix\Resources\Resource
+{
+    protected static ?string $model = ResourceTestModel::class;
+    protected static ?bool $workspace = true;
+
+    public static function getPages(): array
+    {
+        return [];
+    }
+}
+
+class WorkspaceDisabledTestResource extends \Primix\Resources\Resource
+{
+    protected static ?string $model = ResourceTestModel::class;
+    protected static ?bool $workspace = false;
+
+    public static function getPages(): array
+    {
+        return [];
+    }
+}
+
+class WorkspaceMethodEnabledTestResource extends \Primix\Resources\Resource
+{
+    protected static ?string $model = ResourceTestModel::class;
+    protected static ?bool $workspace = false;
+
+    public static function workspace(): bool|\Closure|null
+    {
+        return true;
+    }
 
     public static function getPages(): array
     {
@@ -172,6 +212,55 @@ it('registers navigation by default', function () {
 
 it('can disable navigation registration', function () {
     expect(CustomTestResource::shouldRegisterNavigation())->toBeFalse();
+});
+
+it('resolves workspace from global config by default', function () {
+    app()->instance(PanelRegistry::class, new PanelRegistry());
+    app()->instance('config', new \Illuminate\Config\Repository([
+        'primix.workspace.enabled' => true,
+    ]));
+
+    expect(BasicTestResource::hasWorkspace())->toBeTrue();
+});
+
+it('uses panel workspace setting when resource has no explicit override', function () {
+    app()->instance('config', new \Illuminate\Config\Repository([
+        'primix.workspace.enabled' => false,
+    ]));
+
+    $registry = new PanelRegistry();
+    $registry->register(Panel::make('admin')->path('admin')->workspace(true));
+    $registry->setCurrentPanel('admin');
+    app()->instance(PanelRegistry::class, $registry);
+
+    expect(BasicTestResource::hasWorkspace())->toBeTrue();
+});
+
+it('resource workspace override has priority over panel setting', function () {
+    app()->instance('config', new \Illuminate\Config\Repository([
+        'primix.workspace.enabled' => false,
+    ]));
+
+    $registry = new PanelRegistry();
+    $registry->register(Panel::make('admin')->path('admin')->workspace(true));
+    $registry->setCurrentPanel('admin');
+    app()->instance(PanelRegistry::class, $registry);
+
+    expect(WorkspaceDisabledTestResource::hasWorkspace())->toBeFalse()
+        ->and(WorkspaceEnabledTestResource::hasWorkspace())->toBeTrue();
+});
+
+it('resource workspace method override is honored', function () {
+    app()->instance('config', new \Illuminate\Config\Repository([
+        'primix.workspace.enabled' => false,
+    ]));
+
+    $registry = new PanelRegistry();
+    $registry->register(Panel::make('admin')->path('admin')->workspace(false));
+    $registry->setCurrentPanel('admin');
+    app()->instance(PanelRegistry::class, $registry);
+
+    expect(WorkspaceMethodEnabledTestResource::hasWorkspace())->toBeTrue();
 });
 
 // ============================================================

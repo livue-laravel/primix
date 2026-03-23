@@ -119,12 +119,16 @@ class PanelRegistry
 
         // 2. From session (AJAX updates / requests without route panel context)
         if (app()->bound('session')) {
-            $sessionPanelId = session('primix.current_panel');
+            try {
+                $sessionPanelId = session('primix.current_panel');
 
-            if (is_string($sessionPanelId) && $this->get($sessionPanelId) !== null) {
-                $this->setCurrentPanel($sessionPanelId);
+                if (is_string($sessionPanelId) && $this->get($sessionPanelId) !== null) {
+                    $this->setCurrentPanel($sessionPanelId);
 
-                return $this->get($sessionPanelId);
+                    return $this->get($sessionPanelId);
+                }
+            } catch (\Exception) {
+                // Session not available or driver not configured (e.g. CLI, queue, unit tests)
             }
         }
 
