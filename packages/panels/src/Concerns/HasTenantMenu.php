@@ -90,7 +90,15 @@ trait HasTenantMenu
         $user = $guard->user();
 
         if ($user && method_exists($user, 'tenants')) {
-            $tenants = $user->tenants()->with('domains')->get();
+            $identification = $this->getTenantIdentification();
+            $needsDomains = in_array($identification, ['subdomain', 'domain'], true);
+            $tenantsQuery = $user->tenants();
+
+            if ($needsDomains) {
+                $tenantsQuery = $tenantsQuery->with('domains');
+            }
+
+            $tenants = $tenantsQuery->get();
             $switchTenants = [];
 
             foreach ($tenants as $tenant) {

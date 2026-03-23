@@ -58,7 +58,10 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
             $user = auth()->guard($panel->getAuthGuard())->user();
 
             if ($user && method_exists($user, 'tenants')) {
-                $tenant = $user->tenants()->with('domains')->first();
+                $needsDomains = in_array($identification, ['subdomain', 'domain'], true);
+                $tenant = $needsDomains
+                    ? $user->tenants()->with('domains')->first()
+                    : $user->tenants()->first();
 
                 if ($tenant) {
                     return redirect($panel->getTenantSwitchUrl($tenant));
