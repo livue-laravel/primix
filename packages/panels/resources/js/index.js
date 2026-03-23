@@ -17,6 +17,7 @@ import UserMenu from './components/UserMenu.vue';
 import TenantMenu from './components/TenantMenu.vue';
 import GlobalSearch from './components/GlobalSearch.vue';
 import NotificationBell from './components/NotificationBell.vue';
+import ResourceWorkspaceTabs from './components/ResourceWorkspaceTabs.vue';
 
 const registerPanelComponents = (app) => {
     if (app?.config?.globalProperties?.__primixPanelsReady) {
@@ -34,6 +35,7 @@ const registerPanelComponents = (app) => {
     app.component('PrimixTenantMenu', TenantMenu);
     app.component('PrimixGlobalSearch', GlobalSearch);
     app.component('PrimixNotificationBell', NotificationBell);
+    app.component('PrimixResourceWorkspaceTabs', ResourceWorkspaceTabs);
 };
 
 LiVue.setup(registerPanelComponents);

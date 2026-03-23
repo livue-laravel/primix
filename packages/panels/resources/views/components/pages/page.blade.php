@@ -1,6 +1,16 @@
-
+@php
+    $workspace = $page instanceof \Primix\Resources\Pages\Page
+        ? $page->getWorkspacePayload()
+        : null;
+@endphp
 <div>
     @renderHook(\Primix\Enums\PanelsRenderHook::PAGE_START)
+
+    @if(($workspace['enabled'] ?? false) === true)
+        <primix-resource-workspace-tabs
+            :workspace='@json($workspace)'
+        ></primix-resource-workspace-tabs>
+    @endif
 
     <x-primix::page-header
         :title="$this->getHeading()"

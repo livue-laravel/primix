@@ -71,6 +71,11 @@ class PanelConfiguration
         return $this->addEntry('spa', [$condition], $exclude);
     }
 
+    public function workspace(bool|Closure $condition = true, array $exclude = []): static
+    {
+        return $this->addEntry('workspace', [$condition], $exclude);
+    }
+
     public function topBarNavigation(bool|Closure $condition = true, array $exclude = []): static
     {
         return $this->addEntry('topBarNavigation', [$condition], $exclude);

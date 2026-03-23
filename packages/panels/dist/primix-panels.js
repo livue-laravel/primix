@@ -1,7 +1,7 @@
 import LiVue from "livue";
 import { ref, onMounted, onBeforeUnmount, openBlock, createElementBlock, renderSlot, createVNode, Transition, withCtx, createCommentVNode, withDirectives, createElementVNode, vShow, createBlock, onUnmounted, TransitionGroup, Fragment, renderList, normalizeClass, toDisplayString, computed, resolveComponent, resolveDynamicComponent, createTextVNode, h, mergeProps, defineComponent, withKeys, withModifiers, vModelText, Teleport, inject, watch, nextTick } from "vue";
-const _hoisted_1$a = { key: 0 };
-const _sfc_main$b = {
+const _hoisted_1$b = { key: 0 };
+const _sfc_main$c = {
   __name: "Dropdown",
   setup(__props) {
     const container = ref(null);
@@ -45,7 +45,7 @@ const _sfc_main$b = {
             "leave-to-class": "transform opacity-0 scale-95"
           }, {
             default: withCtx(() => [
-              open.value ? (openBlock(), createElementBlock("div", _hoisted_1$a, [
+              open.value ? (openBlock(), createElementBlock("div", _hoisted_1$b, [
                 renderSlot(_ctx.$slots, "default", { close })
               ])) : createCommentVNode("v-if", true)
             ]),
@@ -59,7 +59,7 @@ const _sfc_main$b = {
     };
   }
 };
-const _sfc_main$a = {
+const _sfc_main$b = {
   __name: "Collapsible",
   props: {
     defaultOpen: {
@@ -135,8 +135,8 @@ const _sfc_main$a = {
     };
   }
 };
-const _hoisted_1$9 = { key: 0 };
-const _sfc_main$9 = {
+const _hoisted_1$a = { key: 0 };
+const _sfc_main$a = {
   __name: "Toast",
   props: {
     duration: {
@@ -165,7 +165,7 @@ const _sfc_main$9 = {
         "leave-to-class": "opacity-0"
       }, {
         default: withCtx(() => [
-          visible.value ? (openBlock(), createElementBlock("div", _hoisted_1$9, [
+          visible.value ? (openBlock(), createElementBlock("div", _hoisted_1$a, [
             renderSlot(_ctx.$slots, "default", { close })
           ])) : createCommentVNode("v-if", true)
         ]),
@@ -175,14 +175,14 @@ const _sfc_main$9 = {
     };
   }
 };
-const _hoisted_1$8 = { class: "p-4" };
-const _hoisted_2$7 = { class: "flex items-start" };
-const _hoisted_3$7 = {
+const _hoisted_1$9 = { class: "p-4" };
+const _hoisted_2$8 = { class: "flex items-start" };
+const _hoisted_3$8 = {
   key: 0,
   class: "flex-shrink-0"
 };
-const _hoisted_4$7 = { class: "ml-3 w-0 flex-1 pt-0.5" };
-const _hoisted_5$7 = {
+const _hoisted_4$8 = { class: "ml-3 w-0 flex-1 pt-0.5" };
+const _hoisted_5$8 = {
   key: 0,
   class: "text-sm font-medium text-gray-900 dark:text-white"
 };
@@ -195,7 +195,7 @@ const _hoisted_7$6 = {
   class: "ml-4 flex flex-shrink-0"
 };
 const _hoisted_8$6 = ["onClick"];
-const _sfc_main$8 = {
+const _sfc_main$9 = {
   __name: "NotificationToasts",
   setup(__props) {
     const notifications = ref([]);
@@ -248,9 +248,9 @@ const _sfc_main$8 = {
                 key: notification.id,
                 class: "pointer-events-auto mb-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 overflow-hidden"
               }, [
-                createElementVNode("div", _hoisted_1$8, [
-                  createElementVNode("div", _hoisted_2$7, [
-                    notification.icon ? (openBlock(), createElementBlock("div", _hoisted_3$7, [
+                createElementVNode("div", _hoisted_1$9, [
+                  createElementVNode("div", _hoisted_2$8, [
+                    notification.icon ? (openBlock(), createElementBlock("div", _hoisted_3$8, [
                       notification.icon === "heroicon-o-check-circle" ? (openBlock(), createElementBlock(
                         "svg",
                         {
@@ -357,10 +357,10 @@ const _sfc_main$8 = {
                         /* CLASS */
                       )) : createCommentVNode("v-if", true)
                     ])) : createCommentVNode("v-if", true),
-                    createElementVNode("div", _hoisted_4$7, [
+                    createElementVNode("div", _hoisted_4$8, [
                       notification.title ? (openBlock(), createElementBlock(
                         "p",
-                        _hoisted_5$7,
+                        _hoisted_5$8,
                         toDisplayString(notification.title),
                         1
                         /* TEXT */
@@ -419,8 +419,8 @@ const _sfc_main$8 = {
     };
   }
 };
-const _hoisted_1$7 = ["onClick"];
-const _hoisted_2$6 = {
+const _hoisted_1$8 = ["onClick"];
+const _hoisted_2$7 = {
   key: 0,
   class: "h-6 w-6",
   fill: "none",
@@ -428,11 +428,11 @@ const _hoisted_2$6 = {
   "stroke-width": "1.5",
   stroke: "currentColor"
 };
-const _hoisted_3$6 = { class: "absolute right-0 z-50 mt-2 w-36 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
-const _hoisted_4$6 = { class: "py-1" };
-const _hoisted_5$6 = ["onClick"];
-const STORAGE_KEY = "primix-color-mode";
-const _sfc_main$7 = {
+const _hoisted_3$7 = { class: "absolute right-0 z-50 mt-2 w-36 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
+const _hoisted_4$7 = { class: "py-1" };
+const _hoisted_5$7 = ["onClick"];
+const STORAGE_KEY$1 = "primix-color-mode";
+const _sfc_main$8 = {
   __name: "ThemeToggle",
   setup(__props) {
     const SunIcon = {
@@ -479,7 +479,7 @@ const _sfc_main$7 = {
     }
     function setMode(newMode) {
       mode.value = newMode;
-      localStorage.setItem(STORAGE_KEY, newMode);
+      localStorage.setItem(STORAGE_KEY$1, newMode);
       applyTheme();
     }
     function onSystemChange(e) {
@@ -489,7 +489,7 @@ const _sfc_main$7 = {
       }
     }
     onMounted(() => {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY$1);
       if (stored && ["light", "dark", "system"].includes(stored)) {
         mode.value = stored;
       }
@@ -520,7 +520,7 @@ const _sfc_main$7 = {
               /* CACHED */
             )),
             createCommentVNode(" Sun icon (light mode) "),
-            effectiveMode.value === "light" ? (openBlock(), createElementBlock("svg", _hoisted_2$6, [..._cache[0] || (_cache[0] = [
+            effectiveMode.value === "light" ? (openBlock(), createElementBlock("svg", _hoisted_2$7, [..._cache[0] || (_cache[0] = [
               createElementVNode(
                 "path",
                 {
@@ -560,11 +560,11 @@ const _sfc_main$7 = {
               2112
               /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
             ))
-          ], 8, _hoisted_1$7)
+          ], 8, _hoisted_1$8)
         ]),
         default: withCtx(({ close }) => [
-          createElementVNode("div", _hoisted_3$6, [
-            createElementVNode("div", _hoisted_4$6, [
+          createElementVNode("div", _hoisted_3$7, [
+            createElementVNode("div", _hoisted_4$7, [
               (openBlock(), createElementBlock(
                 Fragment,
                 null,
@@ -584,7 +584,7 @@ const _sfc_main$7 = {
                       1
                       /* TEXT */
                     )
-                  ], 10, _hoisted_5$6);
+                  ], 10, _hoisted_5$7);
                 }),
                 64
                 /* STABLE_FRAGMENT */
@@ -598,14 +598,14 @@ const _sfc_main$7 = {
     };
   }
 };
-const _hoisted_1$6 = ["onClick"];
-const _hoisted_2$5 = ["src", "alt"];
-const _hoisted_3$5 = {
+const _hoisted_1$7 = ["onClick"];
+const _hoisted_2$6 = ["src", "alt"];
+const _hoisted_3$6 = {
   key: 1,
   class: "flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300"
 };
-const _hoisted_4$5 = { class: "hidden lg:flex lg:items-center" };
-const _hoisted_5$5 = { class: "ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
+const _hoisted_4$6 = { class: "hidden lg:flex lg:items-center" };
+const _hoisted_5$6 = { class: "ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
 const _hoisted_6$5 = { class: "absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
 const _hoisted_7$5 = { class: "px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
 const _hoisted_8$5 = { class: "text-sm font-medium text-gray-900 dark:text-white truncate" };
@@ -617,7 +617,7 @@ const _hoisted_10$4 = { class: "py-1" };
 const _hoisted_11$3 = ["href", "onClick"];
 const _hoisted_12 = { class: "py-1" };
 const _hoisted_13 = ["onClick"];
-const _sfc_main$6 = {
+const _sfc_main$7 = {
   __name: "UserMenu",
   props: {
     userMenu: {
@@ -686,17 +686,17 @@ const _sfc_main$6 = {
               src: __props.userMenu.avatarUrl,
               alt: __props.userMenu.userName,
               class: "h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 object-cover"
-            }, null, 8, _hoisted_2$5)) : (openBlock(), createElementBlock(
+            }, null, 8, _hoisted_2$6)) : (openBlock(), createElementBlock(
               "span",
-              _hoisted_3$5,
+              _hoisted_3$6,
               toDisplayString(initials.value),
               1
               /* TEXT */
             )),
-            createElementVNode("span", _hoisted_4$5, [
+            createElementVNode("span", _hoisted_4$6, [
               createElementVNode(
                 "span",
-                _hoisted_5$5,
+                _hoisted_5$6,
                 toDisplayString(__props.userMenu.userName ?? "User"),
                 1
                 /* TEXT */
@@ -719,7 +719,7 @@ const _sfc_main$6 = {
                 /* CACHED */
               ))
             ])
-          ], 8, _hoisted_1$6)
+          ], 8, _hoisted_1$7)
         ]),
         default: withCtx(({ close }) => [
           createElementVNode("div", _hoisted_6$5, [
@@ -801,11 +801,11 @@ const _sfc_main$6 = {
     };
   }
 };
-const _hoisted_1$5 = ["onClick"];
-const _hoisted_2$4 = { class: "hidden lg:flex lg:items-center" };
-const _hoisted_3$4 = { class: "ml-2 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
-const _hoisted_4$4 = { class: "absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
-const _hoisted_5$4 = { class: "px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
+const _hoisted_1$6 = ["onClick"];
+const _hoisted_2$5 = { class: "hidden lg:flex lg:items-center" };
+const _hoisted_3$5 = { class: "ml-2 text-sm font-semibold leading-6 text-gray-900 dark:text-white" };
+const _hoisted_4$5 = { class: "absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none" };
+const _hoisted_5$5 = { class: "px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
 const _hoisted_6$4 = { class: "text-sm font-semibold text-gray-900 dark:text-white truncate mt-1" };
 const _hoisted_7$4 = {
   key: 0,
@@ -815,7 +815,7 @@ const _hoisted_8$4 = ["href", "onClick"];
 const _hoisted_9$4 = { class: "truncate" };
 const _hoisted_10$3 = { class: "py-1" };
 const _hoisted_11$2 = ["href", "onClick"];
-const _sfc_main$5 = {
+const _sfc_main$6 = {
   __name: "TenantMenu",
   props: {
     tenantMenu: {
@@ -869,10 +869,10 @@ const _sfc_main$5 = {
               -1
               /* CACHED */
             )),
-            createElementVNode("span", _hoisted_2$4, [
+            createElementVNode("span", _hoisted_2$5, [
               createElementVNode(
                 "span",
-                _hoisted_3$4,
+                _hoisted_3$5,
                 toDisplayString(__props.tenantMenu.currentTenantName ?? "Tenant"),
                 1
                 /* TEXT */
@@ -895,12 +895,12 @@ const _sfc_main$5 = {
                 /* CACHED */
               ))
             ])
-          ], 8, _hoisted_1$5)
+          ], 8, _hoisted_1$6)
         ]),
         default: withCtx(({ close }) => [
-          createElementVNode("div", _hoisted_4$4, [
+          createElementVNode("div", _hoisted_4$5, [
             createCommentVNode(" Current tenant header "),
-            createElementVNode("div", _hoisted_5$4, [
+            createElementVNode("div", _hoisted_5$5, [
               _cache[3] || (_cache[3] = createElementVNode(
                 "p",
                 { class: "text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400" },
@@ -1111,7 +1111,7 @@ const SearchResults = defineComponent({
     };
   }
 });
-const _sfc_main$4 = {
+const _sfc_main$5 = {
   name: "PrimixGlobalSearch",
   components: { SearchResults },
   props: {
@@ -1260,21 +1260,21 @@ const _sfc_main$4 = {
     };
   }
 };
-const _hoisted_1$4 = { class: "relative flex flex-1 items-center" };
-const _hoisted_2$3 = {
+const _hoisted_1$5 = { class: "relative flex flex-1 items-center" };
+const _hoisted_2$4 = {
   key: 0,
   class: "hidden sm:inline-flex ml-auto items-center gap-x-0.5 rounded border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 text-xs text-gray-400 font-sans"
 };
-const _hoisted_3$3 = {
+const _hoisted_3$4 = {
   title: "Command",
   class: "no-underline"
 };
-const _hoisted_4$3 = {
+const _hoisted_4$4 = {
   key: 0,
   ref: "dropdownRef",
   class: "absolute left-0 right-0 top-full mt-1 z-50 max-h-96 overflow-y-auto rounded-lg bg-white dark:bg-gray-800 shadow-xl ring-1 ring-black/5 dark:ring-white/10"
 };
-const _hoisted_5$3 = { class: "p-3" };
+const _hoisted_5$4 = { class: "p-3" };
 const _hoisted_6$3 = { class: "relative" };
 const _hoisted_7$3 = {
   ref: "spotlightRef",
@@ -1297,7 +1297,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     null,
     [
       createCommentVNode(" Trigger button (always visible in topbar) "),
-      createElementVNode("div", _hoisted_1$4, [
+      createElementVNode("div", _hoisted_1$5, [
         createElementVNode("button", {
           type: "button",
           class: "flex flex-1 items-center gap-x-2 rounded-md px-3 py-2 text-sm text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors",
@@ -1327,10 +1327,10 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
             -1
             /* CACHED */
           )),
-          $props.mode === "spotlight" ? (openBlock(), createElementBlock("kbd", _hoisted_2$3, [
+          $props.mode === "spotlight" ? (openBlock(), createElementBlock("kbd", _hoisted_2$4, [
             createElementVNode(
               "abbr",
-              _hoisted_3$3,
+              _hoisted_3$4,
               toDisplayString($setup.isMac ? "⌘" : "Ctrl"),
               1
               /* TEXT */
@@ -1345,9 +1345,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         createCommentVNode(" Dropdown mode: results panel "),
         $props.mode === "dropdown" && $setup.isOpen ? (openBlock(), createElementBlock(
           "div",
-          _hoisted_4$3,
+          _hoisted_4$4,
           [
-            createElementVNode("div", _hoisted_5$3, [
+            createElementVNode("div", _hoisted_5$4, [
               createElementVNode("div", _hoisted_6$3, [
                 _cache[16] || (_cache[16] = createElementVNode(
                   "svg",
@@ -1556,18 +1556,18 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE_FRAGMENT */
   );
 }
-const GlobalSearch = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render]]);
-const _hoisted_1$3 = { class: "flex-shrink-0 mt-2 w-2" };
-const _hoisted_2$2 = {
+const GlobalSearch = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render]]);
+const _hoisted_1$4 = { class: "flex-shrink-0 mt-2 w-2" };
+const _hoisted_2$3 = {
   key: 0,
   class: "w-2 h-2 rounded-full bg-blue-500"
 };
-const _hoisted_3$2 = {
+const _hoisted_3$3 = {
   key: 0,
   class: "flex-shrink-0 mt-0.5"
 };
-const _hoisted_4$2 = { class: "flex-1 min-w-0" };
-const _hoisted_5$2 = { class: "flex items-start justify-between gap-2" };
+const _hoisted_4$3 = { class: "flex-1 min-w-0" };
+const _hoisted_5$3 = { class: "flex items-start justify-between gap-2" };
 const _hoisted_6$2 = {
   key: 0,
   class: "text-sm font-medium text-gray-900 dark:text-white"
@@ -1585,7 +1585,7 @@ const _hoisted_9$2 = {
   class: "mt-2 flex flex-wrap gap-3"
 };
 const _hoisted_10$1 = ["href"];
-const _sfc_main$3 = {
+const _sfc_main$4 = {
   __name: "NotificationItem",
   props: {
     notification: {
@@ -1649,11 +1649,11 @@ const _sfc_main$3 = {
         },
         [
           createCommentVNode(" Unread dot "),
-          createElementVNode("div", _hoisted_1$3, [
-            !__props.notification.read_at ? (openBlock(), createElementBlock("div", _hoisted_2$2)) : createCommentVNode("v-if", true)
+          createElementVNode("div", _hoisted_1$4, [
+            !__props.notification.read_at ? (openBlock(), createElementBlock("div", _hoisted_2$3)) : createCommentVNode("v-if", true)
           ]),
           createCommentVNode(" Icon "),
-          __props.notification.icon ? (openBlock(), createElementBlock("div", _hoisted_3$2, [
+          __props.notification.icon ? (openBlock(), createElementBlock("div", _hoisted_3$3, [
             __props.notification.icon === "heroicon-o-check-circle" ? (openBlock(), createElementBlock(
               "svg",
               {
@@ -1761,8 +1761,8 @@ const _sfc_main$3 = {
             )) : createCommentVNode("v-if", true)
           ])) : createCommentVNode("v-if", true),
           createCommentVNode(" Content "),
-          createElementVNode("div", _hoisted_4$2, [
-            createElementVNode("div", _hoisted_5$2, [
+          createElementVNode("div", _hoisted_4$3, [
+            createElementVNode("div", _hoisted_5$3, [
               __props.notification.title ? (openBlock(), createElementBlock(
                 "p",
                 _hoisted_6$2,
@@ -1810,14 +1810,14 @@ const _sfc_main$3 = {
     };
   }
 };
-const _hoisted_1$2 = { class: "absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10" };
-const _hoisted_2$1 = { class: "flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
-const _hoisted_3$1 = { class: "text-sm font-semibold text-gray-900 dark:text-white" };
-const _hoisted_4$1 = {
+const _hoisted_1$3 = { class: "absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10" };
+const _hoisted_2$2 = { class: "flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700" };
+const _hoisted_3$2 = { class: "text-sm font-semibold text-gray-900 dark:text-white" };
+const _hoisted_4$2 = {
   key: 0,
   class: "ml-1 text-xs font-normal text-gray-500 dark:text-gray-400"
 };
-const _hoisted_5$1 = { class: "max-h-[32rem] overflow-y-auto" };
+const _hoisted_5$2 = { class: "max-h-[32rem] overflow-y-auto" };
 const _hoisted_6$1 = { class: "px-4 py-8 text-center" };
 const _hoisted_7$1 = { class: "mt-2 text-sm text-gray-500 dark:text-gray-400" };
 const _hoisted_8$1 = {
@@ -1825,7 +1825,7 @@ const _hoisted_8$1 = {
   class: "border-t border-gray-100 dark:border-gray-700"
 };
 const _hoisted_9$1 = ["disabled"];
-const _sfc_main$2 = {
+const _sfc_main$3 = {
   __name: "NotificationPopup",
   props: {
     notifications: {
@@ -1852,10 +1852,10 @@ const _sfc_main$2 = {
   emits: ["load-more", "mark-read", "mark-all-read", "navigate"],
   setup(__props) {
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$2, [
+      return openBlock(), createElementBlock("div", _hoisted_1$3, [
         createCommentVNode(" Header "),
-        createElementVNode("div", _hoisted_2$1, [
-          createElementVNode("h3", _hoisted_3$1, [
+        createElementVNode("div", _hoisted_2$2, [
+          createElementVNode("h3", _hoisted_3$2, [
             createTextVNode(
               toDisplayString(__props.translations.title || "Notifications") + " ",
               1
@@ -1863,7 +1863,7 @@ const _sfc_main$2 = {
             ),
             __props.unreadCount > 0 ? (openBlock(), createElementBlock(
               "span",
-              _hoisted_4$1,
+              _hoisted_4$2,
               " (" + toDisplayString(__props.unreadCount) + ") ",
               1
               /* TEXT */
@@ -1883,12 +1883,12 @@ const _sfc_main$2 = {
           )) : createCommentVNode("v-if", true)
         ]),
         createCommentVNode(" Notification list "),
-        createElementVNode("div", _hoisted_5$1, [
+        createElementVNode("div", _hoisted_5$2, [
           __props.notifications.length > 0 ? (openBlock(true), createElementBlock(
             Fragment,
             { key: 0 },
             renderList(__props.notifications, (notification) => {
-              return openBlock(), createBlock(_sfc_main$3, {
+              return openBlock(), createBlock(_sfc_main$4, {
                 key: notification.id,
                 notification,
                 onMarkRead: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("mark-read", $event)),
@@ -1949,17 +1949,17 @@ const _sfc_main$2 = {
     };
   }
 };
-const _hoisted_1$1 = {
+const _hoisted_1$2 = {
   key: 0,
   class: "fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-gray-800 shadow-xl flex flex-col"
 };
-const _hoisted_2 = { class: "flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700" };
-const _hoisted_3 = { class: "text-base font-semibold text-gray-900 dark:text-white" };
-const _hoisted_4 = {
+const _hoisted_2$1 = { class: "flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700" };
+const _hoisted_3$1 = { class: "text-base font-semibold text-gray-900 dark:text-white" };
+const _hoisted_4$1 = {
   key: 0,
   class: "ml-1 text-sm font-normal text-gray-500 dark:text-gray-400"
 };
-const _hoisted_5 = { class: "flex items-center gap-3" };
+const _hoisted_5$1 = { class: "flex items-center gap-3" };
 const _hoisted_6 = { class: "sr-only" };
 const _hoisted_7 = { class: "flex-1 overflow-y-auto" };
 const _hoisted_8 = { class: "px-4 py-12 text-center" };
@@ -1969,7 +1969,7 @@ const _hoisted_10 = {
   class: "border-t border-gray-200 dark:border-gray-700"
 };
 const _hoisted_11 = ["disabled"];
-const _sfc_main$1 = {
+const _sfc_main$2 = {
   __name: "NotificationDrawer",
   props: {
     open: {
@@ -2042,10 +2042,10 @@ const _sfc_main$1 = {
           "leave-to-class": "translate-x-full"
         }, {
           default: withCtx(() => [
-            __props.open ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
+            __props.open ? (openBlock(), createElementBlock("div", _hoisted_1$2, [
               createCommentVNode(" Header "),
-              createElementVNode("div", _hoisted_2, [
-                createElementVNode("h2", _hoisted_3, [
+              createElementVNode("div", _hoisted_2$1, [
+                createElementVNode("h2", _hoisted_3$1, [
                   createTextVNode(
                     toDisplayString(__props.translations.title || "Notifications") + " ",
                     1
@@ -2053,13 +2053,13 @@ const _sfc_main$1 = {
                   ),
                   __props.unreadCount > 0 ? (openBlock(), createElementBlock(
                     "span",
-                    _hoisted_4,
+                    _hoisted_4$1,
                     " (" + toDisplayString(__props.unreadCount) + ") ",
                     1
                     /* TEXT */
                   )) : createCommentVNode("v-if", true)
                 ]),
-                createElementVNode("div", _hoisted_5, [
+                createElementVNode("div", _hoisted_5$1, [
                   __props.unreadCount > 0 ? (openBlock(), createElementBlock(
                     "button",
                     {
@@ -2110,7 +2110,7 @@ const _sfc_main$1 = {
                   Fragment,
                   { key: 0 },
                   renderList(__props.notifications, (notification) => {
-                    return openBlock(), createBlock(_sfc_main$3, {
+                    return openBlock(), createBlock(_sfc_main$4, {
                       key: notification.id,
                       notification,
                       onMarkRead: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("mark-read", $event)),
@@ -2176,8 +2176,8 @@ const _sfc_main$1 = {
     };
   }
 };
-const _hoisted_1 = { class: "sr-only" };
-const _sfc_main = {
+const _hoisted_1$1 = { class: "sr-only" };
+const _sfc_main$1 = {
   __name: "NotificationBell",
   props: {
     mode: {
@@ -2315,7 +2315,7 @@ const _sfc_main = {
           }, [
             createElementVNode(
               "span",
-              _hoisted_1,
+              _hoisted_1$1,
               toDisplayString(__props.translations.bell_label || "Notifications"),
               1
               /* TEXT */
@@ -2365,7 +2365,7 @@ const _sfc_main = {
             "leave-to-class": "transform opacity-0 scale-95"
           }, {
             default: withCtx(() => [
-              __props.mode === "popup" && isOpen.value ? (openBlock(), createBlock(_sfc_main$2, {
+              __props.mode === "popup" && isOpen.value ? (openBlock(), createBlock(_sfc_main$3, {
                 key: 0,
                 notifications: notifications.value,
                 "unread-count": unreadCount.value,
@@ -2382,7 +2382,7 @@ const _sfc_main = {
             /* STABLE */
           }),
           createCommentVNode(" Drawer mode "),
-          __props.mode === "drawer" ? (openBlock(), createBlock(_sfc_main$1, {
+          __props.mode === "drawer" ? (openBlock(), createBlock(_sfc_main$2, {
             key: 0,
             open: isOpen.value,
             notifications: notifications.value,
@@ -2403,20 +2403,404 @@ const _sfc_main = {
     };
   }
 };
+const STORAGE_KEY = "primix-resource-workspaces:v1";
+function normalizeWorkspacePath(pathname) {
+  if (typeof pathname !== "string" || pathname === "") {
+    return "/";
+  }
+  const collapsed = pathname.replace(/\/{2,}/g, "/");
+  if (collapsed.length > 1 && collapsed.endsWith("/")) {
+    return collapsed.slice(0, -1);
+  }
+  return collapsed;
+}
+function normalizeWorkspaceSearch(search) {
+  if (typeof search !== "string" || search === "") {
+    return "";
+  }
+  const entries = Array.from(new URLSearchParams(search).entries()).sort(([aKey, aValue], [bKey, bValue]) => {
+    if (aKey === bKey) {
+      return aValue.localeCompare(bValue);
+    }
+    return aKey.localeCompare(bKey);
+  });
+  if (entries.length === 0) {
+    return "";
+  }
+  return `?${new URLSearchParams(entries).toString()}`;
+}
+function normalizeWorkspaceTabId(id, normalizedUrl = null) {
+  if (typeof id === "string") {
+    const trimmedId = id.trim();
+    if (trimmedId.startsWith("key:") && trimmedId.length > 4) {
+      return trimmedId;
+    }
+    const normalizedIdUrl = normalizeWorkspaceUrl(trimmedId);
+    if (normalizedIdUrl !== null) {
+      return normalizedIdUrl;
+    }
+  }
+  return normalizedUrl;
+}
+function resolveCurrentTabId(workspace, normalizedUrl) {
+  if (typeof workspace?.currentKey === "string" && workspace.currentKey.trim() !== "") {
+    return `key:${workspace.currentKey.trim()}`;
+  }
+  return normalizedUrl;
+}
+function dedupeWorkspaceTabs(tabs) {
+  if (!Array.isArray(tabs) || tabs.length === 0) {
+    return [];
+  }
+  const dedupedTabs = [];
+  const dedupedTabsIndex = {};
+  for (const tab of tabs) {
+    if (!tab || typeof tab !== "object") {
+      continue;
+    }
+    const normalizedUrl = normalizeWorkspaceUrl(tab.url);
+    if (normalizedUrl === null) {
+      continue;
+    }
+    const normalizedTab = {
+      id: normalizeWorkspaceTabId(tab.id, normalizedUrl),
+      url: normalizedUrl,
+      title: typeof tab.title === "string" ? tab.title : "",
+      updatedAt: typeof tab.updatedAt === "number" ? tab.updatedAt : Date.now()
+    };
+    const existingIndex = dedupedTabsIndex[normalizedTab.id];
+    if (existingIndex === void 0) {
+      dedupedTabsIndex[normalizedTab.id] = dedupedTabs.length;
+      dedupedTabs.push(normalizedTab);
+      continue;
+    }
+    const existingTab = dedupedTabs[existingIndex];
+    const existingUpdatedAt = existingTab.updatedAt;
+    if (existingTab.title.trim() === "" && normalizedTab.title.trim() !== "") {
+      existingTab.title = normalizedTab.title;
+    }
+    existingTab.updatedAt = Math.max(existingUpdatedAt, normalizedTab.updatedAt);
+    if (normalizedTab.updatedAt >= existingUpdatedAt) {
+      existingTab.url = normalizedTab.url;
+    }
+  }
+  return dedupedTabs;
+}
+function normalizeWorkspaceUrl(url) {
+  if (typeof url !== "string" || url.trim() === "") {
+    return null;
+  }
+  try {
+    const parsed = new URL(url, window.location.origin);
+    const pathname = normalizeWorkspacePath(parsed.pathname);
+    const search = normalizeWorkspaceSearch(parsed.search);
+    return `${pathname}${search}`;
+  } catch {
+    return null;
+  }
+}
+function decodeWorkspaceState(raw) {
+  if (!raw || typeof raw !== "object") {
+    return {};
+  }
+  const workspaces = {};
+  for (const [key, workspace] of Object.entries(raw)) {
+    if (!workspace || typeof workspace !== "object") {
+      continue;
+    }
+    const tabs = Array.isArray(workspace.tabs) ? workspace.tabs : [];
+    const dedupedTabs = dedupeWorkspaceTabs(tabs);
+    const activeTabId = normalizeWorkspaceTabId(workspace.activeTabId, null);
+    workspaces[key] = {
+      tabs: dedupedTabs,
+      activeTabId: activeTabId && dedupedTabs.some((tab) => tab.id === activeTabId) ? activeTabId : null
+    };
+  }
+  return workspaces;
+}
+const storeDefinition = {
+  state: () => ({
+    hydrated: false,
+    workspaces: {}
+  }),
+  actions: {
+    workspaceKey(workspace) {
+      const panelId = workspace?.panelId || "default";
+      const resourceSlug = workspace?.resourceSlug || "resource";
+      return `${panelId}::${resourceSlug}`;
+    },
+    hydrate() {
+      if (this.hydrated || typeof window === "undefined") {
+        return;
+      }
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        this.workspaces = decodeWorkspaceState(raw ? JSON.parse(raw) : {});
+      } catch {
+        this.workspaces = {};
+      }
+      this.hydrated = true;
+      this.persist();
+    },
+    persist() {
+      if (typeof window === "undefined") {
+        return;
+      }
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.workspaces));
+    },
+    ensureWorkspace(key) {
+      if (!this.workspaces[key]) {
+        this.workspaces[key] = {
+          tabs: [],
+          activeTabId: null
+        };
+      }
+      return this.workspaces[key];
+    },
+    registerCurrent(workspace) {
+      this.hydrate();
+      const key = this.workspaceKey(workspace);
+      const url = normalizeWorkspaceUrl(workspace?.currentUrl);
+      if (url === null) {
+        return key;
+      }
+      const tabId = resolveCurrentTabId(workspace, url);
+      const title = `${workspace?.currentTitle || workspace?.resourceLabel || "Untitled"}`.trim();
+      const state = this.ensureWorkspace(key);
+      state.tabs = dedupeWorkspaceTabs(state.tabs);
+      if (!state.tabs.some((tab) => tab.id === state.activeTabId)) {
+        state.activeTabId = null;
+      }
+      const existing = state.tabs.find((tab) => tab.id === tabId || tab.url === url);
+      if (existing) {
+        existing.id = tabId;
+        existing.url = url;
+        existing.title = title || existing.title;
+        existing.updatedAt = Date.now();
+        state.activeTabId = existing.id;
+      } else {
+        const tab = {
+          id: tabId,
+          url,
+          title,
+          updatedAt: Date.now()
+        };
+        state.tabs.push(tab);
+        state.activeTabId = tab.id;
+      }
+      this.persist();
+      return key;
+    },
+    setActiveTab(key, tabId) {
+      this.hydrate();
+      const state = this.ensureWorkspace(key);
+      const tab = state.tabs.find((item) => item.id === tabId);
+      if (!tab) {
+        return;
+      }
+      state.activeTabId = tab.id;
+      tab.updatedAt = Date.now();
+      this.persist();
+    },
+    closeTab(key, tabId) {
+      this.hydrate();
+      const state = this.ensureWorkspace(key);
+      const index = state.tabs.findIndex((tab) => tab.id === tabId);
+      if (index === -1) {
+        return {
+          closedActive: false,
+          nextUrl: null
+        };
+      }
+      const wasActive = state.activeTabId === tabId;
+      state.tabs.splice(index, 1);
+      if (!wasActive) {
+        this.persist();
+        return {
+          closedActive: false,
+          nextUrl: null
+        };
+      }
+      if (state.tabs.length === 0) {
+        state.activeTabId = null;
+        this.persist();
+        return {
+          closedActive: true,
+          nextUrl: null
+        };
+      }
+      const nextIndex = index < state.tabs.length ? index : state.tabs.length - 1;
+      const nextTab = state.tabs[nextIndex];
+      state.activeTabId = nextTab.id;
+      nextTab.updatedAt = Date.now();
+      this.persist();
+      return {
+        closedActive: true,
+        nextUrl: nextTab.url
+      };
+    }
+  }
+};
+function useResourceWorkspaceStore(livue) {
+  if (!livue || typeof livue.store !== "function") {
+    throw new Error("[Primix] Unable to resolve LiVue store helper for resource workspace tabs.");
+  }
+  return livue.store("primix-resource-workspace", storeDefinition, { scope: "global" });
+}
+const _hoisted_1 = {
+  key: 0,
+  class: "mt-4 mb-6"
+};
+const _hoisted_2 = { class: "overflow-x-auto pb-1" };
+const _hoisted_3 = { class: "flex min-w-max items-center gap-2" };
+const _hoisted_4 = ["href", "onClick"];
+const _hoisted_5 = ["aria-label", "onClick"];
+const _sfc_main = {
+  __name: "ResourceWorkspaceTabs",
+  props: {
+    workspace: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(__props) {
+    const props = __props;
+    const livue = inject("livue");
+    const store = useResourceWorkspaceStore(livue);
+    const workspaceKey = computed(() => store.workspaceKey(props.workspace));
+    const tabs = computed(() => store.workspaces[workspaceKey.value]?.tabs ?? []);
+    const activeTabId = computed(() => store.workspaces[workspaceKey.value]?.activeTabId ?? null);
+    function navigate(url) {
+      if (!url) {
+        return;
+      }
+      if (props.workspace.spa) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("data-livue-navigate", "true");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+      window.location.href = url;
+    }
+    function syncCurrentTab() {
+      if (!props.workspace.enabled) {
+        return;
+      }
+      store.registerCurrent({
+        ...props.workspace,
+        currentUrl: typeof window !== "undefined" ? window.location.href : props.workspace.currentUrl
+      });
+    }
+    function activateTab(tab) {
+      store.setActiveTab(workspaceKey.value, tab.id);
+      const currentUrl = normalizeWorkspaceUrl(
+        typeof window !== "undefined" ? window.location.href : props.workspace.currentUrl
+      );
+      if (currentUrl === tab.url) {
+        return;
+      }
+      navigate(tab.url);
+    }
+    function closeTab(tab) {
+      const currentUrl = normalizeWorkspaceUrl(
+        typeof window !== "undefined" ? window.location.href : props.workspace.currentUrl
+      );
+      const { closedActive, nextUrl } = store.closeTab(workspaceKey.value, tab.id);
+      if (!closedActive) {
+        return;
+      }
+      if (nextUrl) {
+        navigate(nextUrl);
+        return;
+      }
+      const fallbackUrl = normalizeWorkspaceUrl(props.workspace.indexUrl);
+      if (fallbackUrl && fallbackUrl !== currentUrl) {
+        navigate(props.workspace.indexUrl);
+      }
+    }
+    onMounted(syncCurrentTab);
+    watch(
+      () => [props.workspace.currentUrl, props.workspace.currentTitle, props.workspace.enabled],
+      syncCurrentTab
+    );
+    return (_ctx, _cache) => {
+      return tabs.value.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_1, [
+        createElementVNode("div", _hoisted_2, [
+          createElementVNode("div", _hoisted_3, [
+            (openBlock(true), createElementBlock(
+              Fragment,
+              null,
+              renderList(tabs.value, (tab) => {
+                return openBlock(), createElementBlock(
+                  "div",
+                  {
+                    key: tab.id,
+                    class: normalizeClass(["group inline-flex max-w-[18rem] items-center gap-2 rounded-lg border px-3 py-1.5 text-sm transition-colors", tab.id === activeTabId.value ? "border-primary-300 bg-primary-50 text-primary-700 dark:border-primary-600/60 dark:bg-primary-900/20 dark:text-primary-300" : "border-gray-200 bg-white text-gray-700 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-600"])
+                  },
+                  [
+                    createElementVNode("a", mergeProps({
+                      href: tab.url,
+                      class: "min-w-0 flex-1 truncate"
+                    }, { ref_for: true }, __props.workspace.spa ? { "data-livue-navigate": "true" } : {}, {
+                      onClick: withModifiers(($event) => activateTab(tab), ["prevent"])
+                    }), toDisplayString(tab.title || __props.workspace.resourceLabel), 17, _hoisted_4),
+                    createElementVNode("button", {
+                      type: "button",
+                      class: "inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-black/5 hover:text-gray-600 dark:hover:bg-white/10 dark:hover:text-gray-200",
+                      "aria-label": __props.workspace.closeTabLabel,
+                      onClick: withModifiers(($event) => closeTab(tab), ["stop", "prevent"])
+                    }, [..._cache[0] || (_cache[0] = [
+                      createElementVNode(
+                        "svg",
+                        {
+                          class: "h-3 w-3",
+                          viewBox: "0 0 20 20",
+                          fill: "currentColor",
+                          "aria-hidden": "true"
+                        },
+                        [
+                          createElementVNode("path", {
+                            "fill-rule": "evenodd",
+                            d: "M4.22 4.22a.75.75 0 011.06 0L10 8.94l4.72-4.72a.75.75 0 111.06 1.06L11.06 10l4.72 4.72a.75.75 0 11-1.06 1.06L10 11.06l-4.72 4.72a.75.75 0 11-1.06-1.06L8.94 10 4.22 5.28a.75.75 0 010-1.06z",
+                            "clip-rule": "evenodd"
+                          })
+                        ],
+                        -1
+                        /* CACHED */
+                      )
+                    ])], 8, _hoisted_5)
+                  ],
+                  2
+                  /* CLASS */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])
+        ])
+      ])) : createCommentVNode("v-if", true);
+    };
+  }
+};
 const registerPanelComponents = (app) => {
   if (app?.config?.globalProperties?.__primixPanelsReady) {
     return;
   }
   app.config.globalProperties.__primixPanelsReady = true;
-  app.component("PrimixDropdown", _sfc_main$b);
-  app.component("PrimixCollapsible", _sfc_main$a);
-  app.component("PrimixToast", _sfc_main$9);
-  app.component("PrimixNotificationToasts", _sfc_main$8);
-  app.component("PrimixThemeToggle", _sfc_main$7);
-  app.component("PrimixUserMenu", _sfc_main$6);
-  app.component("PrimixTenantMenu", _sfc_main$5);
+  app.component("PrimixDropdown", _sfc_main$c);
+  app.component("PrimixCollapsible", _sfc_main$b);
+  app.component("PrimixToast", _sfc_main$a);
+  app.component("PrimixNotificationToasts", _sfc_main$9);
+  app.component("PrimixThemeToggle", _sfc_main$8);
+  app.component("PrimixUserMenu", _sfc_main$7);
+  app.component("PrimixTenantMenu", _sfc_main$6);
   app.component("PrimixGlobalSearch", GlobalSearch);
-  app.component("PrimixNotificationBell", _sfc_main);
+  app.component("PrimixNotificationBell", _sfc_main$1);
+  app.component("PrimixResourceWorkspaceTabs", _sfc_main);
 };
 LiVue.setup(registerPanelComponents);
 //# sourceMappingURL=primix-panels.js.map

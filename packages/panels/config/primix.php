@@ -56,6 +56,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Workspace
+    |--------------------------------------------------------------------------
+    |
+    | Enable resource workspaces (tabbed navigation) by default.
+    | This can be overridden per panel and per resource.
+    |
+    */
+    'workspace' => [
+        'enabled' => env('PRIMIX_WORKSPACE_ENABLED', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Panels
     |--------------------------------------------------------------------------
     |

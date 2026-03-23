@@ -23,6 +23,7 @@ class Panel
     use Concerns\HasTenantMenu;
     use Concerns\HasTheme;
     use Concerns\HasUserMenu;
+    use Concerns\HasWorkspace;
 
     protected string $id;
 

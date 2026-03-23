@@ -2,6 +2,7 @@
 
 namespace Primix\Resources;
 
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Primix\Details\Details;
@@ -35,6 +36,8 @@ abstract class Resource
     protected static ?string $modelLabel = null;
 
     protected static bool $shouldRegisterNavigation = true;
+
+    protected static ?bool $workspace = null;
 
     public static function getModel(): string
     {
@@ -98,6 +101,36 @@ abstract class Resource
     public static function shouldRegisterNavigation(): bool
     {
         return static::$shouldRegisterNavigation;
+    }
+
+    public static function hasWorkspace(): bool
+    {
+        $workspace = static::workspace();
+
+        if ($workspace instanceof Closure) {
+            return (bool) $workspace();
+        }
+
+        if ($workspace !== null) {
+            return (bool) $workspace;
+        }
+
+        $panel = app(PanelRegistry::class)->getCurrentPanel();
+
+        if ($panel !== null && method_exists($panel, 'hasWorkspaceSetting') && $panel->hasWorkspaceSetting()) {
+            return $panel->hasWorkspace();
+        }
+
+        if (! app()->bound('config')) {
+            return false;
+        }
+
+        return (bool) config('primix.workspace.enabled', false);
+    }
+
+    public static function workspace(): bool|Closure|null
+    {
+        return static::$workspace;
     }
 
     public static function getRecordTitleAttribute(): ?string
