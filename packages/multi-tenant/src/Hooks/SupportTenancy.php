@@ -66,43 +66,61 @@ class SupportTenancy extends ComponentHook
     }
 
     /**
-     * Restore URL::defaults based on the identification method.
-     *
-     * The AJAX request comes from the same origin as the original page,
-     * so the host header still contains tenant information for subdomain
-     * and domain identification.
+     * Restore URL::defaults based on the configured identification method.
      */
     protected function restoreUrlDefaults(mixed $tenant): void
+    {
+        $identification = $this->resolveIdentification();
+
+        match ($identification) {
+            'subdomain' => $this->restoreSubdomainDefault(),
+            'domain'    => $this->restoreDomainDefault(),
+            default     => $this->restorePathDefault($tenant), // path or request_data
+        };
+    }
+
+    protected function resolveIdentification(): string
+    {
+        if (class_exists(\Primix\PanelRegistry::class)) {
+            $panel = app(\Primix\PanelRegistry::class)->getCurrentPanel();
+
+            if ($panel && method_exists($panel, 'getTenantIdentification')) {
+                $panelIdentification = $panel->getTenantIdentification();
+
+                if ($panelIdentification !== null) {
+                    return $panelIdentification;
+                }
+            }
+        }
+
+        return config('multi-tenant.identification.default', 'path');
+    }
+
+    protected function restoreSubdomainDefault(): void
     {
         $host = request()->getHost();
         $centralDomains = config('multi-tenant.central_domains', []);
 
-        // Subdomain identification: extract subdomain from host
         foreach ($centralDomains as $centralDomain) {
             if (str_ends_with($host, $centralDomain)) {
                 $subdomain = rtrim(str_replace($centralDomain, '', $host), '.');
 
                 if (! empty($subdomain)) {
-                    URL::defaults(['tenant' => $subdomain]);
-
-                    return;
+                    URL::defaults([config('multi-tenant.panel.route_parameter', 'tenant') => $subdomain]);
                 }
 
-                break;
+                return;
             }
         }
+    }
 
-        // Domain identification: host doesn't match any central domain
-        $isCentralDomain = in_array($host, $centralDomains, true);
+    protected function restoreDomainDefault(): void
+    {
+        URL::defaults(['tenant_domain' => request()->getHost()]);
+    }
 
-        if (! $isCentralDomain) {
-            URL::defaults(['tenant_domain' => $host]);
-
-            return;
-        }
-
-        // Path identification: use the same slug/key value that appears in the URL.
-        // Must match panel.route_parameter (same key used by route registration and middleware).
+    protected function restorePathDefault(mixed $tenant): void
+    {
         $parameter = config('multi-tenant.panel.route_parameter', 'tenant');
 
         if (class_exists(\Primix\PanelRegistry::class)) {
