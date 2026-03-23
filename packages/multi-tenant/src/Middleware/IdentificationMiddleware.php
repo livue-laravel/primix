@@ -15,7 +15,11 @@ abstract class IdentificationMiddleware
 
     public function handle(Request $request, Closure $next): Response
     {
-        $tenant = $this->getResolver()->resolve($request);
+        try {
+            $tenant = $this->getResolver()->resolve($request);
+        } catch (\Throwable) {
+            throw new NotFoundHttpException('Tenant not found.');
+        }
 
         if ($tenant === null) {
             throw new NotFoundHttpException('Tenant not found.');

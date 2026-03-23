@@ -4,6 +4,7 @@ namespace Primix\MultiTenant\Routing;
 
 use Illuminate\Support\Facades\Route;
 use LiVue\Http\Controllers\LiVuePageController;
+use Primix\MultiTenant\Middleware\EnsureHasTenant;
 use Primix\MultiTenant\Middleware\InitializeTenancyByDomain;
 use Primix\MultiTenant\Middleware\InitializeTenancyByPath;
 use Primix\MultiTenant\Middleware\InitializeTenancyByRequestData;
@@ -136,9 +137,10 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
 
         // For path identification, InitializeTenancyByPath must run BEFORE Authenticate
         // so that URL::defaults is set when Authenticate generates the login redirect URL.
+        // EnsureHasTenant always runs last — after both tenancy init and authentication.
         $middleware = $identification === 'path'
-            ? array_merge($panel->getMiddleware(), [$tenancyMiddleware], $panel->getAuthMiddleware())
-            : array_merge($panel->getMiddleware(), $panel->getAuthMiddleware(), [$tenancyMiddleware]);
+            ? array_merge($panel->getMiddleware(), [$tenancyMiddleware], $panel->getAuthMiddleware(), [EnsureHasTenant::class])
+            : array_merge($panel->getMiddleware(), $panel->getAuthMiddleware(), [$tenancyMiddleware], [EnsureHasTenant::class]);
 
         $prefix = $this->resolvePrefix($panel, $identification);
 
