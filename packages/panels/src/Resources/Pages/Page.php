@@ -2,6 +2,8 @@
 
 namespace Primix\Resources\Pages;
 
+use Illuminate\Contracts\Support\Htmlable;
+use Primix\PanelRegistry;
 use Primix\Pages\Page as BasePage;
 
 abstract class Page extends BasePage
@@ -32,6 +34,85 @@ abstract class Page extends BasePage
     public function resolveResource(): string
     {
         return $this->resourceClass ?: static::getResource();
+    }
+
+    public function hasWorkspace(): bool
+    {
+        return $this->resolveResource()::hasWorkspace();
+    }
+
+    public function getWorkspaceTitle(): string|Htmlable
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * @return array{
+     *   enabled: bool,
+     *   panelId: string,
+     *   resourceSlug: string,
+     *   resourceLabel: string,
+     *   currentKey: string,
+     *   currentUrl: string,
+     *   currentTitle: string,
+     *   indexUrl: string|null,
+     *   spa: bool,
+     *   closeTabLabel: string
+     * }
+     */
+    public function getWorkspacePayload(): array
+    {
+        $resource = $this->resolveResource();
+        $panel = app(PanelRegistry::class)->getCurrentPanel();
+        $workspaceTitle = $this->getWorkspaceTitle();
+        $panelId = (string) ($panel?->getId() ?? '');
+        $resourceSlug = $resource::getSlug();
+        $registration = $this->resolveCurrentResourcePageRegistration();
+        $pageName = (string) ($registration['name'] ?? static::class);
+        $routeParameters = request()->route()?->parametersWithoutNulls() ?? [];
+
+        $routeParameters = collect($routeParameters)
+            ->reject(fn (mixed $value, string|int $key): bool => is_string($key) && str_starts_with($key, '_'))
+            ->mapWithKeys(function (mixed $value, string|int $key): array {
+                if (! is_string($key) && ! is_int($key)) {
+                    return [];
+                }
+
+                $normalizedValue = is_scalar($value)
+                    ? (string) $value
+                    : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+
+                return [(string) $key => $normalizedValue ?: ''];
+            })
+            ->all();
+
+        ksort($routeParameters);
+
+        $currentKey = implode('|', [
+            $panelId,
+            $resourceSlug,
+            $pageName,
+            http_build_query($routeParameters, '', '&', PHP_QUERY_RFC3986),
+        ]);
+
+        if ($workspaceTitle instanceof Htmlable) {
+            $workspaceTitle = $workspaceTitle->toHtml();
+        }
+
+        $title = trim(strip_tags((string) $workspaceTitle));
+
+        return [
+            'enabled' => $this->hasWorkspace(),
+            'panelId' => $panelId,
+            'resourceSlug' => $resourceSlug,
+            'resourceLabel' => $resource::getNavigationLabel(),
+            'currentKey' => $currentKey,
+            'currentUrl' => url()->full(),
+            'currentTitle' => $title,
+            'indexUrl' => $resource::hasPage('index') ? $resource::getUrl('index') : null,
+            'spa' => $panel?->hasSpa() ?? false,
+            'closeTabLabel' => __('primix::panel.workspace.close_tab'),
+        ];
     }
 
     /**
