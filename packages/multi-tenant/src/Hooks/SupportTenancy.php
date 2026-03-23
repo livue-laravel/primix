@@ -101,8 +101,23 @@ class SupportTenancy extends ComponentHook
             return;
         }
 
-        // Path identification: use tenant key as URL parameter
-        $parameter = config('multi-tenant.identification.path_parameter', 'tenant');
+        // Path identification: use the same slug/key value that appears in the URL.
+        // Must match panel.route_parameter (same key used by route registration and middleware).
+        $parameter = config('multi-tenant.panel.route_parameter', 'tenant');
+
+        if (class_exists(\Primix\PanelRegistry::class)) {
+            $panel = app(\Primix\PanelRegistry::class)->getCurrentPanel();
+            $slugAttribute = $panel && method_exists($panel, 'getTenantSlugAttribute')
+                ? $panel->getTenantSlugAttribute()
+                : null;
+
+            if ($slugAttribute && isset($tenant->{$slugAttribute})) {
+                URL::defaults([$parameter => $tenant->{$slugAttribute}]);
+
+                return;
+            }
+        }
+
         URL::defaults([$parameter => $tenant->getTenantKey()]);
     }
 }

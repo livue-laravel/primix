@@ -28,8 +28,10 @@ class InitializeTenancyByPath extends IdentificationMiddleware
 
         Tenancy::initialize($tenant);
 
-        // Set URL defaults so route() calls automatically include the tenant parameter
-        $parameter = config('multi-tenant.identification.path_parameter', 'tenant');
+        // Use the same config key as the route registration so the URL::defaults key
+        // always matches the route parameter name (avoids mismatch when the two config
+        // keys are set to different values in a published config file).
+        $parameter = config('multi-tenant.panel.route_parameter', 'tenant');
         $tenantKey = $request->route($parameter);
 
         if ($tenantKey !== null) {
