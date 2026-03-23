@@ -150,7 +150,7 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         if ($identification === 'path') {
             $routeParameter = config('multi-tenant.panel.route_parameter', 'tenant');
 
-            return '{' . $routeParameter . '}/' . $panel->getPath();
+            return $panel->getPath() . '/{' . $routeParameter . '}';
         }
 
         // For domain/subdomain/request_data, no tenant segment in the path

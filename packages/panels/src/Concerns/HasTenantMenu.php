@@ -157,7 +157,7 @@ trait HasTenantMenu
             'subdomain' => $this->getTenantSubdomainSwitchUrl($tenant),
             'domain' => $this->getTenantDomainSwitchUrl($tenant),
             'request_data' => url($this->getPath()) . '?tenant_id=' . $tenantKey,
-            default => url($tenantKey . '/' . $this->getPath()), // path
+            default => url($this->getPath() . '/' . $tenantKey), // path: /{panel}/{tenant}
         };
     }
 

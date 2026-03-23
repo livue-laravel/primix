@@ -151,10 +151,16 @@ class GlobalSearch
 
     protected function setPathDefault(string $routeParam): void
     {
-        $segments = request()->segments();
+        // If SupportTenancy hook has already restored URL defaults (AJAX context), nothing to do.
+        if (isset(URL::getDefaultParameters()[$routeParam])) {
+            return;
+        }
 
-        if (! empty($segments)) {
-            URL::defaults([$routeParam => $segments[0]]);
+        // Initial page load: the route parameter is present on the current request.
+        $value = request()->route($routeParam);
+
+        if ($value !== null) {
+            URL::defaults([$routeParam => $value]);
         }
     }
 
