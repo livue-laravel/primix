@@ -144,6 +144,11 @@ class EditRecord extends Page
     public function getTitle(): string
     {
         $resource = $this->resolveResource();
+        $recordTitle = $resource::getRecordTitle($this->record);
+
+        if (filled($recordTitle)) {
+            return __('primix::panel.page_titles.edit_record', ['record' => $recordTitle]);
+        }
 
         return __('primix::panel.page_titles.edit', ['model' => $resource::getModelLabel()]);
     }

@@ -185,9 +185,13 @@ class ViewRecord extends Page
     public function getTitle(): string
     {
         $resource = $this->resolveResource();
-        $title = $resource::getRecordTitle($this->record);
+        $recordTitle = $resource::getRecordTitle($this->record);
 
-        return $title ?? __('primix::panel.page_titles.view', ['model' => $resource::getModelLabel()]);
+        if (filled($recordTitle)) {
+            return __('primix::panel.page_titles.view_record', ['record' => $recordTitle]);
+        }
+
+        return __('primix::panel.page_titles.view', ['model' => $resource::getModelLabel()]);
     }
 
     protected function render(): string
