@@ -149,7 +149,9 @@
             :block-scroll="{{ $action->shouldModalBlockScroll() ? 'true' : 'false' }}"
             :draggable="{{ $action->isModalDraggable() ? 'true' : 'false' }}"
             :maximizable="{{ $action->isModalMaximizable() ? 'true' : 'false' }}"
-            @if(!empty($pt)) :pt="{!! \Illuminate\Support\Js::from($pt) !!}" @endif
+            :auto-z-index="false"
+            @php $pt = array_merge_recursive($pt, ['mask' => ['style' => 'z-index: 100']]); @endphp
+            :pt="{!! \Illuminate\Support\Js::from($pt) !!}"
         >
             @if($action->getModalDescription())
                 <p class="text-surface-500 dark:text-surface-400 mb-4">{{ $action->getModalDescription() }}</p>
