@@ -244,14 +244,14 @@ class MorphToSelect extends Field
         return $query->pluck($config['titleAttribute'], $model->getKeyName())->toArray();
     }
 
-    public function getRelationshipName(): ?string
+    public function getRelationshipName(): string
     {
-        return $this->relationship;
+        return $this->relationship ?? $this->getName();
     }
 
     public function hasRelationship(): bool
     {
-        return $this->relationship !== null;
+        return true;
     }
 
     /**
@@ -266,7 +266,7 @@ class MorphToSelect extends Field
         }
 
         $instance = $model instanceof Model ? $model : new $model;
-        $relationshipName = $this->relationship;
+        $relationshipName = $this->getRelationshipName();
 
         if (! method_exists($instance, $relationshipName)) {
             return null;
@@ -280,21 +280,21 @@ class MorphToSelect extends Field
     /**
      * Get the morph type column name (e.g., 'commentable_type').
      */
-    public function getMorphTypeColumn(): ?string
+    public function getMorphTypeColumn(): string
     {
         $relation = $this->getRelation();
 
-        return $relation?->getMorphType();
+        return $relation?->getMorphType() ?? $this->getName() . '_type';
     }
 
     /**
      * Get the morph id column name (e.g., 'commentable_id').
      */
-    public function getMorphIdColumn(): ?string
+    public function getMorphIdColumn(): string
     {
         $relation = $this->getRelation();
 
-        return $relation?->getForeignKeyName();
+        return $relation?->getForeignKeyName() ?? $this->getName() . '_id';
     }
 
     /**
