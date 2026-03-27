@@ -25,6 +25,12 @@ class DatePicker extends Field
 
     protected bool|Closure $isRange = false;
 
+    protected bool|Closure $showTime = false;
+
+    protected string|Closure $hourFormat = '24';
+
+    protected bool|Closure $isInline = false;
+
     public function format(?string $format): static
     {
         $this->format = $format;
@@ -103,6 +109,42 @@ class DatePicker extends Field
     public function isRange(): bool
     {
         return (bool) $this->evaluate($this->isRange);
+    }
+
+    public function showTime(bool|Closure $condition = true): static
+    {
+        $this->showTime = $condition;
+
+        return $this;
+    }
+
+    public function showsTime(): bool
+    {
+        return (bool) $this->evaluate($this->showTime);
+    }
+
+    public function hourFormat(string|Closure $format): static
+    {
+        $this->hourFormat = $format;
+
+        return $this;
+    }
+
+    public function getHourFormat(): string
+    {
+        return $this->evaluate($this->hourFormat);
+    }
+
+    public function inline(bool|Closure $condition = true): static
+    {
+        $this->isInline = $condition;
+
+        return $this;
+    }
+
+    public function isInline(): bool
+    {
+        return (bool) $this->evaluate($this->isInline);
     }
 
     public function getFormat(): ?string
@@ -188,6 +230,9 @@ class DatePicker extends Field
             'closeOnDateSelection' => (bool) $this->evaluate($this->closeOnDateSelection),
             'dateView' => $this->getDateView(),
             'range' => $this->isRange(),
+            'showTime' => $this->showsTime(),
+            'hourFormat' => $this->getHourFormat(),
+            'inline' => $this->isInline(),
         ]);
     }
 }
