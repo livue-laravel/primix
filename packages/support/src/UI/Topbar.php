@@ -84,9 +84,17 @@ class Topbar extends Component implements Htmlable
             return '';
         }
 
+        $componentName = $this->getName();
+        $componentViewData = [$componentName => $this];
+
+        // Keep topbar available for compatibility in custom detached views.
+        if ($componentName !== 'topbar') {
+            $componentViewData['topbar'] = $this;
+        }
+
         return View::make($view, array_merge(
             $this->getViewData(),
-            ['topbar' => $this]
+            $componentViewData
         ))->render();
     }
 

@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Primix\Details\Details;
 use Primix\Forms\Form;
+use Primix\MultiTenant\Facades\Tenancy;
 use Primix\Panel;
 use Primix\PanelRegistry;
 use Primix\Pages\PageRegistration;
@@ -314,4 +316,81 @@ it('form table and details return same builder by default', function () {
     expect(BasicTestResource::form($form))->toBe($form)
         ->and(BasicTestResource::table($table))->toBe($table)
         ->and(BasicTestResource::details($details))->toBe($details);
+});
+
+it('does not apply tenant column scope when tenant column is missing', function () {
+    config()->set('database.default', 'sqlite');
+    config()->set('database.connections.sqlite', [
+        'driver' => 'sqlite',
+        'database' => ':memory:',
+        'prefix' => '',
+    ]);
+    config()->set('multi-tenant.database.strategy', 'single');
+    config()->set('multi-tenant.tenant_column', 'facility_id');
+
+    Schema::dropIfExists('resource_test_models');
+    Schema::create('resource_test_models', function (\Illuminate\Database\Schema\Blueprint $table) {
+        $table->id();
+    });
+
+    Tenancy::shouldReceive('initialized')->once()->andReturnTrue();
+    Tenancy::shouldReceive('tenant')->never();
+
+    $query = BasicTestResource::getEloquentQuery();
+
+    expect($query->toSql())->not->toContain('facility_id')
+        ->and($query->getBindings())->toBe([]);
+});
+
+it('applies tenant column scope when tenant column exists', function () {
+    config()->set('database.default', 'sqlite');
+    config()->set('database.connections.sqlite', [
+        'driver' => 'sqlite',
+        'database' => ':memory:',
+        'prefix' => '',
+    ]);
+    config()->set('multi-tenant.database.strategy', 'single');
+    config()->set('multi-tenant.tenant_column', 'tenant_id');
+
+    Schema::dropIfExists('resource_test_models');
+    Schema::create('resource_test_models', function (\Illuminate\Database\Schema\Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('tenant_id')->nullable();
+    });
+
+    $tenant = new class implements \Primix\MultiTenant\Contracts\TenantContract
+    {
+        public function getTenantKey(): int
+        {
+            return 3;
+        }
+
+        public function getTenantKeyName(): string
+        {
+            return 'id';
+        }
+
+        public function getInternal(string $key): mixed
+        {
+            return null;
+        }
+
+        public function setInternal(string $key, mixed $value): static
+        {
+            return $this;
+        }
+
+        public function run(callable $callback): mixed
+        {
+            return $callback();
+        }
+    };
+
+    Tenancy::shouldReceive('initialized')->once()->andReturnTrue();
+    Tenancy::shouldReceive('tenant')->once()->andReturn($tenant);
+
+    $query = BasicTestResource::getEloquentQuery();
+
+    expect($query->toSql())->toContain('tenant_id')
+        ->and($query->getBindings())->toBe([3]);
 });

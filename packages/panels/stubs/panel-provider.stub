@@ -3,6 +3,7 @@
 namespace {{ namespace }};
 
 {{ parentProviderImport }}
+use Primix\Http\Middleware\Authenticate;
 use Primix\Pages\Dashboard;
 use Primix\Panel;
 
@@ -13,6 +14,7 @@ class {{ class }} extends {{ parentProviderClass }}
         return $panel
             ->path('{{ path }}')
             ->login()
+            ->authMiddleware([Authenticate::class])
             ->passwordReset()
             ->registration()
             ->discoverResources(in: app_path('Primix/Resources'), for: 'App\\Primix\\Resources')

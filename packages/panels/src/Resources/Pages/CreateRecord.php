@@ -84,7 +84,7 @@ class CreateRecord extends Page
             }
         }
 
-        if ($resource::shouldScopeToTenant()) {
+        if ($resource::shouldScopeToTenant() && $resource::hasTenantColumn()) {
             $column = config('multi-tenant.tenant_column', 'tenant_id');
             $attributeData[$column] = \Primix\MultiTenant\Facades\Tenancy::tenant()->getTenantKey();
         }

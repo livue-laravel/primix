@@ -2,6 +2,9 @@
 
 namespace Primix;
 
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -82,6 +85,7 @@ class PrimixServiceProvider extends ServiceProvider
         $this->registerComponentTypes();
         $this->registerRoutes();
         $this->registerViewComposers();
+        $this->handleAuthenticationException();
     }
 
     protected function registerAssets(): void
@@ -172,6 +176,30 @@ class PrimixServiceProvider extends ServiceProvider
     {
         $registry = $this->app->make(ComponentTypeRegistry::class);
         $registry->discoverInPath('Primix\\Resources\\Actions', __DIR__ . '/Resources/Actions');
+    }
+
+    protected function handleAuthenticationException(): void
+    {
+        $this->app->make(ExceptionHandler::class)
+            ->renderable(function (AuthenticationException $e, Request $request) {
+                $panelId = $request->route()?->parameter('_panel')
+                    ?? $request->route()?->defaults['_panel']
+                    ?? null;
+
+                if (! $panelId) {
+                    return null;
+                }
+
+                $panel = app(PanelRegistry::class)->get($panelId);
+
+                if (! $panel || ! $panel->hasLogin()) {
+                    return null;
+                }
+
+                session()->put('url.intended', $request->fullUrl());
+
+                return redirect($panel->getLoginUrl());
+            });
     }
 
     protected function registerRoutes(): void

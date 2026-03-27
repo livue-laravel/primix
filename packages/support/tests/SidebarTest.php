@@ -20,6 +20,14 @@ it('uses the default sidebar view', function () {
     expect($sidebar->getView())->toBe('primix::ui.sidebar');
 });
 
+it('renders sidebar detached view with sidebar variable context', function () {
+    $html = Sidebar::make()->toHtml();
+
+    expect($html)
+        ->toContain('<aside')
+        ->toContain(config('app.name'));
+});
+
 it('resolves sidebar with a sidebar method and caches the instance', function () {
     $component = new class extends Component
     {
@@ -98,4 +106,3 @@ it('resets sidebar cache on hydration', function () {
         ->and($second)->not->toBe($first)
         ->and($component->buildCount)->toBe(2);
 });
-
