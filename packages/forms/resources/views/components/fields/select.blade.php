@@ -166,7 +166,7 @@
                         :loading="asyncSelectLoading['{{ $optionKey }}'] || false"
                         @filter="(e) => {
                             var query = e.value || '';
-                            @if($createMissingOption) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
+                            @if($createMissingOption) if (query) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
                             if (query.length < {{ $minSearchLength }}) {
                                 asyncSelectOptions['{{ $optionKey }}'] = {!! \Illuminate\Support\Js::from($initialOptions) !!};
                                 return;
@@ -200,8 +200,9 @@
                         @change="(e) => {
                             var val = e.value;
                             if (Array.isArray(val) && val.indexOf('__quick_create__') !== -1) {
+                                var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
                                 {{ $statePath }} = val.filter(function(v) { return v !== '__quick_create__'; });
-                                createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', asyncSelectSearchQuery['{{ $optionKey }}']);
+                                if (q) createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', q);
                             }
                         }"
                     @endif
@@ -230,7 +231,7 @@
                         :loading="asyncSelectLoading['{{ $optionKey }}'] || false"
                         @filter="(e) => {
                             var query = e.value || '';
-                            @if($createMissingOption) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
+                            @if($createMissingOption) if (query) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
                             if (query.length < {{ $minSearchLength }}) {
                                 asyncSelectOptions['{{ $optionKey }}'] = {!! \Illuminate\Support\Js::from($initialOptions) !!};
                                 return;
@@ -263,8 +264,9 @@
                     @if($createMissingOption)
                         @change="(e) => {
                             if (e.value === '__quick_create__') {
+                                var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
                                 {{ $statePath }} = null;
-                                createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', asyncSelectSearchQuery['{{ $optionKey }}']);
+                                if (q) createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', q);
                             }
                         }"
                     @endif
