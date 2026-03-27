@@ -5,6 +5,7 @@ namespace Primix\Resources;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Primix\Details\Details;
 use Primix\Forms\Form;
 use Primix\PanelRegistry;
@@ -39,6 +40,10 @@ abstract class Resource
 
     protected static ?bool $workspace = null;
 
+    protected static ?bool $shouldTranslateLabels = null;
+
+    protected static array $tenantColumnExistsCache = [];
+
     public static function getModel(): string
     {
         return static::$model ?? throw new \Exception('Model not defined for resource ' . static::class);
@@ -55,27 +60,53 @@ abstract class Resource
 
     public static function getNavigationLabel(): string
     {
-        return static::$navigationLabel ?? str(class_basename(static::class))
+        $label = static::$navigationLabel ?? str(class_basename(static::class))
             ->beforeLast('Resource')
             ->plural()
             ->headline()
             ->toString();
+
+        return static::shouldTranslateLabels() ? __($label) : $label;
     }
 
     public static function getModelLabel(): string
     {
-        return static::$modelLabel ?? str(class_basename(static::getModel()))
+        $label = static::$modelLabel ?? str(class_basename(static::getModel()))
             ->headline()
             ->lower()
             ->ucfirst()
             ->toString();
+
+        return static::shouldTranslateLabels() ? __($label) : $label;
     }
 
     public static function getPluralModelLabel(): string
     {
-        return static::$pluralModelLabel ?? str(static::getModelLabel())
-            ->plural()
+        // Use the raw (untranslated) singular to build the plural, then translate once.
+        $singular = static::$modelLabel ?? str(class_basename(static::getModel()))
+            ->headline()
+            ->lower()
+            ->ucfirst()
             ->toString();
+
+        $label = static::$pluralModelLabel ?? str($singular)->plural()->toString();
+
+        return static::shouldTranslateLabels() ? __($label) : $label;
+    }
+
+    public static function shouldTranslateLabels(): bool
+    {
+        if (static::$shouldTranslateLabels !== null) {
+            return static::$shouldTranslateLabels;
+        }
+
+        $panel = app(PanelRegistry::class)->getCurrentPanel();
+
+        if ($panel !== null && method_exists($panel, 'shouldTranslateLabels')) {
+            return $panel->shouldTranslateLabels();
+        }
+
+        return app(PanelRegistry::class)->shouldTranslateLabels();
     }
 
     public static function getNavigationIcon(): ?string
@@ -153,7 +184,7 @@ abstract class Resource
     {
         $query = static::getModel()::query();
 
-        if (static::shouldScopeToTenant()) {
+        if (static::shouldScopeToTenant() && static::hasTenantColumn()) {
             $column = config('multi-tenant.tenant_column', 'tenant_id');
 
             $query->where(
@@ -170,6 +201,31 @@ abstract class Resource
         return class_exists(\Primix\MultiTenant\Facades\Tenancy::class)
             && \Primix\MultiTenant\Facades\Tenancy::initialized()
             && config('multi-tenant.database.strategy') === 'single';
+    }
+
+    public static function hasTenantColumn(): bool
+    {
+        $column = config('multi-tenant.tenant_column', 'tenant_id');
+        $model = static::getModel();
+        /** @var Model $instance */
+        $instance = new $model();
+        $table = $instance->getTable();
+        $connection = $instance->getConnectionName() ?? config('database.default');
+        $cacheKey = implode('|', [$model, $connection, $table, $column]);
+
+        if (array_key_exists($cacheKey, static::$tenantColumnExistsCache)) {
+            return static::$tenantColumnExistsCache[$cacheKey];
+        }
+
+        try {
+            $exists = Schema::connection($instance->getConnectionName())->hasColumn($table, $column);
+        } catch (\Throwable) {
+            $exists = false;
+        }
+
+        static::$tenantColumnExistsCache[$cacheKey] = $exists;
+
+        return $exists;
     }
 
     public static function form(Form $form): Form

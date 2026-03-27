@@ -19,6 +19,8 @@ use Primix\PanelRegistry;
  * @method static bool isCrossPanelSearchEnabled()
  * @method static void globalSearchMode(\Primix\GlobalSearch\GlobalSearchMode|\Closure $mode)
  * @method static \Primix\GlobalSearch\GlobalSearchMode getGlobalSearchMode()
+ * @method static void translateLabels(bool|\Closure $condition = true)
+ * @method static bool shouldTranslateLabels()
  *
  * @see \Primix\PanelRegistry
  */

@@ -16,6 +16,8 @@ class PanelRegistry
 
     protected GlobalSearchMode|Closure $globalSearchMode = GlobalSearchMode::Spotlight;
 
+    protected bool|Closure $translateLabels = false;
+
     /** @var array<Closure> */
     protected array $panelConfigurations = [];
 
@@ -189,5 +191,21 @@ class PanelRegistry
         }
 
         return $this->globalSearchMode;
+    }
+
+    // ─── Label Translation ──────────────────────────────────────────────
+
+    public function translateLabels(bool|Closure $condition = true): void
+    {
+        $this->translateLabels = $condition;
+    }
+
+    public function shouldTranslateLabels(): bool
+    {
+        if ($this->translateLabels instanceof Closure) {
+            return (bool) ($this->translateLabels)();
+        }
+
+        return $this->translateLabels;
     }
 }

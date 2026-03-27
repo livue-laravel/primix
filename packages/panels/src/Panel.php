@@ -16,6 +16,7 @@ class Panel
     use Concerns\HasDatabaseNotifications;
     use Concerns\HasDiscovery;
     use Concerns\HasGlobalSearch;
+    use Concerns\HasLabelTranslation;
     use Concerns\HasModalConfiguration;
     use Concerns\HasPlugins;
     use Concerns\HasTenancy;
