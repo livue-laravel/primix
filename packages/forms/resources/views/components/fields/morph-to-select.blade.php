@@ -57,7 +57,7 @@
                     @update:model-value="{{ $idStatePath }} = null"
                 ></p-select>
                 <label for="{{ $id }}_type">
-                    Type
+                    {{ __('primix-forms::forms.morph_type_label') }}
                 </label>
             </p-float-label>
         </div>

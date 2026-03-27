@@ -8,6 +8,7 @@ return [
     'add_item' => 'Add item',
     'edit_image' => 'Edit image',
     'option' => 'Option',
+    'morph_type_label' => 'Type',
 
     'file_upload' => [
         'uploading' => 'Uploading...',
