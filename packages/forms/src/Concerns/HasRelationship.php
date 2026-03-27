@@ -113,9 +113,10 @@ trait HasRelationship
         }
 
         $relationshipName = $this->relationship;
+        $related = $record->{$relationshipName}()->getRelated();
 
         return $record->{$relationshipName}()
-            ->pluck($record->{$relationshipName}()->getRelated()->getKeyName())
+            ->pluck($related->getQualifiedKeyName())
             ->toArray();
     }
 

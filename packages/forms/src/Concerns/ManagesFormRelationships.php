@@ -12,6 +12,7 @@ trait ManagesFormRelationships
             $this->getFields(),
             fn ($field) => method_exists($field, 'hasRelationship')
                 && $field->hasRelationship()
+                && method_exists($field, 'isBelongsToMany')
                 && $field->isBelongsToMany()
         );
     }
