@@ -10,8 +10,8 @@ it('resolves tenant by route parameter', function () {
 
     $resolver = new PathTenantResolver();
 
-    $request = Request::create('/admin/' . $tenant->id . '/dashboard');
-    $route = new Route('GET', '/admin/{tenant}/dashboard', fn () => null);
+    $request = Request::create('/' . $tenant->id . '/admin/dashboard');
+    $route = new Route('GET', '/{tenant}/admin/dashboard', fn () => null);
     $route->bind($request);
     $request->setRouteResolver(fn () => $route);
 
@@ -35,8 +35,8 @@ it('returns null when route parameter is missing', function () {
 it('returns null for non-existent tenant', function () {
     $resolver = new PathTenantResolver();
 
-    $request = Request::create('/admin/999/dashboard');
-    $route = new Route('GET', '/admin/{tenant}/dashboard', fn () => null);
+    $request = Request::create('/999/admin/dashboard');
+    $route = new Route('GET', '/{tenant}/admin/dashboard', fn () => null);
     $route->bind($request);
     $request->setRouteResolver(fn () => $route);
 

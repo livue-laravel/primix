@@ -772,6 +772,43 @@ it('can set tenantMenuItems', function () {
     expect(Panel::make('test')->tenantMenuItems($items)->getTenantMenuItems())->toBe($items);
 });
 
+it('builds path tenant switch URL as tenant segment before panel path', function () {
+    $tenant = new class
+    {
+        public string $slug = 'acme';
+
+        public function getTenantKey(): int
+        {
+            return 42;
+        }
+    };
+
+    $panel = Panel::make('test')
+        ->path('admin')
+        ->tenant('App\\Models\\Team')
+        ->tenantIdentification('path')
+        ->tenantSlugAttribute('slug');
+
+    expect($panel->getTenantSwitchUrl($tenant))->toEndWith('/acme/admin');
+});
+
+it('uses tenant key when slug attribute is not configured for path tenant switch URL', function () {
+    $tenant = new class
+    {
+        public function getTenantKey(): int
+        {
+            return 42;
+        }
+    };
+
+    $panel = Panel::make('test')
+        ->path('admin')
+        ->tenant('App\\Models\\Team')
+        ->tenantIdentification('path');
+
+    expect($panel->getTenantSwitchUrl($tenant))->toEndWith('/42/admin');
+});
+
 // ============================================================
 // RenderHook
 // ============================================================

@@ -41,6 +41,19 @@ class DatabaseConfig
 
     public static function getTenantConnection(): string
     {
-        return config('multi-tenant.database.tenant_connection', 'tenant');
+        $tenantConnection = config('multi-tenant.database.tenant_connection', 'tenant');
+        $strategy = config('multi-tenant.database.strategy', 'single');
+
+        if ($strategy !== 'single') {
+            return $tenantConnection;
+        }
+
+        $connectionConfig = config("database.connections.{$tenantConnection}");
+
+        if (is_array($connectionConfig)) {
+            return $tenantConnection;
+        }
+
+        return static::getCentralConnection();
     }
 }

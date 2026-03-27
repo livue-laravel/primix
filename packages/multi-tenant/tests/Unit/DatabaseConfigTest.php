@@ -33,6 +33,14 @@ it('returns tenant connection name', function () {
     expect(DatabaseConfig::getTenantConnection())->toBe('tenant');
 });
 
+it('falls back to central connection in single strategy when tenant connection is missing', function () {
+    config(['multi-tenant.database.strategy' => 'single']);
+    config(['multi-tenant.database.central_connection' => 'testing']);
+    config(['multi-tenant.database.tenant_connection' => 'tenant_missing']);
+
+    expect(DatabaseConfig::getTenantConnection())->toBe('testing');
+});
+
 it('builds multi-db config with database name', function () {
     config(['multi-tenant.database.strategy' => 'multi']);
     config(['multi-tenant.database.template_connection' => 'testing']);
