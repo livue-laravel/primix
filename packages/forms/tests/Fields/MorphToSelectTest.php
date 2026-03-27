@@ -1,6 +1,9 @@
 <?php
 
 use Primix\Forms\Components\Fields\MorphToSelect;
+use Primix\Forms\Components\Fields\MorphType;
+
+// --- MorphToSelect ---
 
 it('has null relationship by default', function () {
     $field = MorphToSelect::make('morph');
@@ -129,39 +132,31 @@ it('has empty types by default', function () {
     expect($field->getTypes())->toBe([]);
 });
 
-it('normalizes simple type config', function () {
-    $field = MorphToSelect::make('morph')->types(['App\\Models\\Post' => 'title']);
-
-    expect($field->getTypes())->toBe([
-        'App\\Models\\Post' => [
-            'titleAttribute' => 'title',
-            'label' => 'Posts',
-            'modifyQueryUsing' => null,
-        ],
+it('getTypes returns MorphType objects keyed by model class', function () {
+    $field = MorphToSelect::make('morph')->types([
+        MorphType::make('App\\Models\\Post')->titleAttribute('title'),
     ]);
+
+    $types = $field->getTypes();
+
+    expect($types)->toHaveKey('App\\Models\\Post')
+        ->and($types['App\\Models\\Post'])->toBeInstanceOf(MorphType::class);
 });
 
-it('normalizes full type config', function () {
+it('getTypes handles MorphType with custom label', function () {
     $field = MorphToSelect::make('morph')->types([
-        'App\\Models\\Post' => [
-            'titleAttribute' => 'name',
-            'label' => 'Blog Posts',
-        ],
+        MorphType::make('App\\Models\\Post')->titleAttribute('name')->label('Blog Posts'),
     ]);
 
-    expect($field->getTypes())->toBe([
-        'App\\Models\\Post' => [
-            'titleAttribute' => 'name',
-            'label' => 'Blog Posts',
-            'modifyQueryUsing' => null,
-        ],
-    ]);
+    $types = $field->getTypes();
+
+    expect($types['App\\Models\\Post']->getLabel())->toBe('Blog Posts');
 });
 
 it('returns type options', function () {
     $field = MorphToSelect::make('morph')->types([
-        'App\\Models\\Post' => 'title',
-        'App\\Models\\Video' => 'name',
+        MorphType::make('App\\Models\\Post')->titleAttribute('title'),
+        MorphType::make('App\\Models\\Video')->titleAttribute('name'),
     ]);
 
     expect($field->getTypeOptions())->toBe([
@@ -171,18 +166,19 @@ it('returns type options', function () {
 });
 
 it('returns type options for vue', function () {
-    $field = MorphToSelect::make('morph')->types(['App\\Models\\Post' => 'title']);
+    $field = MorphToSelect::make('morph')->types([
+        MorphType::make('App\\Models\\Post')->titleAttribute('title'),
+    ]);
 
     expect($field->getTypeOptionsForVue())->toBe([
-        [
-            'label' => 'Posts',
-            'value' => 'App\\Models\\Post',
-        ],
+        ['label' => 'Posts', 'value' => 'App\\Models\\Post'],
     ]);
 });
 
 it('generates label from camel case model name', function () {
-    $field = MorphToSelect::make('morph')->types(['App\\Models\\BlogPost' => 'title']);
+    $field = MorphToSelect::make('morph')->types([
+        MorphType::make('App\\Models\\BlogPost')->titleAttribute('title'),
+    ]);
 
     expect($field->getTypeOptions())->toBe([
         'App\\Models\\BlogPost' => 'Blog Posts',
@@ -197,7 +193,7 @@ it('returns correct view', function () {
 
 it('returns complete vue props', function () {
     $field = MorphToSelect::make('morph')
-        ->types(['App\\Models\\Post' => 'title'])
+        ->types([MorphType::make('App\\Models\\Post')->titleAttribute('title')])
         ->searchable();
 
     $props = $field->toVueProps();
@@ -205,4 +201,84 @@ it('returns complete vue props', function () {
     expect($props)
         ->toHaveKey('types')
         ->toHaveKey('searchable', true);
+});
+
+// --- MorphType ---
+
+it('MorphType can be created with model class', function () {
+    $type = MorphType::make('App\\Models\\Post');
+
+    expect($type->getModelClass())->toBe('App\\Models\\Post');
+});
+
+it('MorphType has default titleAttribute of id', function () {
+    $type = MorphType::make('App\\Models\\Post');
+
+    expect($type->getTitleAttribute())->toBe('id');
+});
+
+it('MorphType can set titleAttribute as string', function () {
+    $type = MorphType::make('App\\Models\\Post')->titleAttribute('title');
+
+    expect($type->getTitleAttribute())->toBe('title');
+});
+
+it('MorphType can set titleAttribute as closure', function () {
+    $type = MorphType::make('App\\Models\\Post')->titleAttribute(fn ($r) => $r->name);
+
+    expect($type->getTitleAttribute())->toBeInstanceOf(Closure::class);
+});
+
+it('MorphType auto-generates label from model class', function () {
+    $type = MorphType::make('App\\Models\\Post');
+
+    expect($type->getLabel())->toBe('Posts');
+});
+
+it('MorphType auto-generates label from camel case model', function () {
+    $type = MorphType::make('App\\Models\\BlogPost');
+
+    expect($type->getLabel())->toBe('Blog Posts');
+});
+
+it('MorphType can set custom label as string', function () {
+    $type = MorphType::make('App\\Models\\Post')->label('Articoli');
+
+    expect($type->getLabel())->toBe('Articoli');
+});
+
+it('MorphType can set custom label as closure', function () {
+    $type = MorphType::make('App\\Models\\Post')->label(fn () => 'Dynamic Label');
+
+    expect($type->getLabel())->toBe('Dynamic Label');
+});
+
+it('MorphType has null modifyQueryUsing by default', function () {
+    $type = MorphType::make('App\\Models\\Post');
+
+    expect($type->getModifyQueryUsing())->toBeNull();
+});
+
+it('MorphType can set modifyQueryUsing', function () {
+    $type = MorphType::make('App\\Models\\Post')->modifyQueryUsing(fn ($q) => $q);
+
+    expect($type->getModifyQueryUsing())->toBeInstanceOf(Closure::class);
+});
+
+it('MorphType resolves title from string attribute', function () {
+    $type = MorphType::make('App\\Models\\Post')->titleAttribute('title');
+    $record = new class extends \Illuminate\Database\Eloquent\Model {
+        public string $title = 'Hello World';
+    };
+
+    expect($type->resolveTitle($record))->toBe('Hello World');
+});
+
+it('MorphType resolves title from closure', function () {
+    $type = MorphType::make('App\\Models\\Post')->titleAttribute(fn ($r) => strtoupper($r->name));
+    $record = new class extends \Illuminate\Database\Eloquent\Model {
+        public string $name = 'hello';
+    };
+
+    expect($type->resolveTitle($record))->toBe('HELLO');
 });

@@ -40,16 +40,15 @@ class MorphToSelect extends Field
     /**
      * Define the morphable types with their configuration.
      *
-     * @param array $types Array of model class => config
+     * @param MorphType[] $types
      *
      * Example:
      * ->types([
-     *     Post::class => 'title',  // Simple: just the title attribute
-     *     Video::class => [
-     *         'titleAttribute' => 'name',
-     *         'label' => 'Videos',
-     *         'modifyQueryUsing' => fn (Builder $query) => $query->where('active', true),
-     *     ],
+     *     MorphType::make(Post::class)->titleAttribute('title'),
+     *     MorphType::make(Video::class)
+     *         ->titleAttribute(fn (Video $record) => $record->title . ' (' . $record->year . ')')
+     *         ->label('Videos')
+     *         ->modifyQueryUsing(fn (Builder $query) => $query->where('active', true)),
      * ])
      */
     public function types(array $types): static
@@ -66,7 +65,7 @@ class MorphToSelect extends Field
      *                                       or array of column names to search on multiple columns.
      *
      * Example:
-     * ->searchable()                           // Search on title attribute only
+     * ->searchable()                           // Search on title attribute only (string titleAttribute required)
      * ->searchable(['name', 'email', 'code'])  // Search on multiple columns
      */
     public function searchable(bool|Closure|array $condition = true): static
@@ -121,7 +120,6 @@ class MorphToSelect extends Field
     {
         $value = $this->evaluate($this->isSearchable);
 
-        // If array of columns is passed, searchable is enabled
         if (is_array($value)) {
             return true;
         }
@@ -177,12 +175,11 @@ class MorphToSelect extends Field
 
     /**
      * Custom callback for searching options.
-     * Receives (string $search, string $modelClass, Field $component) and should return array of options.
+     * Receives (string $search, string $modelClass) and should return array of options.
      *
      * Example:
      * ->getSearchResultsUsing(function (string $search, string $modelClass) {
      *     return $modelClass::where('name', 'like', "%{$search}%")
-     *         ->orWhere('code', 'like', "%{$search}%")
      *         ->limit(20)
      *         ->pluck('name', 'id')
      *         ->toArray();
@@ -202,7 +199,6 @@ class MorphToSelect extends Field
      */
     public function searchOptionsForType(string $modelClass, string $search): array
     {
-        // Custom search callback takes precedence
         if ($this->getSearchResultsUsing) {
             return $this->evaluate($this->getSearchResultsUsing, [
                 'search' => $search,
@@ -216,42 +212,50 @@ class MorphToSelect extends Field
             return [];
         }
 
-        $config = $types[$modelClass];
+        $morphType = $types[$modelClass];
         $model = new $modelClass;
         $query = $model->query();
 
-        if ($config['modifyQueryUsing']) {
-            ($config['modifyQueryUsing'])($query);
+        if ($callback = $morphType->getModifyQueryUsing()) {
+            $callback($query);
         }
 
-        // Get columns to search on
-        $searchColumns = $this->getSearchColumns() ?? [$config['titleAttribute']];
+        $titleAttr = $morphType->getTitleAttribute();
 
-        // Add search conditions (OR across all columns)
-        $query->where(function ($q) use ($searchColumns, $search) {
-            foreach ($searchColumns as $index => $column) {
-                if ($index === 0) {
-                    $q->where($column, 'like', "%{$search}%");
-                } else {
-                    $q->orWhere($column, 'like', "%{$search}%");
+        // When titleAttribute is a Closure, explicit searchable columns are required
+        $searchColumns = $this->getSearchColumns() ?? (is_string($titleAttr) ? [$titleAttr] : []);
+
+        if (! empty($searchColumns)) {
+            $query->where(function ($q) use ($searchColumns, $search) {
+                foreach ($searchColumns as $index => $column) {
+                    if ($index === 0) {
+                        $q->where($column, 'like', "%{$search}%");
+                    } else {
+                        $q->orWhere($column, 'like', "%{$search}%");
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        // Limit results
         $query->limit($this->getOptionsLimit());
 
-        return $query->pluck($config['titleAttribute'], $model->getKeyName())->toArray();
+        if ($titleAttr instanceof Closure) {
+            return $query->get()->mapWithKeys(
+                fn ($record) => [$record->getKey() => $morphType->resolveTitle($record)]
+            )->toArray();
+        }
+
+        return $query->pluck($titleAttr, $model->getKeyName())->toArray();
     }
 
-    public function getRelationshipName(): string
+    public function getRelationshipName(): ?string
     {
-        return $this->relationship ?? $this->getName();
+        return $this->relationship;
     }
 
     public function hasRelationship(): bool
     {
-        return true;
+        return $this->relationship !== null;
     }
 
     /**
@@ -266,7 +270,7 @@ class MorphToSelect extends Field
         }
 
         $instance = $model instanceof Model ? $model : new $model;
-        $relationshipName = $this->getRelationshipName();
+        $relationshipName = $this->relationship ?? $this->getName();
 
         if (! method_exists($instance, $relationshipName)) {
             return null;
@@ -298,33 +302,19 @@ class MorphToSelect extends Field
     }
 
     /**
-     * Get configured types with normalized structure.
+     * Get configured types keyed by model class.
      *
-     * @return array<string, array{titleAttribute: string, label: string, modifyQueryUsing: ?Closure}>
+     * @return array<string, MorphType>
      */
     public function getTypes(): array
     {
-        $normalized = [];
+        $result = [];
 
-        foreach ($this->types as $modelClass => $config) {
-            if (is_string($config)) {
-                // Simple format: Post::class => 'title'
-                $normalized[$modelClass] = [
-                    'titleAttribute' => $config,
-                    'label' => $this->getModelLabel($modelClass),
-                    'modifyQueryUsing' => null,
-                ];
-            } else {
-                // Full format with array config
-                $normalized[$modelClass] = [
-                    'titleAttribute' => $config['titleAttribute'] ?? 'id',
-                    'label' => $config['label'] ?? $this->getModelLabel($modelClass),
-                    'modifyQueryUsing' => $config['modifyQueryUsing'] ?? null,
-                ];
-            }
+        foreach ($this->types as $morphType) {
+            $result[$morphType->getModelClass()] = $morphType;
         }
 
-        return $normalized;
+        return $result;
     }
 
     /**
@@ -336,8 +326,8 @@ class MorphToSelect extends Field
     {
         $options = [];
 
-        foreach ($this->getTypes() as $modelClass => $config) {
-            $options[$modelClass] = $config['label'];
+        foreach ($this->getTypes() as $modelClass => $morphType) {
+            $options[$modelClass] = $morphType->getLabel();
         }
 
         return $options;
@@ -356,15 +346,23 @@ class MorphToSelect extends Field
             return [];
         }
 
-        $config = $types[$modelClass];
+        $morphType = $types[$modelClass];
         $model = new $modelClass;
         $query = $model->query();
 
-        if ($config['modifyQueryUsing']) {
-            ($config['modifyQueryUsing'])($query);
+        if ($callback = $morphType->getModifyQueryUsing()) {
+            $callback($query);
         }
 
-        return $query->pluck($config['titleAttribute'], $model->getKeyName())->toArray();
+        $titleAttr = $morphType->getTitleAttribute();
+
+        if ($titleAttr instanceof Closure) {
+            return $query->get()->mapWithKeys(
+                fn ($record) => [$record->getKey() => $morphType->resolveTitle($record)]
+            )->toArray();
+        }
+
+        return $query->pluck($titleAttr, $model->getKeyName())->toArray();
     }
 
     /**
@@ -375,14 +373,13 @@ class MorphToSelect extends Field
      */
     public function getOptionsForVue(): array
     {
-        // For async search (searchable without preload), return only selected option initially
         if ($this->isAsyncSearch()) {
             return $this->getSelectedOptionsForVue();
         }
 
         $result = [];
 
-        foreach ($this->getTypes() as $modelClass => $config) {
+        foreach ($this->getTypes() as $modelClass => $morphType) {
             $options = $this->getOptionsForType($modelClass);
 
             $result[$modelClass] = collect($options)->map(function ($label, $value) {
@@ -405,12 +402,10 @@ class MorphToSelect extends Field
     {
         $result = [];
 
-        // Initialize empty arrays for all types
-        foreach ($this->getTypes() as $modelClass => $config) {
+        foreach ($this->getTypes() as $modelClass => $morphType) {
             $result[$modelClass] = [];
         }
 
-        // Try to get current selected value
         $container = $this->container ?? null;
         if (! $container) {
             return $result;
@@ -430,15 +425,17 @@ class MorphToSelect extends Field
         $currentType = $formData[$typeColumn] ?? null;
         $currentId = $formData[$idColumn] ?? null;
 
-        if ($currentType && $currentId && isset($this->getTypes()[$currentType])) {
-            $config = $this->getTypes()[$currentType];
+        $types = $this->getTypes();
+
+        if ($currentType && $currentId && isset($types[$currentType])) {
+            $morphType = $types[$currentType];
             $model = new $currentType;
             $record = $model->find($currentId);
 
             if ($record) {
                 $result[$currentType] = [
                     [
-                        'label' => $record->{$config['titleAttribute']},
+                        'label' => $morphType->resolveTitle($record),
                         'value' => $currentId,
                     ],
                 ];
@@ -461,19 +458,6 @@ class MorphToSelect extends Field
                 'value' => $value,
             ];
         })->values()->all();
-    }
-
-    /**
-     * Generate a human-readable label from a model class.
-     */
-    protected function getModelLabel(string $modelClass): string
-    {
-        $basename = class_basename($modelClass);
-
-        // Convert CamelCase to words and pluralize
-        $words = preg_replace('/([a-z])([A-Z])/', '$1 $2', $basename);
-
-        return str($words)->plural()->toString();
     }
 
     protected function getRelationshipModel(): mixed
