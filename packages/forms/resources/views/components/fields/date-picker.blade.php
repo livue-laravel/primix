@@ -13,7 +13,17 @@
 >
     <p-date-picker
         id="{{ $id }}"
-        v-model="{{ $statePath }}"
+        :model-value="(function(v) {
+            if (!v) return null;
+            if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T')) : d; });
+            return v instanceof Date ? v : new Date(String(v).replace(' ', 'T'));
+        })({{ $statePath }})"
+        @update:model-value="(function(d) {
+            function fmt(dt) { if (!dt || !(dt instanceof Date) || isNaN(dt.getTime())) return null; return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0'); }
+            if (!d) { {{ $statePath }} = null; return; }
+            if (Array.isArray(d)) { {{ $statePath }} = d.map(fmt); return; }
+            {{ $statePath }} = fmt(d);
+        })($event)"
         @if($disabled) disabled @endif
         @error($component->getStatePath()) invalid @enderror
         @if($format) date-format="{{ $format }}" @endif
