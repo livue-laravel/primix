@@ -20,6 +20,7 @@
 
     // Initial options
     $initialOptions = $component->getOptionsForVue();
+    $initialOptionsJs = \Illuminate\Support\Js::from($initialOptions);
 
     // Style PassThrough
     $style = $style ?? [];
@@ -31,6 +32,68 @@
     if (!empty($style['option']))  $selectPt['option'] = $style['option'];
     if (!empty($style['filter']))  $selectPt['filterInput'] = $style['filter'];
     if (!empty($style['chip']))    $selectPt['chip'] = $style['chip'];
+
+    // Async filter handler — shared between p-select and p-multi-select
+    $filterHandlerJs = null;
+    $changeHandlerJs = null;
+
+    if ($asyncSearch) {
+        $filterHandlerJs = "(e) => {\n"
+            . "    var query = e.value || '';\n"
+            . "    if (query.length < " . $minSearchLength . ") {\n"
+            . "        var baseOpts = " . $initialOptionsJs . ";\n"
+            . "        var selected = " . $statePath . ";\n"
+            . "        var curOpts = asyncSelectOptions['" . $optionKey . "'] || [];\n"
+            . "        if (selected && curOpts.length) {\n"
+            . "            var selArr = Array.isArray(selected) ? selected : [selected];\n"
+            . "            var baseValues = baseOpts.map(function(o) { return o.value; });\n"
+            . "            curOpts.forEach(function(o) {\n"
+            . "                if (selArr.indexOf(o.value) !== -1 && baseValues.indexOf(o.value) === -1) baseOpts.push(o);\n"
+            . "            });\n"
+            . "        }\n"
+            . "        asyncSelectOptions['" . $optionKey . "'] = baseOpts;\n"
+            . "        return;\n"
+            . "    }\n"
+            . "    asyncSelectLoading['" . $optionKey . "'] = true;\n"
+            . "    searchSelectOptions(['" . $formName . "', '" . $fieldName . "', query], { debounce: " . $searchDebounce . " })\n"
+            . "        .then(function(opts) {\n"
+            . "            if (opts) {\n"
+            . ($createMissingOption
+                ? "                if (query && !opts.some(function(o) { return o.label.toLowerCase() === query.toLowerCase(); })) {\n"
+                . "                    opts = opts.concat([{ label: '" . addslashes(__('Create')) . " \\u0022' + query + '\\u0022', value: '__quick_create__:' + query }]);\n"
+                . "                }\n"
+                : "")
+            . "                asyncSelectOptions['" . $optionKey . "'] = opts;\n"
+            . "            }\n"
+            . "            asyncSelectLoading['" . $optionKey . "'] = false;\n"
+            . "        })\n"
+            . "        .catch(function() { asyncSelectLoading['" . $optionKey . "'] = false; });\n"
+            . "}";
+    }
+
+    if ($createMissingOption) {
+        if ($multiple) {
+            $changeHandlerJs = "(e) => {\n"
+                . "    var val = e.value;\n"
+                . "    if (Array.isArray(val)) {\n"
+                . "        var createItem = val.find(function(v) { return typeof v === 'string' && v.startsWith('__quick_create__:'); });\n"
+                . "        if (createItem) {\n"
+                . "            var q = createItem.slice('__quick_create__:'.length);\n"
+                . "            " . $statePath . " = val.filter(function(v) { return typeof v !== 'string' || !v.startsWith('__quick_create__:'); });\n"
+                . "            if (q) createMissingSelectOption('" . $formName . "', '" . $fieldName . "', q);\n"
+                . "        }\n"
+                . "    }\n"
+                . "}";
+        } else {
+            $changeHandlerJs = "(e) => {\n"
+                . "    if (typeof e.value === 'string' && e.value.startsWith('__quick_create__:')) {\n"
+                . "        var q = e.value.slice('__quick_create__:'.length);\n"
+                . "        " . $statePath . " = null;\n"
+                . "        if (q) createMissingSelectOption('" . $formName . "', '" . $fieldName . "', q);\n"
+                . "    }\n"
+                . "}";
+        }
+    }
 @endphp
 
 @if($isTree)
@@ -41,7 +104,7 @@
         <p-tree-select
             id="{{ $id }}"
             v-model="{{ $statePath }}"
-            :options="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+            :options="{!! $initialOptionsJs !!}"
             option-disabled="disabled"
             @if($disabled) disabled @endif
             @if($searchable) filter @endif
@@ -66,7 +129,7 @@
         <p-cascade-select
             id="{{ $id }}"
             v-model="{{ $statePath }}"
-            :options="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+            :options="{!! $initialOptionsJs !!}"
             option-label="label"
             option-value="value"
             option-group-label="label"
@@ -99,7 +162,7 @@
         <p-listbox
             id="{{ $id }}"
             v-model="{{ $statePath }}"
-            :options="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+            :options="{!! $initialOptionsJs !!}"
             option-label="label"
             option-value="value"
             option-disabled="disabled"
@@ -132,7 +195,7 @@
                 }"
                 option-label="label"
             @else
-                :suggestions="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+                :suggestions="{!! $initialOptionsJs !!}"
                 option-label="label"
             @endif
             @if($disabled) disabled @endif
@@ -162,33 +225,11 @@
                     v-model="{{ $statePath }}"
                     option-disabled="disabled"
                     @if($asyncSearch)
-                        :options="asyncSelectOptions['{{ $optionKey }}'] || {!! \Illuminate\Support\Js::from($initialOptions) !!}"
+                        :options="asyncSelectOptions['{{ $optionKey }}'] || {!! $initialOptionsJs !!}"
                         :loading="asyncSelectLoading['{{ $optionKey }}'] || false"
-                        @filter="(e) => {
-                            var query = e.value || '';
-                            @if($createMissingOption) if (query) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
-                            if (query.length < {{ $minSearchLength }}) {
-                                asyncSelectOptions['{{ $optionKey }}'] = {!! \Illuminate\Support\Js::from($initialOptions) !!};
-                                return;
-                            }
-                            asyncSelectLoading['{{ $optionKey }}'] = true;
-                            searchSelectOptions(['{{ $formName }}', '{{ $fieldName }}', query], { debounce: {{ $searchDebounce }} })
-                                .then(function(opts) {
-                                    if (opts) {
-                                        @if($createMissingOption)
-                                        var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
-                                        if (q && !opts.some(function(o) { return o.label.toLowerCase() === q.toLowerCase(); })) {
-                                            opts = opts.concat([{ label: '{{ __("Create") }} \u0022' + q + '\u0022', value: '__quick_create__' }]);
-                                        }
-                                        @endif
-                                        asyncSelectOptions['{{ $optionKey }}'] = opts;
-                                    }
-                                    asyncSelectLoading['{{ $optionKey }}'] = false;
-                                })
-                                .catch(function() { asyncSelectLoading['{{ $optionKey }}'] = false; });
-                        }"
+                        @filter="{!! $filterHandlerJs !!}"
                     @else
-                        :options="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+                        :options="{!! $initialOptionsJs !!}"
                     @endif
                     option-label="label"
                     option-value="value"
@@ -196,28 +237,15 @@
                     @if($searchable) filter @endif
                     @error($component->getStatePath()) invalid @enderror
                     display="chip"
-                    @if($createMissingOption)
-                        @change="(e) => {
-                            var val = e.value;
-                            if (Array.isArray(val) && val.indexOf('__quick_create__') !== -1) {
-                                var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
-                                {{ $statePath }} = val.filter(function(v) { return v !== '__quick_create__'; });
-                                if (q) createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', q);
-                            }
-                        }"
+                    @if($changeHandlerJs)
+                        @change="{!! $changeHandlerJs !!}"
                     @endif
                     @if(!empty($selectPt)) :pt="{!! \Illuminate\Support\Js::from($selectPt) !!}" @endif
                     fluid
                     {!! $component->getExtraAttributes() !!}
                 >
                     @if($createMissingOption)
-                        <template #option="slotProps">
-                            <div v-if="slotProps.option.value === '__quick_create__'" class="flex items-center gap-2 text-primary-500 font-medium">
-                                <i class="pi pi-plus text-sm"></i>
-                                <span v-text="slotProps.option.label"></span>
-                            </div>
-                            <span v-else v-text="slotProps.option.label"></span>
-                        </template>
+                        @include('primix-forms::components.fields.partials._select-quick-create-option')
                     @endif
                 </p-multi-select>
             @else
@@ -227,33 +255,11 @@
                     v-model="{{ $statePath }}"
                     option-disabled="disabled"
                     @if($asyncSearch)
-                        :options="asyncSelectOptions['{{ $optionKey }}'] || {!! \Illuminate\Support\Js::from($initialOptions) !!}"
+                        :options="asyncSelectOptions['{{ $optionKey }}'] || {!! $initialOptionsJs !!}"
                         :loading="asyncSelectLoading['{{ $optionKey }}'] || false"
-                        @filter="(e) => {
-                            var query = e.value || '';
-                            @if($createMissingOption) if (query) asyncSelectSearchQuery['{{ $optionKey }}'] = query; @endif
-                            if (query.length < {{ $minSearchLength }}) {
-                                asyncSelectOptions['{{ $optionKey }}'] = {!! \Illuminate\Support\Js::from($initialOptions) !!};
-                                return;
-                            }
-                            asyncSelectLoading['{{ $optionKey }}'] = true;
-                            searchSelectOptions(['{{ $formName }}', '{{ $fieldName }}', query], { debounce: {{ $searchDebounce }} })
-                                .then(function(opts) {
-                                    if (opts) {
-                                        @if($createMissingOption)
-                                        var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
-                                        if (q && !opts.some(function(o) { return o.label.toLowerCase() === q.toLowerCase(); })) {
-                                            opts = opts.concat([{ label: '{{ __("Create") }} \u0022' + q + '\u0022', value: '__quick_create__' }]);
-                                        }
-                                        @endif
-                                        asyncSelectOptions['{{ $optionKey }}'] = opts;
-                                    }
-                                    asyncSelectLoading['{{ $optionKey }}'] = false;
-                                })
-                                .catch(function() { asyncSelectLoading['{{ $optionKey }}'] = false; });
-                        }"
+                        @filter="{!! $filterHandlerJs !!}"
                     @else
-                        :options="{!! \Illuminate\Support\Js::from($initialOptions) !!}"
+                        :options="{!! $initialOptionsJs !!}"
                     @endif
                     option-label="label"
                     option-value="value"
@@ -261,27 +267,15 @@
                     @if($searchable) filter @endif
                     @error($component->getStatePath()) invalid @enderror
                     show-clear
-                    @if($createMissingOption)
-                        @change="(e) => {
-                            if (e.value === '__quick_create__') {
-                                var q = asyncSelectSearchQuery['{{ $optionKey }}'] || '';
-                                {{ $statePath }} = null;
-                                if (q) createMissingSelectOption('{{ $formName }}', '{{ $fieldName }}', q);
-                            }
-                        }"
+                    @if($changeHandlerJs)
+                        @change="{!! $changeHandlerJs !!}"
                     @endif
                     @if(!empty($selectPt)) :pt="{!! \Illuminate\Support\Js::from($selectPt) !!}" @endif
                     fluid
                     {!! $component->getExtraAttributes() !!}
                 >
                     @if($createMissingOption)
-                        <template #option="slotProps">
-                            <div v-if="slotProps.option.value === '__quick_create__'" class="flex items-center gap-2 text-primary-500 font-medium">
-                                <i class="pi pi-plus text-sm"></i>
-                                <span v-text="slotProps.option.label"></span>
-                            </div>
-                            <span v-else v-text="slotProps.option.label"></span>
-                        </template>
+                        @include('primix-forms::components.fields.partials._select-quick-create-option')
                     @endif
                 </p-select>
             @endif

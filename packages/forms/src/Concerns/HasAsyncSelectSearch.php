@@ -19,13 +19,6 @@ trait HasAsyncSelectSearch
     public array $asyncSelectLoading = [];
 
     /**
-     * Store the current search query for async select fields.
-     * Used by createMissingOption to know what text to create.
-     * Keyed by "formName.fieldName" => string.
-     */
-    public array $asyncSelectSearchQuery = [];
-
-    /**
      * Search options for a select field asynchronously.
      * Called from Vue when user types in an async searchable select.
      *
@@ -74,6 +67,21 @@ trait HasAsyncSelectSearch
                 'value' => $value,
             ];
         })->values()->all();
+
+        // Preserve labels for already-selected values
+        if (method_exists($field, 'getSelectedOptions')) {
+            $selectedOptions = $field->getSelectedOptions();
+            $searchValues = collect($formatted)->pluck('value')->all();
+
+            foreach ($selectedOptions as $value => $label) {
+                if (! in_array($value, $searchValues, false)) {
+                    array_unshift($formatted, [
+                        'label' => $label,
+                        'value' => $value,
+                    ]);
+                }
+            }
+        }
 
         // Store options for this field
         $this->asyncSelectOptions[$optionKey] = $formatted;
