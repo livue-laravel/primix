@@ -38,13 +38,3 @@
         </div>
     @endif
 </form>
-
-@if(($renderFieldActionModal ?? true) && !method_exists($this, 'hasModalStack'))
-    <x-primix-actions::action-modal
-        :action="$this->getMountedFormFieldAction()"
-        :action-form="$this->getFieldActionForm()"
-        :edit-picker-options="$this->mountedFormFieldActionEditOptions ?? []"
-        :edit-key="$this->mountedFormFieldActionEditKey ?? null"
-        type="field"
-    />
-@endif

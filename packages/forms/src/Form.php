@@ -33,6 +33,8 @@ class Form extends Schema implements Htmlable
 
     protected bool $isWrapped = false;
 
+    protected bool $shouldRenderFieldActionModal = true;
+
     protected array|\Closure|null $footerActions = null;
 
     public function name(string $name): static
@@ -103,6 +105,18 @@ class Form extends Schema implements Htmlable
     public function isWrapped(): bool
     {
         return $this->isWrapped;
+    }
+
+    public function renderFieldActionModal(bool $condition = true): static
+    {
+        $this->shouldRenderFieldActionModal = $condition;
+
+        return $this;
+    }
+
+    public function shouldRenderFieldActionModal(): bool
+    {
+        return $this->shouldRenderFieldActionModal;
     }
 
     public function footerActions(array|\Closure $actions): static

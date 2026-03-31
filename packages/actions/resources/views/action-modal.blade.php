@@ -14,19 +14,9 @@
 @php
     $isPageAction = $type === 'page';
     $isEditPicker = !$isPageAction && !empty($editPickerOptions) && $editKey === null;
-    $resolvedActionForm = $actionForm;
-
-    if ($resolvedActionForm === null && $action && $action->hasForm() && class_exists(\Primix\Forms\Form::class)) {
-        $statePath = $isPageAction ? 'mountedActionData' : 'mountedFormFieldActionData';
-        $submitAction = $isPageAction ? 'submitMountedAction' : 'submitFormFieldAction';
-
-        $resolvedActionForm = \Primix\Forms\Form::make()
-            ->livue($this)
-            ->name($statePath)
-            ->statePath($statePath)
-            ->submitAction($submitAction)
-            ->schema($action->getFormSchema());
-    }
+    // For page actions the form is built by getMountedActionForm() on the component.
+    // For field actions the form is passed explicitly via the $actionForm prop.
+    $resolvedActionForm = $actionForm ?? ($isPageAction ? $this->getMountedActionForm() : null);
 @endphp
 
 @if($action && $isEditPicker)
@@ -46,6 +36,58 @@
         ></p-listbox>
     </p-dialog>
 @elseif($action)
+    @php
+        $modalContentRaw = $action->getModalContent();
+        $modalContentHtml = $modalContentRaw !== null
+            ? '<div class="primix-modal-content mb-4">'
+                . ($modalContentRaw instanceof \Illuminate\Contracts\Support\Htmlable
+                    ? $modalContentRaw->toHtml()
+                    : e($modalContentRaw))
+                . '</div>'
+            : null;
+        $showContentAfterForm = $action->shouldShowModalContentAfterForm();
+
+        $isSlideOver = $action->isSlideOver();
+        $slideOverPosition = $isSlideOver ? $action->getSlideOverPosition() : null;
+        $transitionMs = 300;
+
+        $sizePx = match($action->getModalWidth()) {
+            'sm' => '400px',
+            'md' => '500px',
+            'lg' => '700px',
+            'xl' => '900px',
+            '2xl' => '1100px',
+            default => '500px',
+        };
+
+        if ($isSlideOver) {
+            $dialogPosition = $slideOverPosition->getDialogPosition();
+            $dialogStyle = $slideOverPosition->isVertical()
+                ? "width: {$sizePx}; height: 100%; max-height: 100%; border-radius: 0; margin: 0;"
+                : "width: 100%; max-width: 100%; height: {$sizePx}; border-radius: 0; margin: 0;";
+        } else {
+            $dialogPosition = $action->getModalPosition();
+            $dialogStyle = "width: {$sizePx};";
+        }
+
+        $pt = $action->getModalPassThrough();
+        if ($isSlideOver) {
+            $pt = array_merge($pt, ['transition' => $slideOverPosition->getTransitionPt()]);
+        }
+
+        if ($isPageAction) {
+            $visibleExpr = 'mountedAction !== null';
+            $closeHandler = $isSlideOver
+                ? "mountedAction = null; setTimeout(() => closeActionModal(), {$transitionMs})"
+                : "mountedAction = null; closeActionModal()";
+        } else {
+            $visibleExpr = 'mountedFormFieldAction !== null';
+            $closeHandler = $isSlideOver
+                ? "mountedFormFieldAction = null; setTimeout(() => closeFormFieldAction(), {$transitionMs})"
+                : "mountedFormFieldAction = null; closeFormFieldAction()";
+        }
+    @endphp
+
     @if($isPageAction && $action->isPopover())
         {{-- Popover (solo per page actions) --}}
         <p-popover
@@ -59,11 +101,12 @@
                 <p class="text-surface-500 dark:text-surface-400 mb-3 text-sm">{{ $action->getModalDescription() }}</p>
             @endif
 
+            @if($modalContentHtml && !$showContentAfterForm)
+                {!! $modalContentHtml !!}
+            @endif
+
             @if($resolvedActionForm)
-                @include('primix-forms::form', [
-                    'form' => $resolvedActionForm,
-                    'renderFieldActionModal' => false,
-                ])
+                {{ $resolvedActionForm }}
             @elseif($action->hasForm())
                 <div class="primix-action-form space-y-3">
                     @foreach($action->getFormSchema() as $field)
@@ -72,65 +115,34 @@
                 </div>
             @endif
 
-            @if(!$action->isModalFooterHidden())
+            @if($modalContentHtml && $showContentAfterForm)
+                {!! $modalContentHtml !!}
+            @endif
+
+            @if(!$action->isModalFooterHidden() && count($action->getModalActions()) > 0)
                 <div class="flex justify-end gap-2 mt-3">
-                    <p-button
-                        label="{{ $action->getModalCancelActionLabel() }}"
-                        severity="secondary"
-                        size="small"
-                        @click="mountedAction = null; closeActionModal()"
-                    ></p-button>
-                    <p-button
-                        label="{{ $action->getModalSubmitActionLabel() }}"
-                        size="small"
-                        @click="callAction({ name: '{{ $action->getName() }}' })"
-                    ></p-button>
+                    @foreach($action->getModalActions() as $modalAction)
+                        @php
+                            if ($modalAction->isCancel()) {
+                                $clickExpr = "mountedAction = null; closeActionModal()";
+                            } elseif ($modalAction->isSubmit()) {
+                                $clickExpr = "callAction({ name: '" . addslashes($action->getName()) . "' })";
+                            } else {
+                                $clickExpr = $modalAction->getJsAction() ?? '';
+                            }
+                        @endphp
+                        <p-button
+                            label="{{ $modalAction->getLabel() }}"
+                            severity="{{ $modalAction->getSeverity() }}"
+                            size="small"
+                            @click="{{ $clickExpr }}"
+                            @if($modalAction->isOutlined()) outlined @endif
+                        ></p-button>
+                    @endforeach
                 </div>
             @endif
         </p-popover>
     @else
-        @php
-            $isSlideOver = $action->isSlideOver();
-            $slideOverPosition = $isSlideOver ? $action->getSlideOverPosition() : null;
-            $transitionMs = 300;
-
-            $sizePx = match($action->getModalWidth()) {
-                'sm' => '400px',
-                'md' => '500px',
-                'lg' => '700px',
-                'xl' => '900px',
-                '2xl' => '1100px',
-                default => '500px',
-            };
-
-            if ($isSlideOver) {
-                $dialogPosition = $slideOverPosition->getDialogPosition();
-                $dialogStyle = $slideOverPosition->isVertical()
-                    ? "width: {$sizePx}; height: 100%; max-height: 100%; border-radius: 0; margin: 0;"
-                    : "width: 100%; max-width: 100%; height: {$sizePx}; border-radius: 0; margin: 0;";
-            } else {
-                $dialogPosition = $action->getModalPosition();
-                $dialogStyle = "width: {$sizePx};";
-            }
-
-            $pt = $action->getModalPassThrough();
-            if ($isSlideOver) {
-                $pt = array_merge($pt, ['transition' => $slideOverPosition->getTransitionPt()]);
-            }
-
-            if ($isPageAction) {
-                $visibleExpr = 'mountedAction !== null';
-                $closeHandler = $isSlideOver
-                    ? "mountedAction = null; setTimeout(() => closeActionModal(), {$transitionMs})"
-                    : "mountedAction = null; closeActionModal()";
-            } else {
-                $visibleExpr = 'mountedFormFieldAction !== null';
-                $closeHandler = $isSlideOver
-                    ? "mountedFormFieldAction = null; setTimeout(() => closeFormFieldAction(), {$transitionMs})"
-                    : "mountedFormFieldAction = null; closeFormFieldAction()";
-            }
-        @endphp
-
         <p-dialog
             :visible="{{ $visibleExpr }}"
             @update:visible="(val) => { if (!val) { {{ $closeHandler }} } }"
@@ -157,11 +169,12 @@
                 <p class="text-surface-500 dark:text-surface-400 mb-4">{{ $action->getModalDescription() }}</p>
             @endif
 
+            @if($modalContentHtml && !$showContentAfterForm)
+                {!! $modalContentHtml !!}
+            @endif
+
             @if($resolvedActionForm)
-                @include('primix-forms::form', [
-                    'form' => $resolvedActionForm,
-                    'renderFieldActionModal' => false,
-                ])
+                {{ $resolvedActionForm }}
             @elseif($action->hasForm())
                 <div class="primix-action-form space-y-4">
                     @foreach($action->getFormSchema() as $field)
@@ -170,21 +183,31 @@
                 </div>
             @endif
 
-            @if(!$isPageAction || !$action->isModalFooterHidden())
+            @if($modalContentHtml && $showContentAfterForm)
+                {!! $modalContentHtml !!}
+            @endif
+
+            @if((!$isPageAction || !$action->isModalFooterHidden()) && count($action->getModalActions()) > 0)
                 <template #footer>
-                    <p-button
-                        label="{{ $action->getModalCancelActionLabel() }}"
-                        severity="secondary"
-                        @click="{{ $closeHandler }}"
-                    ></p-button>
-                    <p-button
-                        label="{{ $action->getModalSubmitActionLabel() }}"
-                        @if($isPageAction)
-                            @click="callAction({ name: '{{ $action->getName() }}' })"
-                        @else
-                            @click="submitFormFieldAction()"
-                        @endif
-                    ></p-button>
+                    @foreach($action->getModalActions() as $modalAction)
+                        @php
+                            if ($modalAction->isCancel()) {
+                                $clickExpr = $closeHandler;
+                            } elseif ($modalAction->isSubmit()) {
+                                $clickExpr = $isPageAction
+                                    ? "callAction({ name: '" . addslashes($action->getName()) . "' })"
+                                    : 'submitFormFieldAction()';
+                            } else {
+                                $clickExpr = $modalAction->getJsAction() ?? '';
+                            }
+                        @endphp
+                        <p-button
+                            label="{{ $modalAction->getLabel() }}"
+                            severity="{{ $modalAction->getSeverity() }}"
+                            @click="{{ $clickExpr }}"
+                            @if($modalAction->isOutlined()) outlined @endif
+                        ></p-button>
+                    @endforeach
                 </template>
             @endif
         </p-dialog>

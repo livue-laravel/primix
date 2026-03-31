@@ -321,12 +321,42 @@ trait HasActions
     }
 
     /**
+     * Build and return the Form for the currently mounted action.
+     * Returns null if no action is mounted, the action has no form, or primix/forms is unavailable.
+     */
+    public function getMountedActionForm(): mixed
+    {
+        if (! class_exists(\Primix\Forms\Form::class)) {
+            return null;
+        }
+
+        $action = $this->getMountedAction();
+
+        if ($action === null || ! $action->hasForm()) {
+            return null;
+        }
+
+        $form = $action->buildForm($this);
+
+        if ($form === null) {
+            return null;
+        }
+
+        $form->name('mountedActionData')
+            ->statePath('mountedActionData')
+            ->submitAction('submitMountedAction')
+            ->renderFieldActionModal(false);
+
+        return $form;
+    }
+
+    /**
      * Get the form for the currently mounted action.
-     * Returns null by default; override in subclasses (e.g., HasPageActions) for full Form::make() support.
+     * Override in subclasses to provide a custom Form instance.
      */
     public function getActionForm(): mixed
     {
-        return null;
+        return $this->getMountedActionForm();
     }
 
     /**

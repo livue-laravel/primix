@@ -39,6 +39,65 @@ trait HasForm
         return $this;
     }
 
+    /**
+     * Build and return a configured Form for this action.
+     *
+     * When the schema is a Closure accepting a Form parameter, the pre-built
+     * Form instance (with livue context already set) is injected so that
+     * configure methods like EventForm::configure($form) receive the correct
+     * instance. The returned Form carries all configuration (columns, schema,
+     * livue) set inside the closure — no external extraction needed.
+     *
+     * Duck typing (class_exists + method_exists) avoids a hard dependency on
+     * primix/forms to prevent circular deps.
+     */
+    public function buildForm(mixed $livue = null): mixed
+    {
+        $formClass = 'Primix\Forms\Form';
+
+        if (! class_exists($formClass) || empty($this->formSchema)) {
+            return null;
+        }
+
+        $form = $formClass::make();
+
+        if ($livue !== null) {
+            $form->livue($livue);
+        }
+
+        if ($this->formSchema instanceof Closure) {
+            // Inject the pre-built Form so the closure configures this exact instance.
+            // The closure receives it via typed injection (step 2 in EvaluatesClosures).
+            $result = $this->evaluate($this->formSchema, [], [$formClass => $form]);
+
+            // The closure may return $form itself (configured in-place, most common)
+            // or a different Form object. Either way, ensure livue is set.
+            if (is_object($result) && method_exists($result, 'getComponents')) {
+                if ($result !== $form && $livue !== null && method_exists($result, 'livue')) {
+                    $result->livue($livue);
+                }
+
+                return $result;
+            }
+
+            // Closure returned an array of components
+            if (! empty($result)) {
+                return $form->schema((array) $result);
+            }
+
+            return null;
+        }
+
+        // Array schema
+        $schema = $this->evaluate($this->formSchema);
+
+        if (! empty($schema)) {
+            return $form->schema((array) $schema);
+        }
+
+        return null;
+    }
+
     public function getFormSchema(): array
     {
         $schema = $this->evaluate($this->formSchema);

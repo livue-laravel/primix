@@ -318,6 +318,20 @@ class Action extends ViewComponent
         };
     }
 
+    /**
+     * @return array<mixed>
+     */
+    protected function resolveDefaultClosureDependencyForEvaluationByType(string $parameterType): array
+    {
+        // Inject a fresh Form instance when closures (e.g. ->form()) expect one.
+        // String-based is_a avoids importing primix/forms to prevent circular deps.
+        if (is_a($parameterType, 'Primix\Forms\Form', allow_string: true)) {
+            return [app()->make($parameterType)];
+        }
+
+        return parent::resolveDefaultClosureDependencyForEvaluationByType($parameterType);
+    }
+
     public function getView(): string
     {
         return 'primix-actions::action';

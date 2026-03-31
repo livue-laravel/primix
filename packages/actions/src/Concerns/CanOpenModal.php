@@ -3,6 +3,8 @@
 namespace Primix\Actions\Concerns;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
+use Primix\Actions\ModalAction;
 use Primix\Support\Enums\SlideOverPosition;
 
 trait CanOpenModal
@@ -40,6 +42,12 @@ trait CanOpenModal
     protected bool|Closure $modalFooterHidden = false;
 
     protected bool|Closure $isPopover = false;
+
+    protected string|Htmlable|Closure|null $modalContent = null;
+
+    protected bool|Closure $showModalContentAfterForm = false;
+
+    protected array|Closure $modalActionsConfig = [];
 
     public function modal(bool|Closure $condition = true): static
     {
@@ -249,5 +257,50 @@ trait CanOpenModal
     public function isPopover(): bool
     {
         return (bool) $this->evaluate($this->isPopover);
+    }
+
+    public function modalContent(string|Htmlable|Closure|null $content): static
+    {
+        $this->modalContent = $content;
+
+        return $this;
+    }
+
+    public function showContentAfterForm(bool|Closure $condition = true): static
+    {
+        $this->showModalContentAfterForm = $condition;
+
+        return $this;
+    }
+
+    public function getModalContent(): string|Htmlable|null
+    {
+        return $this->evaluate($this->modalContent);
+    }
+
+    public function shouldShowModalContentAfterForm(): bool
+    {
+        return (bool) $this->evaluate($this->showModalContentAfterForm);
+    }
+
+    public function modalActions(array|Closure $actions): static
+    {
+        $this->modalActionsConfig = $actions;
+
+        return $this;
+    }
+
+    public function getModalActions(): array
+    {
+        $actions = $this->evaluate($this->modalActionsConfig);
+
+        if (! empty($actions)) {
+            return $actions;
+        }
+
+        return [
+            ModalAction::cancel($this->getModalCancelActionLabel()),
+            ModalAction::submit($this->getModalSubmitActionLabel()),
+        ];
     }
 }

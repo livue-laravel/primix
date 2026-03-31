@@ -149,13 +149,19 @@ trait HasPageActions
             return null;
         }
 
-        // Always rebuild — multi-step actions may change schema between steps
-        $form = Form::make()
-            ->livue($this)
-            ->name('mountedActionData')
+        // Always rebuild — multi-step actions may change schema between steps.
+        // buildForm($this) injects the livue context into the closure so the Form
+        // is fully configured (columns, schema) before we add statePath/submitAction.
+        $form = $action->buildForm($this);
+
+        if ($form === null) {
+            return null;
+        }
+
+        $form->name('mountedActionData')
             ->statePath('mountedActionData')
             ->submitAction('submitMountedAction')
-            ->schema($action->getFormSchema());
+            ->renderFieldActionModal(false);
 
         // Set model on form for relationship fields
         $record = $action->getRecord();
