@@ -11,12 +11,14 @@
 
     <div class="primix-grid" style="{{ $form->getGridStyle() }}">
         @foreach($form->getComponents() as $component)
+            @if(!method_exists($component, 'isHidden') || !$component->isHidden())
             <div class="primix-grid-item"
                 @if(method_exists($component, 'getGridItemStyle') && $component->getGridItemStyle()) style="{{ $component->getGridItemStyle() }}" @endif
                 @if(method_exists($component, 'isColumnSpanFull') && $component->isColumnSpanFull()) data-col-span-full @endif
             >
                 {{ $component }}
             </div>
+            @endif
         @endforeach
     </div>
 
