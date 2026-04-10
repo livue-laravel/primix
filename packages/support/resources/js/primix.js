@@ -14,23 +14,20 @@ import LiVue from 'livue';
 import { setupTheme, PrimeVue, PrimixPreset } from './theme/index.js';
 
 /**
- * Ensure the current bundle's PrimeVue plugin instance is installed.
+ * Ensure PrimeVue is installed on the given Vue app instance.
  *
- * Primix bundles are built independently and may each include a different
- * PrimeVue plugin object reference. Checking only $primevue is not enough:
- * it can be populated by another bundle instance.
+ * Multiple Primix bundles each call LiVue.setup(registerPrimeVueTheme) and
+ * each bundle contains its own copy of the PrimeVue object reference. Using
+ * Vue's internal WeakSet (app._context.plugins) to detect duplicates does not
+ * work across bundles because each bundle's PrimeVue reference is distinct.
+ *
+ * Instead we rely on $primevue which PrimeVue sets in globalProperties during
+ * install(). This is the authoritative signal that PrimeVue is already active
+ * on this app, regardless of which bundle performed the installation.
  */
 export function ensurePrimeVueTheme(app) {
-    const plugins = app?._context?.plugins;
-    const hasCurrentPrimeVue = Boolean(
-        plugins &&
-        typeof plugins.has === 'function' &&
-        plugins.has(PrimeVue)
-    );
-
-    if (!hasCurrentPrimeVue) {
-        setupTheme(app);
-    }
+    if (app.config?.globalProperties?.$primevue) return;
+    setupTheme(app);
 }
 
 const registerPrimeVueTheme = (app) => {
