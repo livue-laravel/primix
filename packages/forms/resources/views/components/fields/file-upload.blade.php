@@ -12,12 +12,171 @@
     // For nested paths like "data.avatar", we need to handle Vue access carefully
     $vueStatePath = $statePath;
 
+    $isAvatar = $component->isAvatar();
+
     // Image editor configuration
     $imageEditorConfig = $component->getImageEditorConfig();
     $hasImageEditor = !empty($imageEditorConfig);
     $imageEditorRef = 'imageEditor_' . $id;
 @endphp
 
+@if($isAvatar)
+{{-- ==================== Avatar Variant ==================== --}}
+<div class="primix-file-upload primix-file-upload-avatar">
+    <label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
+        {{ $label }}
+        @if($required)
+            <span class="text-red-500">*</span>
+        @endif
+    </label>
+
+    {{-- Hidden File Input --}}
+    <input
+        type="file"
+        ref="{{ $fieldId }}"
+        id="{{ $fieldId }}"
+        class="hidden"
+        @if($accept) accept="{{ $accept }}" @endif
+        @if($disabled) disabled @endif
+        @change="(function(e) {
+            var files = e.target.files;
+            if (files.length === 0) return;
+            livue.upload('{{ $statePath }}', files[0]);
+            e.target.value = '';
+        })($event)"
+    >
+
+    <div class="relative inline-block group">
+        {{-- Avatar Circle --}}
+        <div
+            class="w-24 h-24 rounded-full overflow-hidden border-2 border-surface-300 dark:border-surface-600 bg-surface-100 dark:bg-surface-800 cursor-pointer transition-all hover:border-primary-400 dark:hover:border-primary-500"
+            @click="$refs['{{ $fieldId }}'].click()"
+            @dragover.prevent
+            @dragleave.prevent
+            @drop.prevent="(function(e) {
+                var files = e.dataTransfer.files;
+                if (files.length === 0) return;
+                livue.upload('{{ $statePath }}', files[0]);
+            })($event)"
+            @if($disabled) style="pointer-events: none; opacity: 0.5;" @endif
+        >
+            {{-- Upload Progress --}}
+            <div v-if="livue.uploading" class="w-full h-full flex flex-col items-center justify-center">
+                <div class="w-12 bg-surface-200 dark:bg-surface-700 rounded-full h-1.5 mb-1">
+                    <div class="bg-primary-500 h-1.5 rounded-full transition-all duration-300" :style="{ width: livue.uploadProgress + '%' }"></div>
+                </div>
+                <span class="text-xs text-surface-500">@{{ livue.uploadProgress }}%</span>
+            </div>
+
+            {{-- Image Preview: new upload --}}
+            <img
+                v-else-if="{{ $vueStatePath }} && typeof {{ $vueStatePath }} === 'object' && {{ $vueStatePath }}.previewUrl"
+                :src="{{ $vueStatePath }}.previewUrl"
+                class="w-full h-full object-cover"
+            >
+
+            {{-- Image Preview: saved path --}}
+            <img
+                v-else-if="{{ $vueStatePath }} && typeof {{ $vueStatePath }} === 'string'"
+                :src="'/storage/' + {{ $vueStatePath }}"
+                class="w-full h-full object-cover"
+            >
+
+            {{-- Empty State --}}
+            <div v-else class="w-full h-full flex items-center justify-center">
+                <i class="pi pi-user text-2xl text-surface-400"></i>
+            </div>
+
+            {{-- Hover Overlay --}}
+            <div
+                class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                @if($disabled) style="display: none;" @endif
+            >
+                <i class="pi pi-camera text-white text-lg"></i>
+            </div>
+        </div>
+
+        {{-- Remove Button --}}
+        <button
+            v-if="{{ $vueStatePath }}"
+            type="button"
+            class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm transition-colors"
+            @click.stop="livue.removeUpload('{{ $statePath }}')"
+            @if($disabled) disabled style="display: none;" @endif
+            title="{{ __('primix-forms::forms.file_upload.remove') }}"
+        >
+            <i class="pi pi-times text-xs"></i>
+        </button>
+    </div>
+
+    {{-- Upload Error --}}
+    <div
+        v-if="livue.errors['{{ $statePath }}'] && livue.errors['{{ $statePath }}'].file"
+        class="mt-2 text-xs text-red-600 dark:text-red-400"
+    >
+        <span v-text="livue.errors['{{ $statePath }}'].message"></span>
+        <button type="button" class="ml-1 text-red-400 hover:text-red-600" @click="delete livue.errors['{{ $statePath }}']">
+            <i class="pi pi-times text-xs"></i>
+        </button>
+    </div>
+
+    {{-- Image Editor Modal --}}
+    @if($hasImageEditor)
+        <primix-image-editor
+            ref="{{ $imageEditorRef }}"
+            :config='@json($imageEditorConfig)'
+            :translations='@json([
+                "edit_image" => __("primix-forms::forms.edit_image"),
+                "cancel" => __("primix-forms::forms.cancel"),
+                "apply" => __("primix-forms::forms.image_editor.apply"),
+                "tool_move" => __("primix-forms::forms.image_editor.tool_move"),
+                "tool_crop" => __("primix-forms::forms.image_editor.tool_crop"),
+                "tool_zoom" => __("primix-forms::forms.image_editor.tool_zoom"),
+                "tool_transform" => __("primix-forms::forms.image_editor.tool_transform"),
+                "tool_adjustments" => __("primix-forms::forms.image_editor.tool_adjustments"),
+                "tool_filters" => __("primix-forms::forms.image_editor.tool_filters"),
+                "tool_ai" => __("primix-forms::forms.image_editor.tool_ai"),
+                "rotation_title" => __("primix-forms::forms.image_editor.rotation_title"),
+                "rotate_ccw" => __("primix-forms::forms.image_editor.rotate_ccw"),
+                "rotate_cw" => __("primix-forms::forms.image_editor.rotate_cw"),
+                "free_rotation" => __("primix-forms::forms.image_editor.free_rotation"),
+                "flip_title" => __("primix-forms::forms.image_editor.flip_title"),
+                "flip_horizontal" => __("primix-forms::forms.image_editor.flip_horizontal"),
+                "flip_vertical" => __("primix-forms::forms.image_editor.flip_vertical"),
+                "crop_aspect_ratio" => __("primix-forms::forms.image_editor.crop_aspect_ratio"),
+                "crop_free" => __("primix-forms::forms.image_editor.crop_free"),
+                "apply_crop" => __("primix-forms::forms.image_editor.apply_crop"),
+                "move_title" => __("primix-forms::forms.image_editor.move_title"),
+                "drag_to_move" => __("primix-forms::forms.image_editor.drag_to_move"),
+                "mouse_wheel_zoom" => __("primix-forms::forms.image_editor.mouse_wheel_zoom"),
+                "zoom_title" => __("primix-forms::forms.image_editor.zoom_title"),
+                "click_to_zoom_in" => __("primix-forms::forms.image_editor.click_to_zoom_in"),
+                "alt_click_zoom_out" => __("primix-forms::forms.image_editor.alt_click_zoom_out"),
+                "mouse_wheel_continuous" => __("primix-forms::forms.image_editor.mouse_wheel_continuous"),
+                "ai_tools_title" => __("primix-forms::forms.image_editor.ai_tools_title"),
+                "processing" => __("primix-forms::forms.image_editor.processing"),
+                "loading_model" => __("primix-forms::forms.image_editor.loading_model"),
+                "no_ai_configured" => __("primix-forms::forms.image_editor.no_ai_configured"),
+                "bg_removal_label" => __("primix-forms::forms.image_editor.bg_removal_label"),
+                "bg_removal_desc" => __("primix-forms::forms.image_editor.bg_removal_desc"),
+                "auto_enhance_label" => __("primix-forms::forms.image_editor.auto_enhance_label"),
+                "auto_enhance_desc" => __("primix-forms::forms.image_editor.auto_enhance_desc"),
+            ])'
+            state-path="{{ $statePath }}"
+            @save="(function(payload) {
+                var file = payload.file;
+                var fileInput = $refs['{{ $fieldId }}'];
+                var win = fileInput.ownerDocument.defaultView;
+                var dt = new win.DataTransfer();
+                dt.items.add(file);
+                fileInput.files = dt.files;
+                fileInput.dispatchEvent(new win.Event('change'));
+            })($event)"
+        />
+    @endif
+</div>
+@else
+{{-- ==================== Standard Variant ==================== --}}
 <div class="primix-file-upload">
     <label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-2">
         {{ $label }}
@@ -467,3 +626,4 @@
         />
     @endif
 </div>
+@endif

@@ -49,6 +49,8 @@ class FileUpload extends Field
 
     protected bool|Closure $shouldPreserveFilenames = false;
 
+    protected bool $isAvatar = false;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -100,10 +102,16 @@ class FileUpload extends Field
 
     public function avatar(): static
     {
+        $this->isAvatar = true;
         $this->image();
         $this->directory('avatars');
 
         return $this;
+    }
+
+    public function isAvatar(): bool
+    {
+        return $this->isAvatar;
     }
 
     public function acceptedFileTypes(array|string $types): static
@@ -479,6 +487,27 @@ class FileUpload extends Field
             return $file;
         }
 
+        // Array from LiVue upload response: {ref: "encrypted", originalName, mimeType, size, previewUrl}
+        if (is_array($file) && isset($file['ref'])) {
+            try {
+                $data = decrypt($file['ref']);
+            } catch (\Throwable) {
+                return null;
+            }
+
+            if (($data['expires'] ?? 0) < now()->timestamp) {
+                return null;
+            }
+
+            $file = new TemporaryUploadedFile(
+                $data['path'],
+                $data['originalName'],
+                $data['mimeType'],
+                $data['size'],
+                $data['disk'] ?? 'local',
+            );
+        }
+
         if (! ($file instanceof TemporaryUploadedFile)) {
             return null;
         }
@@ -537,6 +566,7 @@ class FileUpload extends Field
             'minFiles' => $this->getMinFiles(),
             'maxSizeForHumans' => $this->getMaxSizeForHumans(),
             'imageEditor' => $this->getImageEditorConfig(),
+            'isAvatar' => $this->isAvatar(),
         ]);
     }
 }

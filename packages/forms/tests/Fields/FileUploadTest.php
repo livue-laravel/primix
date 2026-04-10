@@ -52,7 +52,8 @@ it('can be set as avatar', function () {
     $field = FileUpload::make('file')->avatar();
 
     expect($field->isImage())->toBeTrue()
-        ->and($field->getDirectory())->toBe('avatars');
+        ->and($field->getDirectory())->toBe('avatars')
+        ->and($field->isAvatar())->toBeTrue();
 });
 
 it('has null max size by default', function () {
