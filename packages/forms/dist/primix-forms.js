@@ -2202,8 +2202,13 @@ function setupTheme(app) {
   app.use(PrimeVue, options6);
 }
 function ensurePrimeVueTheme(app) {
-  if (app.config?.globalProperties?.$primevue) return;
-  setupTheme(app);
+  const plugins = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins && typeof plugins.has === "function" && plugins.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
 }
 const registerPrimeVueTheme = (app) => {
   ensurePrimeVueTheme(app);

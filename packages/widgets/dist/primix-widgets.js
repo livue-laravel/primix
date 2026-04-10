@@ -1626,8 +1626,13 @@ function setupTheme(app) {
   app.use(PrimeVue, options2);
 }
 function ensurePrimeVueTheme(app) {
-  if (app.config?.globalProperties?.$primevue) return;
-  setupTheme(app);
+  const plugins2 = app?._context?.plugins;
+  const hasCurrentPrimeVue = Boolean(
+    plugins2 && typeof plugins2.has === "function" && plugins2.has(PrimeVue)
+  );
+  if (!hasCurrentPrimeVue) {
+    setupTheme(app);
+  }
 }
 const registerPrimeVueTheme = (app) => {
   ensurePrimeVueTheme(app);
