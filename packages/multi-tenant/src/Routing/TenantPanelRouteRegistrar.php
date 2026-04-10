@@ -57,7 +57,18 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         $landingRoute = Route::get($panel->getPath(), function () use ($panel, $identification) {
             $user = auth()->guard($panel->getAuthGuard())->user();
 
-            if ($user && method_exists($user, 'tenants')) {
+            if (! $user) {
+                if ($panel->hasLogin()) {
+                    $loginSlug = $panel->getLoginPage()::getSlug();
+                    $loginPath = trim($panel->getPath() . '/' . $loginSlug, '/');
+
+                    return redirect(url($loginPath));
+                }
+
+                abort(403);
+            }
+
+            if (method_exists($user, 'tenants')) {
                 $needsDomains = in_array($identification, ['subdomain', 'domain'], true);
                 $tenant = $needsDomains
                     ? $user->tenants()->with('domains')->first()
