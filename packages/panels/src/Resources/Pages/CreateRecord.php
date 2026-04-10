@@ -91,6 +91,8 @@ class CreateRecord extends Page
 
         $record = $model::create($attributeData);
 
+        $this->afterCreate($record);
+
         $form->saveRelationships($record, $data);
 
         Notification::make()
@@ -102,6 +104,11 @@ class CreateRecord extends Page
             $this->getRedirectUrl($record),
             navigate: true
         );
+    }
+
+    protected function afterCreate(\Illuminate\Database\Eloquent\Model $record): void
+    {
+        //
     }
 
     protected function getRedirectUrl(\Illuminate\Database\Eloquent\Model $record): string
