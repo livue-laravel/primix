@@ -117,7 +117,7 @@
                                 icon="{{ $nextIcon }}"
                                 icon-pos="right"
                                 @if($validateOnStepChange)
-                                    @click="validateWizardStep({{ $index }}).then(() => { {{ $goToStep($index + 1) }} })"
+                                    @click="livue.call('validateWizardStep', {{ $index }}).then(() => { {{ $goToStep($index + 1) }} })"
                                 @else
                                     @click="{{ $goToStep($index + 1) }}"
                                 @endif

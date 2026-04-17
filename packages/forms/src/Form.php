@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\View;
 use Primix\Actions\Action;
 use Primix\Forms\Components\Fields\Field;
+use Primix\Forms\Components\Layouts\Wizard;
 use Primix\Forms\Concerns\HandlesFormFileUploads;
 use Primix\Forms\Concerns\ManagesFormRelationships;
 use Primix\Forms\Concerns\ManagesNestedRelationships;
@@ -170,6 +171,40 @@ class Form extends Schema implements Htmlable
             $fieldRules = $field->getRules();
 
             if ($fieldRules) {
+                $rules[$path] = $fieldRules;
+            }
+        }
+
+        return $rules;
+    }
+
+    public function getValidationRulesForWizardStep(int $stepIndex): array
+    {
+        $wizard = null;
+        foreach ($this->getComponents() as $component) {
+            if ($component instanceof Wizard) {
+                $wizard = $component;
+                break;
+            }
+        }
+
+        if (! $wizard) {
+            return $this->getValidationRules();
+        }
+
+        $visibleSteps = array_values(array_filter(
+            $wizard->getSteps(),
+            fn ($s) => ! $s->isHidden()
+        ));
+
+        if (! isset($visibleSteps[$stepIndex])) {
+            return [];
+        }
+
+        $rules = [];
+
+        foreach ($this->flattenComponents($visibleSteps[$stepIndex]->getChildComponents()) as $path => $component) {
+            if ($component instanceof Field && ($fieldRules = $component->getRules())) {
                 $rules[$path] = $fieldRules;
             }
         }

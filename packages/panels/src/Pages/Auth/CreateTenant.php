@@ -55,6 +55,21 @@ class CreateTenant extends SimplePage
             );
     }
 
+    public function validateWizardStep(int $step): void
+    {
+        $form = $this->getForm('form');
+
+        if (! $form) {
+            return;
+        }
+
+        $rules = $form->getValidationRulesForWizardStep($step);
+
+        if ($rules) {
+            $this->validate($rules);
+        }
+    }
+
     public function create(): void
     {
         $rules = $this->getFormValidationRules('form');
