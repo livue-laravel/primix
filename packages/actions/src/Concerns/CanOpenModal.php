@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 use Primix\Actions\ModalAction;
 use Primix\Support\Enums\SlideOverPosition;
+use Primix\Support\Enums\Width;
 
 trait CanOpenModal
 {
@@ -19,7 +20,7 @@ trait CanOpenModal
 
     protected string|Closure|null $modalDescription = null;
 
-    protected string|Closure|null $modalWidth = null;
+    protected Width|string|Closure|null $modalWidth = null;
 
     protected string|Closure|null $modalSubmitActionLabel = null;
 
@@ -70,7 +71,7 @@ trait CanOpenModal
         return $this;
     }
 
-    public function modalWidth(string|Closure|null $width): static
+    public function modalWidth(Width|string|Closure|null $width): static
     {
         $this->modalWidth = $width;
 
@@ -122,7 +123,13 @@ trait CanOpenModal
 
     public function getModalWidth(): string
     {
-        return $this->evaluate($this->modalWidth) ?? 'md';
+        $width = $this->evaluate($this->modalWidth);
+
+        if ($width instanceof Width) {
+            return $width->value;
+        }
+
+        return $width ?? 'md';
     }
 
     public function getModalSubmitActionLabel(): string

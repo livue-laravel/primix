@@ -20,7 +20,13 @@
         {!! $component->getExtraAttributes() !!}
     ></p-toggle-button>
 @else
-<div class="flex items-center gap-3">
+<div class="flex flex-col gap-2">
+    <label for="{{ $id }}" class="cursor-pointer{{ $labelClass ? " {$labelClass}" : '' }}">
+        {{ $label }}
+        @if($required)
+            <span class="text-red-500">*</span>
+        @endif
+    </label>
     <p-toggle-switch
         id="{{ $id }}"
         v-model="{{ $statePath }}"
@@ -29,11 +35,5 @@
         @if($switchPt) :pt="{!! \Illuminate\Support\Js::from($switchPt) !!}" @endif
         {!! $component->getExtraAttributes() !!}
     ></p-toggle-switch>
-    <label for="{{ $id }}" class="cursor-pointer{{ $labelClass ? " {$labelClass}" : '' }}">
-        {{ $label }}
-        @if($required)
-            <span class="text-red-500">*</span>
-        @endif
-    </label>
 </div>
 @endif

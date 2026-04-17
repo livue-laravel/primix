@@ -57,6 +57,20 @@
             'lg' => '700px',
             'xl' => '900px',
             '2xl' => '1100px',
+            // Width enum values
+            'max-w-xs' => '320px',
+            'max-w-sm' => '384px',
+            'max-w-md' => '448px',
+            'max-w-lg' => '512px',
+            'max-w-xl' => '576px',
+            'max-w-2xl' => '672px',
+            'max-w-3xl' => '768px',
+            'max-w-4xl' => '896px',
+            'max-w-5xl' => '1024px',
+            'max-w-6xl' => '1152px',
+            'max-w-7xl' => '1280px',
+            'max-w-full' => '100%',
+            'max-w-screen-2xl' => '1536px',
             default => '500px',
         };
 

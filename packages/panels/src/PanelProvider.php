@@ -22,7 +22,6 @@ abstract class PanelProvider extends ServiceProvider
         $registry = $this->app->make(PanelRegistry::class);
 
         $panel = Panel::make($this->getId());
-        $registry->applyGlobalConfiguration($panel);
         $panel = $this->panel($panel);
 
         $registry->register($panel);
@@ -30,7 +29,11 @@ abstract class PanelProvider extends ServiceProvider
         // Mark early so PrimixServiceProvider's fallback skips this panel
         $panel->markRoutesRegistered();
 
-        $this->app->booted(function () use ($panel) {
+        // Defer global configuration to after all service providers have booted,
+        // so that AppServiceProvider::register() callbacks are available.
+        $this->app->booted(function () use ($panel, $registry) {
+            $registry->applyGlobalConfiguration($panel);
+
             $panel->bootPlugins();
 
             $registrar = $this->getRouteRegistrar();

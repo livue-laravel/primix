@@ -60,6 +60,7 @@ class PanelViewComposer
         $view->with('hasDatabaseNotifications', $topbarData['hasDatabaseNotifications'] ?? false);
         $view->with('databaseNotificationsMode', $topbarData['databaseNotificationsMode'] ?? 'popup');
         $view->with('databaseNotificationsPollingInterval', $topbarData['databaseNotificationsPollingInterval'] ?? 30);
+        $view->with('maxContentWidth', $panel->getMaxContentWidth());
 
         $view->with('shell', Shell::make()
             ->navigation($navigation)
