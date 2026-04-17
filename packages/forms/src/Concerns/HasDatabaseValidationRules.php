@@ -6,11 +6,7 @@ trait HasDatabaseValidationRules
 {
     public function unique(string $table, ?string $column = null, mixed $ignore = null): static
     {
-        $rule = 'unique:' . $table;
-
-        if ($column) {
-            $rule .= ',' . $column;
-        }
+        $rule = 'unique:' . $table . ',' . ($column ?? $this->getName());
 
         if ($ignore !== null) {
             $rule .= ',' . $ignore;
@@ -21,11 +17,7 @@ trait HasDatabaseValidationRules
 
     public function exists(string $table, ?string $column = null): static
     {
-        $rule = 'exists:' . $table;
-
-        if ($column) {
-            $rule .= ',' . $column;
-        }
+        $rule = 'exists:' . $table . ',' . ($column ?? $this->getName());
 
         return $this->setDedicatedRule('exists', $rule);
     }
