@@ -393,9 +393,16 @@ class RelationManagerComponent extends Component
             return new EmbeddedRecord(array_merge($this->embeddedItems[$index], ['__embedded_index' => $index]));
         }
 
-        $query = clone $this->getRelationQuery();
+        $relation = $this->getRelation();
+        $keyName  = $this->getTable()->getRecordKeyName();
 
-        return $query->where($this->getTable()->getRecordKeyName(), $key)->first();
+        // Qualify the key column to avoid "ambiguous column" errors on PostgreSQL when the
+        // relation query includes a JOIN (e.g. BelongsToMany joins the pivot table, which
+        // may also have an 'id' column if it was created with $table->id()).
+        $qualifiedKey = $relation->getRelated()->qualifyColumn($keyName);
+        $query        = clone $relation->getQuery();
+
+        return $query->where($qualifiedKey, $key)->first();
     }
 
     /**
