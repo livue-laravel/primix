@@ -63,8 +63,23 @@ trait WatchesFormState
                 $watcher = $field->getWatchCallback();
 
                 if ($watcher) {
+                    $component = $this;
+                    $setter = new class($component, $key) {
+                        public function __construct(
+                            private mixed $component,
+                            private string $key,
+                        ) {}
+
+                        public function __invoke(string $path, mixed $value): void
+                        {
+                            data_set($this->component->{$this->key}, $path, $value);
+                        }
+                    };
+
                     $field->evaluate($watcher, [
-                        'old' => $oldValue,
+                        'old'   => $oldValue,
+                        'state' => $newValue,
+                        'set'   => $setter,
                     ]);
                 }
             }

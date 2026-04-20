@@ -19,7 +19,7 @@ $wrapperAttributes = $component->getExtraWrapperAttributes()
 @endphp
 
 <div {!! $wrapperAttributes !!}
-    @if(method_exists($component, 'getWatchDirective')) {!! $component->getWatchDirective() !!} @endif
+    @if(method_exists($component, 'isWatched') && $component->isWatched()) {!! $component->getWatchDirective() !!}="'{{ $statePath }}'" @endif
 >
     @if($isInline)
         <div class="primix-inline-label-area">
