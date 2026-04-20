@@ -1,6 +1,7 @@
 <?php
 
 use Primix\Forms\Form;
+use Primix\Forms\Components\Fields\Repeater;
 use Primix\Forms\Components\Fields\TextInput;
 use Primix\Forms\Components\Fields\Select;
 use Primix\Forms\Components\Layouts\Section;
@@ -124,4 +125,63 @@ it('serializes to array with state', function () {
     expect($array['statePath'])->toBe('data');
     expect($array['state'])->toBe(['title' => 'Hello']);
     expect($array['components'])->toHaveCount(1);
+});
+
+// ─── Regression: Repeater template field isolation in flattenComponents ───────
+//
+// Bug: Repeater::getChildComponents() exposed schema template fields to
+// flattenComponents(), giving them top-level statePaths and overwriting
+// watched form fields with the same names.
+
+it('flattenComponents includes Repeater as leaf but does not traverse its schema template fields', function () {
+    $form = Form::make()->schema([
+        TextInput::make('title'),
+        Repeater::make('items')->schema([
+            TextInput::make('name'),
+            TextInput::make('value'),
+        ]),
+    ]);
+
+    $leaves = $form->getLeafComponents();
+
+    // Only 'title' and 'items' — NOT 'name' or 'value' from the repeater template
+    expect($leaves)->toHaveCount(2);
+    expect(array_keys($leaves))->toBe(['title', 'items']);
+});
+
+it('top-level watched field is not overwritten by same-named Repeater schema template field', function () {
+    $form = Form::make()->schema([
+        TextInput::make('name')->watchDebounce(ms: 800),
+        Repeater::make('rows')->schema([
+            TextInput::make('name'),  // same key — must NOT overwrite the top-level field
+        ]),
+    ]);
+
+    $leaves = $form->getLeafComponents();
+
+    expect($leaves)->toHaveCount(2);
+    expect($leaves['name'])->toBeInstanceOf(TextInput::class);
+    expect($leaves['name']->isWatched())->toBeTrue();
+    expect($leaves['name']->getWatchDebounceMs())->toBe(800);
+});
+
+it('flattenComponents with Section and Repeater returns only non-template leaves', function () {
+    $form = Form::make()->schema([
+        Section::make('Info')->schema([
+            TextInput::make('title'),
+            TextInput::make('slug'),
+        ]),
+        Repeater::make('tags')->schema([
+            TextInput::make('label'),  // repeater template field — must NOT appear as top-level leaf
+        ]),
+    ]);
+
+    $leaves = $form->getLeafComponents();
+
+    // title + slug (from Section) + tags (the Repeater itself) = 3
+    expect($leaves)->toHaveCount(3);
+    expect(array_keys($leaves))->toContain('title');
+    expect(array_keys($leaves))->toContain('slug');
+    expect(array_keys($leaves))->toContain('tags');
+    expect(array_keys($leaves))->not->toContain('label');
 });

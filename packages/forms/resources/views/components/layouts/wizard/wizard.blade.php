@@ -126,7 +126,7 @@
                             <p-button
                                 label="{{ $submitLabel }}"
                                 icon="{{ $submitIcon }}"
-                                @click="{{ $submitAction }}()"
+                                @click="livue.call('{{ $submitAction }}')"
                             ></p-button>
                         @endif
                     </div>

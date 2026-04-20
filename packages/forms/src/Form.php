@@ -244,6 +244,36 @@ class Form extends Schema implements Htmlable
         return $attributes;
     }
 
+    public function validate(): array
+    {
+        $livue = $this->getLiVue();
+
+        if ($livue === null) {
+            throw new \LogicException('Cannot validate a form without an attached LiVue component.');
+        }
+
+        return $livue->validate(
+            $this->getValidationRules(),
+            $this->getValidationMessages(),
+            $this->getValidationAttributes(),
+        );
+    }
+
+    public function validateWizardStep(int $stepIndex): array
+    {
+        $livue = $this->getLiVue();
+
+        if ($livue === null) {
+            throw new \LogicException('Cannot validate a form without an attached LiVue component.');
+        }
+
+        return $livue->validate(
+            $this->getValidationRulesForWizardStep($stepIndex),
+            $this->getValidationMessages(),
+            $this->getValidationAttributes(),
+        );
+    }
+
     public function hasWatchers(): bool
     {
         foreach ($this->getFields() as $field) {

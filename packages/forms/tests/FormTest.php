@@ -4,6 +4,7 @@ use LiVue\Features\SupportFileUploads\TemporaryUploadedFile;
 use Primix\Forms\Form;
 use Primix\Forms\Components\Fields\FileUpload;
 use Primix\Forms\Components\Fields\Select;
+use Primix\Forms\Components\Fields\Repeater;
 use Primix\Forms\Components\Fields\TextInput;
 use Primix\Forms\Components\Layouts\Section;
 use Primix\Forms\Components\Layouts\Wizard;
@@ -612,4 +613,114 @@ it('WatchesFormState auto-fills slug from name typed inside wizard step', functi
     $component->updatedHasForms('data', $component->data);
 
     expect($component->data['slug'])->toBe('my-full-name');
+});
+
+// ─── Regression: Repeater field isolation in getFields() / WatchesFormState ──
+//
+// Bug: Repeater::getChildComponents() was exposing schema template fields to
+// flattenComponents(), overwriting watched top-level fields with the same name.
+// Fix: getChildComponents() returns only real runtime items; template fields
+// are accessible only via getSchema().
+
+it('getFields does not include Repeater schema template fields', function () {
+    $form = Form::make()->schema([
+        TextInput::make('name'),
+        Repeater::make('items')->schema([
+            TextInput::make('name'),   // same name as top-level — must not appear separately
+            TextInput::make('value'),
+        ]),
+    ]);
+
+    $fields = $form->getFields();
+
+    // 'name' (TextInput) + 'items' (Repeater) = 2 total
+    // Repeater template fields 'name'/'value' must NOT appear as top-level entries
+    expect($fields)->toHaveCount(2);
+    expect(array_keys($fields))->toContain('name');
+    expect(array_keys($fields))->toContain('items');
+});
+
+it('getFields returns the watched top-level field even when Repeater has a same-named template field', function () {
+    $form = Form::make()->schema([
+        TextInput::make('name')->watchDebounce(fn ($state, $set) => $set('slug', str($state)->slug()->toString()), 800),
+        TextInput::make('slug'),
+        Repeater::make('rows')->schema([
+            TextInput::make('name'),  // same key — would overwrite watched field if bug is present
+        ]),
+    ]);
+
+    $fields = $form->getFields();
+
+    expect($fields)->toHaveKey('name');
+    expect($fields['name'])->toBeInstanceOf(TextInput::class);
+    expect($fields['name']->isWatched())->toBeTrue();
+    expect($fields['name']->getWatchMode())->toBe('debounce');
+});
+
+it('WatchesFormState fires watch callback when form contains Repeater with same-named template field', function () {
+    $form = Form::make()->statePath('data')->schema([
+        TextInput::make('name')->watchDebounce(function (string $state, $set): void {
+            $set('slug', str($state)->slug()->toString());
+        }, 800),
+        TextInput::make('slug'),
+        Repeater::make('fields')->schema([
+            TextInput::make('name'),  // same name as watched top-level field
+        ]),
+    ]);
+
+    $component = new class {
+        use WatchesFormState;
+        public array $data = ['name' => '', 'slug' => '', 'fields' => []];
+        public array $cachedForms = [];
+    };
+    $component->cachedForms = [$form];
+
+    // First cycle: hydration (skipped by the trait)
+    $component->updatingHasForms('data', $component->data);
+    $component->updatedHasForms('data', $component->data);
+
+    // Second cycle: user types in the 'name' field
+    $component->updatingHasForms('data', ['name' => 'My Facility', 'slug' => '', 'fields' => []]);
+    $component->data = ['name' => 'My Facility', 'slug' => '', 'fields' => []];
+    $component->updatedHasForms('data', $component->data);
+
+    expect($component->data['slug'])->toBe('my-facility');
+});
+
+it('WatchesFormState fires watch inside Wizard step when a Repeater with same-named fields is present in another step', function () {
+    $form = Form::make()->statePath('data')->schema([
+        Wizard::make()->steps([
+            Step::make('Info')->schema([
+                Section::make()->schema([
+                    TextInput::make('name')->watchDebounce(function (string $state, $set): void {
+                        $set('slug', str($state)->slug()->toString());
+                    }, 800),
+                    TextInput::make('slug'),
+                ]),
+            ]),
+            Step::make('Items')->schema([
+                Repeater::make('fields')->schema([
+                    TextInput::make('name'),  // same name, different context
+                ]),
+            ]),
+        ]),
+    ]);
+
+    $component = new class {
+        use WatchesFormState;
+        public array $data = ['name' => '', 'slug' => '', 'fields' => []];
+        public array $cachedForms = [];
+    };
+    $component->cachedForms = [$form];
+
+    // Hydration cycle (skipped)
+    $component->updatingHasForms('data', $component->data);
+    $component->updatedHasForms('data', $component->data);
+
+    // User types in the 'name' field in step 1
+    $component->updatingHasForms('data', ['name' => 'Sports Arena', 'slug' => '', 'fields' => []]);
+    $component->data = ['name' => 'Sports Arena', 'slug' => '', 'fields' => []];
+    $component->updatedHasForms('data', $component->data);
+
+    expect($component->data['slug'])->toBe('sports-arena');
 });

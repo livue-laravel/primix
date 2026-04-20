@@ -179,3 +179,42 @@ it('returns complete vue props', function () {
         ->toHaveKey('cloneable', false)
         ->toHaveKey('blankItem');
 });
+
+// ─── Regression: getChildComponents() isolation ──────────────────────────────
+//
+// Bug: getChildComponents() was returning schema template fields, causing
+// flattenComponents() to assign top-level statePaths (e.g. 'name') to them,
+// overwriting watched/configured fields with the same name.
+// Fix: getChildComponents() returns only real runtime items (parent::); schema
+// template fields are accessible only via getSchema().
+
+it('getChildComponents does not expose schema template fields', function () {
+    $field = Repeater::make('items')->schema([
+        TextInput::make('name'),
+        TextInput::make('value'),
+    ]);
+
+    // Schema template fields must NOT leak into flattenComponents() traversal
+    expect($field->getChildComponents())->toHaveCount(0);
+});
+
+it('getSchema returns template fields independently from getChildComponents', function () {
+    $field = Repeater::make('items')->schema([
+        TextInput::make('name'),
+        TextInput::make('value'),
+    ]);
+
+    expect($field->getSchema())->toHaveCount(2);
+    expect($field->getChildComponents())->toHaveCount(0);
+});
+
+it('getBlankItemData works correctly after getChildComponents isolation', function () {
+    $field = Repeater::make('items')->schema([
+        TextInput::make('title')->default('Draft'),
+        TextInput::make('qty')->default(1),
+    ]);
+
+    // getBlankItemData uses getSchema(), not getChildComponents() — must still work
+    expect($field->getBlankItemData())->toBe(['title' => 'Draft', 'qty' => 1]);
+    expect($field->getChildComponents())->toHaveCount(0);
+});

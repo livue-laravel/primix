@@ -302,7 +302,11 @@ class Repeater extends Field
 
     public function getChildComponents(): array
     {
-        return array_merge($this->childComponents, parent::getChildComponents());
+        // Do NOT expose schema template fields here — they would be traversed by
+        // flattenComponents() and configureComponents(), giving them the same statePaths
+        // as top-level form fields (e.g. data.name), overwriting watched/configured versions.
+        // Template fields are accessed directly via getSchema() when rendering items.
+        return parent::getChildComponents();
     }
 
     public function getSchema(): array
