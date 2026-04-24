@@ -13,13 +13,13 @@
 <div class="{{ $fixedTopbar ? 'fixed' : 'sticky' }} top-0 left-0 right-0 z-50">
     {{-- === NAVIGATION BAR (topbar mode only) === --}}
     @if($topBarNavigation)
-        <header class="min-h-10 border-b border-surface-200/80 bg-white/75 backdrop-blur dark:border-surface-700/80 dark:bg-surface-900/78">
+        <header class="min-h-10 border-b border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900">
             <p-menubar :model="menuItems" :pt="menubarPt"></p-menubar>
         </header>
     @endif
     {{-- === TOOLBAR === --}}
     <header
-        class="flex h-16 shrink-0 items-center gap-x-4 border-b border-surface-200/80 bg-white/88 px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur dark:border-surface-700/80 dark:bg-surface-900/86 sm:gap-x-6 sm:px-6 lg:px-8">
+        class="flex h-16 shrink-0 items-center gap-x-4 border-b border-surface-200 bg-white px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] dark:border-surface-700 dark:bg-surface-900 sm:gap-x-6 sm:px-6 lg:px-8">
 
         @renderHook(\Primix\Enums\PanelsRenderHook::TOPBAR_START)
 

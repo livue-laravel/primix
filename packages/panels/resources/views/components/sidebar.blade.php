@@ -1,5 +1,5 @@
 <aside
-    class="fixed left-0 z-40 hidden w-64 overflow-y-auto border-r border-surface-200/80 bg-white/78 backdrop-blur dark:border-surface-700/80 dark:bg-surface-900/82 lg:block"
+    class="fixed left-0 z-40 hidden w-64 overflow-y-auto border-r border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 lg:block"
     style="top: 4rem; bottom: 0; height: calc(100vh - 4rem);"
 >
     {{-- @todo da abilitare quando sistemiamo la possibilità di non avere la topbar
