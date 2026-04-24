@@ -74,7 +74,8 @@ class ViewRecord extends Page
         $this->resourceClass = static::getResource();
         $resource = $this->resourceClass;
 
-        $this->record = $resource::getEloquentQuery()->findOrFail($record);
+        $routeKeyName = (new ($resource::getModel()))->getRouteKeyName();
+        $this->record = $resource::getEloquentQuery()->where($routeKeyName, $record)->firstOrFail();
 
         if (! $resource::canView($this->record)) {
             abort(403);

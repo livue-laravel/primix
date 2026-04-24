@@ -37,8 +37,8 @@ class ListRecords extends Page
         )->query($resource::getEloquentQuery());
 
         if ($table->getRecordUrlResolver() === null) {
-            $table->recordUrl(function (Model $record) use ($resource, $table) {
-                $recordKey = $record->{$table->getRecordKeyName()};
+            $table->recordUrl(function (Model $record) use ($resource) {
+                $recordKey = $record->getRouteKey();
 
                 if ($resource::hasPage('view')) {
                     return $resource::getUrl('view', ['record' => $recordKey]);
