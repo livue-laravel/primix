@@ -57,9 +57,6 @@
 
     <div @class([
         'flex w-full min-h-screen',
-        'relative isolate overflow-hidden',
-        'bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(248,250,252,0.88)_40%,_rgba(241,245,249,0.82)_100%)]',
-        'dark:bg-[radial-gradient(circle_at_top_left,_rgba(30,41,59,0.82),_rgba(15,23,42,0.96)_45%,_rgba(2,6,23,1)_100%)]',
         'lg:pl-64' => $showSidebar && ! $topBarNavigation,
         $topbarPt => $showTopbar && $fixedTopbar,
     ])>
