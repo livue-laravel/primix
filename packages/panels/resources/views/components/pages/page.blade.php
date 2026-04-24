@@ -3,7 +3,7 @@
         ? $page->getWorkspacePayload()
         : null;
 @endphp
-<div>
+<div class="space-y-8 lg:space-y-10">
     @renderHook(\Primix\Enums\PanelsRenderHook::PAGE_START)
 
     @if(($workspace['enabled'] ?? false) === true)

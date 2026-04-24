@@ -26,11 +26,11 @@
         @else
             {!! $brandLogo !!}
         @endif
-    @elseif(filled($brandName))
-        @if($variant === 'simple')
-            <h2 class="{{ $textClasses }}">{!! $brandName !!}</h2>
+        @elseif(filled($brandName))
+            @if($variant === 'simple')
+            <h2 data-primix-heading class="{{ $textClasses }}">{!! $brandName !!}</h2>
         @else
-            <span class="{{ $textClasses }}">{!! $brandName !!}</span>
+            <span data-primix-heading class="{{ $textClasses }}">{!! $brandName !!}</span>
         @endif
     @endif
 </{{ $wrapperTag }}>

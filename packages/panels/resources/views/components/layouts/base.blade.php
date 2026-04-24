@@ -31,7 +31,7 @@
     @livueStyles
     @php(\Primix\Support\ViteHot::prepare())
 </head>
-<body class="h-full bg-gray-100 dark:bg-gray-900">
+<body class="h-full bg-[var(--p-surface-50)] dark:bg-[var(--p-surface-950)]">
     {{ $slot }}
 
     @livueScripts

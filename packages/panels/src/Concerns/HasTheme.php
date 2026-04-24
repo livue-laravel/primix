@@ -107,6 +107,20 @@ trait HasTheme
         return $this;
     }
 
+    public function bodyFont(string $font): static
+    {
+        $this->getThemeConfig()->bodyFont($font);
+
+        return $this;
+    }
+
+    public function headingFont(string $font): static
+    {
+        $this->getThemeConfig()->headingFont($font);
+
+        return $this;
+    }
+
     public function getThemeConfig(): ThemeConfig
     {
         if ($this->themeConfig === null) {

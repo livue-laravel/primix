@@ -2,7 +2,7 @@
 
 @if(count($widgets) > 0)
     @php($widgetData = property_exists($this, 'tableFilters') ? ['tableFilters' => $this->tableFilters] : [])
-    <div class="primix-grid mt-6" style="{{ $this->getWidgetsGridStyle($columns) }}">
+    <div class="primix-grid mt-8 lg:mt-10" style="{{ $this->getWidgetsGridStyle($columns) }}">
         @foreach($widgets as $widget)
             @php($widgetClass = $widget instanceof \Primix\Widgets\WidgetConfiguration ? $widget->getWidget() : $widget)
             <div class="primix-grid-item"

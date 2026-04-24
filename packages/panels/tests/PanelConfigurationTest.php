@@ -222,3 +222,24 @@ it('primaryColor queues entry', function () {
     expect($entry['method'])->toBe('primaryColor')
         ->and($entry['args'])->toBe(['#3b82f6']);
 });
+
+it('font queues entry', function () {
+    $entry = PanelConfiguration::make()->font('"Inter", sans-serif')->getEntries()[0];
+
+    expect($entry['method'])->toBe('font')
+        ->and($entry['args'])->toBe(['"Inter", sans-serif']);
+});
+
+it('bodyFont queues entry', function () {
+    $entry = PanelConfiguration::make()->bodyFont('"Instrument Sans", sans-serif')->getEntries()[0];
+
+    expect($entry['method'])->toBe('bodyFont')
+        ->and($entry['args'])->toBe(['"Instrument Sans", sans-serif']);
+});
+
+it('headingFont queues entry', function () {
+    $entry = PanelConfiguration::make()->headingFont('"Fraunces", serif')->getEntries()[0];
+
+    expect($entry['method'])->toBe('headingFont')
+        ->and($entry['args'])->toBe(['"Fraunces", serif']);
+});

@@ -57,9 +57,14 @@
 
     <div @class([
         'flex w-full min-h-screen',
+        'relative isolate overflow-hidden',
+        'bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(248,250,252,0.88)_40%,_rgba(241,245,249,0.82)_100%)]',
+        'dark:bg-[radial-gradient(circle_at_top_left,_rgba(30,41,59,0.82),_rgba(15,23,42,0.96)_45%,_rgba(2,6,23,1)_100%)]',
         'lg:pl-64' => $showSidebar && ! $topBarNavigation,
         $topbarPt => $showTopbar && $fixedTopbar,
     ])>
+        <div class="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.2),_transparent_70%)] dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_70%)]"></div>
+
         @if($showSidebar && ! $topBarNavigation)
             @if($resolvedSidebar instanceof \Illuminate\Contracts\Support\Htmlable)
                 {{ $resolvedSidebar }}
@@ -76,8 +81,8 @@
         @endif
 
         <div class="flex w-full flex-grow">
-            <main class="py-6 w-full max-w-full">
-                <x-primix::content-container :maxWidth="$maxContentWidth" class="mx-auto px-4 sm:px-6 lg:px-8">
+            <main class="relative w-full max-w-full py-8 lg:py-10">
+                <x-primix::content-container :maxWidth="$maxContentWidth" class="relative mx-auto px-4 sm:px-6 lg:px-8">
                     @renderHook(\Primix\Enums\PanelsRenderHook::CONTENT_START)
                     {{ $slot }}
                     @renderHook(\Primix\Enums\PanelsRenderHook::CONTENT_END)

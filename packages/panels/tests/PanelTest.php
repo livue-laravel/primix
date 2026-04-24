@@ -722,6 +722,17 @@ it('lazy-creates ThemeConfig', function () {
         ->toBeInstanceOf(\Primix\Support\Theme\ThemeConfig::class);
 });
 
+it('supports separate body and heading fonts on the theme config', function () {
+    $panel = Panel::make('test')
+        ->font('"Inter", sans-serif')
+        ->bodyFont('"Instrument Sans", sans-serif')
+        ->headingFont('"Fraunces", serif');
+
+    expect($panel->getThemeConfig()->getFont())->toBe('"Inter", sans-serif')
+        ->and($panel->getThemeConfig()->getBodyFont())->toBe('"Instrument Sans", sans-serif')
+        ->and($panel->getThemeConfig()->getHeadingFont())->toBe('"Fraunces", serif');
+});
+
 // ============================================================
 // HasUserMenu
 // ============================================================

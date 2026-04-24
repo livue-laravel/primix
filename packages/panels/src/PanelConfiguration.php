@@ -174,6 +174,16 @@ class PanelConfiguration
         return $this->addEntry('font', [$font], $exclude);
     }
 
+    public function bodyFont(string $font, array $exclude = []): static
+    {
+        return $this->addEntry('bodyFont', [$font], $exclude);
+    }
+
+    public function headingFont(string $font, array $exclude = []): static
+    {
+        return $this->addEntry('headingFont', [$font], $exclude);
+    }
+
     // ─── Global Search ───────────────────────────────────────────────
 
     public function globalSearch(bool|Closure $condition = true, array $exclude = []): static
