@@ -51,6 +51,11 @@ class StatsOverviewWidgetWithResponsiveColumns extends StatsOverviewWidget
     ];
 }
 
+class StatsOverviewWidgetWithCustomSections extends StatsOverviewWidget
+{
+    protected array|\Closure|null $statCardSections = ['trend', 'chart'];
+}
+
 // ============================================================
 // Default values
 // ============================================================
@@ -107,6 +112,33 @@ it('supports responsive columns', function () {
         'xl' => 4,
     ])
         ->and($widget->getGridStyle())->toBe('--cols: 1; --cols-md: 2; --cols-xl: 4;');
+});
+
+it('uses all stat card sections by default', function () {
+    $widget = new ConcreteStatsOverviewWidget();
+
+    expect($widget->getStatCardSections())->toBe(['description', 'trend', 'chart'])
+        ->and($widget->hasStatCardSection('description'))->toBeTrue()
+        ->and($widget->hasStatCardSection('trend'))->toBeTrue()
+        ->and($widget->hasStatCardSection('chart'))->toBeTrue();
+});
+
+it('supports custom stat card sections', function () {
+    $widget = new StatsOverviewWidgetWithCustomSections();
+
+    expect($widget->getStatCardSections())->toBe(['trend', 'chart'])
+        ->and($widget->hasStatCardSection('description'))->toBeFalse()
+        ->and($widget->hasStatCardSection('trend'))->toBeTrue()
+        ->and($widget->hasStatCardSection('chart'))->toBeTrue();
+});
+
+it('normalizes stat card sections set at runtime', function () {
+    $widget = (new ConcreteStatsOverviewWidget())
+        ->statCardSections(['desc', 'trend', 'invalid', 'trend']);
+
+    expect($widget->getStatCardSections())->toBe(['description', 'trend'])
+        ->and($widget->hasStatCardSection('description'))->toBeTrue()
+        ->and($widget->hasStatCardSection('chart'))->toBeFalse();
 });
 
 // ============================================================

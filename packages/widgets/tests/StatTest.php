@@ -41,7 +41,12 @@ it('has null defaults for optional properties', function () {
         ->getDescriptionColor()->toBeNull()
         ->getChart()->toBeNull()
         ->getChartColor()->toBeNull()
+        ->getTrend()->toBeNull()
+        ->getTrendIcon()->toBeNull()
+        ->getTrendColor()->toBeNull()
         ->getIcon()->toBeNull()
+        ->getIconBackgroundColor()->toBeNull()
+        ->getIconBoxShape()->toBe('soft-square')
         ->getColor()->toBeNull();
 });
 
@@ -62,7 +67,7 @@ it('can set description icon with color string', function () {
 
     expect($stat)
         ->getDescriptionIcon()->toBe('pi pi-arrow-up')
-        ->getDescriptionColor()->toBe('success');
+        ->getDescriptionColor()->toBe('#22c55e');
 });
 
 it('can set description icon with Color object', function () {
@@ -107,7 +112,7 @@ it('can set chart data with color string', function () {
 
     expect($stat)
         ->getChart()->toBe([10, 20])
-        ->getChartColor()->toBe('primary');
+        ->getChartColor()->toBe('#2563eb');
 });
 
 it('can set chart data with Color object', function () {
@@ -117,6 +122,79 @@ it('can set chart data with Color object', function () {
     expect($stat)
         ->getChart()->toBe([10, 20])
         ->getChartColor()->toBe('#3b82f6');
+});
+
+it('can set icon background color', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->iconBackground('success');
+
+    expect($stat->getIconBackgroundColor())->toBe('#22c55e');
+});
+
+it('uses soft-square as default icon box shape', function () {
+    $stat = Stat::make('Revenue', 100);
+
+    expect($stat->getIconBoxShape())->toBe('soft-square');
+});
+
+it('can set icon box shape', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->iconBoxShape('circle');
+
+    expect($stat->getIconBoxShape())->toBe('circle');
+});
+
+it('normalizes unknown icon box shapes to soft-square', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->iconBoxShape('whatever');
+
+    expect($stat->getIconBoxShape())->toBe('soft-square');
+});
+
+it('can set trend text with icon and color', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->trend('+12.4% vs last week', 'heroicon-o-arrow-trending-up', Color::hex('#22c55e'));
+
+    expect($stat)
+        ->getTrend()->toBe('+12.4% vs last week')
+        ->getTrendIcon()->toBe('heroicon-o-arrow-trending-up')
+        ->getTrendColor()->toBe('#22c55e');
+});
+
+it('infers positive trend icon and default color', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->trend('5');
+
+    expect($stat)
+        ->getTrend()->toBe('5')
+        ->getTrendIcon()->toBe('primix-trend-up')
+        ->getTrendColor()->toBe('#22c55e');
+});
+
+it('infers negative trend icon and default color', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->trend('-3');
+
+    expect($stat)
+        ->getTrend()->toBe('-3')
+        ->getTrendIcon()->toBe('primix-trend-down')
+        ->getTrendColor()->toBe('#ef4444');
+});
+
+it('serializes inferred trend metadata to array', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->trend('5');
+
+    expect($stat->toArray())
+        ->toHaveKey('trendIcon', 'primix-trend-up')
+        ->toHaveKey('trendColor', '#22c55e');
+});
+
+it('resolves semantic trend colors to hex', function () {
+    $stat = Stat::make('Revenue', 100)
+        ->trend('+9%', null, 'success');
+
+    expect($stat->getTrendColor())->toBe('#22c55e');
 });
 
 // ============================================================
@@ -163,8 +241,13 @@ it('serializes to array with all null defaults', function () {
         'descriptionColor' => null,
         'icon' => null,
         'color' => null,
+        'iconBackgroundColor' => null,
+        'iconBoxShape' => 'soft-square',
         'chart' => null,
         'chartColor' => null,
+        'trend' => null,
+        'trendIcon' => null,
+        'trendColor' => null,
         'columnSpan' => null,
     ]);
 });
@@ -175,7 +258,10 @@ it('serializes to array with all properties set', function () {
         ->descriptionIcon('pi pi-arrow-up', Color::hex('#22c55e'))
         ->icon('pi pi-dollar')
         ->color('success')
+        ->iconBackground(Color::hex('#eff6ff'))
+        ->iconBoxShape('circle')
         ->chart([10, 20, 30], Color::hex('#3b82f6'))
+        ->trend('+12.4% vs last week', 'primix-trend-up', Color::hex('#22c55e'))
         ->columnSpan(2);
 
     $array = $stat->toArray();
@@ -187,9 +273,14 @@ it('serializes to array with all properties set', function () {
         ->toHaveKey('descriptionIcon', 'pi pi-arrow-up')
         ->toHaveKey('descriptionColor', '#22c55e')
         ->toHaveKey('icon', 'pi pi-dollar')
-        ->toHaveKey('color', 'success')
+        ->toHaveKey('color', '#22c55e')
+        ->toHaveKey('iconBackgroundColor', '#eff6ff')
+        ->toHaveKey('iconBoxShape', 'circle')
         ->toHaveKey('chart', [10, 20, 30])
         ->toHaveKey('chartColor', '#3b82f6')
+        ->toHaveKey('trend', '+12.4% vs last week')
+        ->toHaveKey('trendIcon', 'primix-trend-up')
+        ->toHaveKey('trendColor', '#22c55e')
         ->toHaveKey('columnSpan', 2);
 });
 
@@ -203,7 +294,10 @@ it('supports fluent chaining', function () {
         ->descriptionIcon('pi pi-users')
         ->icon('pi pi-user')
         ->color('primary')
+        ->iconBackground('success')
+        ->iconBoxShape('square')
         ->chart([5, 10, 15])
+        ->trend('+9%', 'primix-trend-up', 'success')
         ->columnSpan(1);
 
     expect($stat)

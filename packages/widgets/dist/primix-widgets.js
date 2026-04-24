@@ -5081,9 +5081,9 @@ function parseMaxStyle$1(styleValue, node, parentProperty) {
   }
   return valueInPixels;
 }
-const getComputedStyle$1 = (element) => element.ownerDocument.defaultView.getComputedStyle(element, null);
+const getComputedStyle$2 = (element) => element.ownerDocument.defaultView.getComputedStyle(element, null);
 function getStyle$1(el, property) {
-  return getComputedStyle$1(el).getPropertyValue(property);
+  return getComputedStyle$2(el).getPropertyValue(property);
 }
 const positions$1 = [
   "top",
@@ -5129,7 +5129,7 @@ function getRelativePosition$1(event, chart) {
     return event;
   }
   const { canvas, currentDevicePixelRatio } = chart;
-  const style2 = getComputedStyle$1(canvas);
+  const style2 = getComputedStyle$2(canvas);
   const borderBox = style2.boxSizing === "border-box";
   const paddings = getPositionedStyle$1(style2, "padding");
   const borders = getPositionedStyle$1(style2, "border", "width");
@@ -5155,7 +5155,7 @@ function getContainerSize$1(canvas, width, height) {
       height = canvas.clientHeight;
     } else {
       const rect = container.getBoundingClientRect();
-      const containerStyle = getComputedStyle$1(container);
+      const containerStyle = getComputedStyle$2(container);
       const containerBorder = getPositionedStyle$1(containerStyle, "border", "width");
       const containerPadding = getPositionedStyle$1(containerStyle, "padding");
       width = rect.width - containerPadding.width - containerBorder.width;
@@ -5173,7 +5173,7 @@ function getContainerSize$1(canvas, width, height) {
 }
 const round1$1 = (v2) => Math.round(v2 * 10) / 10;
 function getMaximumSize$1(canvas, bbWidth, bbHeight, aspectRatio) {
-  const style2 = getComputedStyle$1(canvas);
+  const style2 = getComputedStyle$2(canvas);
   const margins = getPositionedStyle$1(style2, "margin");
   const maxWidth = parseMaxStyle$1(style2.maxWidth, canvas, "clientWidth") || INFINITY$1;
   const maxHeight = parseMaxStyle$1(style2.maxHeight, canvas, "clientHeight") || INFINITY$1;
@@ -12626,10 +12626,62 @@ const _sfc_main = {
     const props = __props;
     const canvas = ref(null);
     let chart = null;
+    function resolveRange(values) {
+      if (!Array.isArray(values) || values.length === 0) {
+        return { min: -1, max: 1 };
+      }
+      const numericValues = values.map((value) => Number(value) || 0);
+      const min = Math.min(...numericValues);
+      const max = Math.max(...numericValues);
+      if (min === max) {
+        const padding2 = Math.max(Math.abs(max) * 0.35, 1);
+        return {
+          min: min - padding2,
+          max: max + padding2
+        };
+      }
+      const spread = max - min;
+      const padding = Math.max(spread * 0.18, 0.5);
+      return {
+        min: min - padding,
+        max: max + padding
+      };
+    }
+    function resolveColor(color2) {
+      if (typeof color2 !== "string") return "#6366f1";
+      const trimmed = color2.trim();
+      const match = trimmed.match(/^var\((--[^,)\s]+)(?:\s*,\s*([^)]+))?\)$/);
+      if (!match) return trimmed;
+      const [, varName, fallback] = match;
+      const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+      if (resolved) return resolveColor(resolved);
+      if (fallback) return resolveColor(fallback.trim());
+      return "#6366f1";
+    }
+    function toRgba(color2, alpha2) {
+      const probe = document.createElement("canvas").getContext("2d");
+      probe.fillStyle = "#000";
+      probe.fillStyle = color2;
+      const computed = probe.fillStyle;
+      if (computed.startsWith("#")) {
+        const hex2 = computed.length === 4 ? computed.replace(/^#(.)(.)(.)$/, "#$1$1$2$2$3$3") : computed;
+        const r2 = parseInt(hex2.slice(1, 3), 16);
+        const g2 = parseInt(hex2.slice(3, 5), 16);
+        const b2 = parseInt(hex2.slice(5, 7), 16);
+        return `rgba(${r2},${g2},${b2},${alpha2})`;
+      }
+      const rgbMatch = computed.match(/^rgba?\(([^)]+)\)$/);
+      if (rgbMatch) {
+        const [r2, g2, b2] = rgbMatch[1].split(",").map((s2) => s2.trim());
+        return `rgba(${r2},${g2},${b2},${alpha2})`;
+      }
+      return computed;
+    }
     function createGradient(ctx, color2) {
+      const resolved = resolveColor(color2);
       const gradient = ctx.createLinearGradient(0, 0, 0, props.height);
-      gradient.addColorStop(0, color2 + "40");
-      gradient.addColorStop(1, color2 + "05");
+      gradient.addColorStop(0, toRgba(resolved, 0.25));
+      gradient.addColorStop(1, toRgba(resolved, 0.02));
       return gradient;
     }
     function renderChart() {
@@ -12638,14 +12690,16 @@ const _sfc_main = {
         chart.destroy();
       }
       const ctx = canvas.value.getContext("2d");
+      const resolved = resolveColor(props.color);
+      const range = resolveRange(props.data);
       chart = new Chart$1(ctx, {
         type: "line",
         data: {
           labels: props.data.map((_, i2) => i2),
           datasets: [{
             data: props.data,
-            borderColor: props.color,
-            backgroundColor: createGradient(ctx, props.color),
+            borderColor: resolved,
+            backgroundColor: createGradient(ctx, resolved),
             borderWidth: 2,
             fill: true,
             tension: 0.4,
@@ -12664,8 +12718,8 @@ const _sfc_main = {
             x: { display: false },
             y: {
               display: false,
-              beginAtZero: true,
-              suggestedMax: Math.max(1, ...props.data)
+              min: range.min,
+              max: range.max
             }
           },
           animation: {
@@ -15094,9 +15148,9 @@ function parseMaxStyle(styleValue, node, parentProperty) {
   }
   return valueInPixels;
 }
-const getComputedStyle = (element) => element.ownerDocument.defaultView.getComputedStyle(element, null);
+const getComputedStyle$1 = (element) => element.ownerDocument.defaultView.getComputedStyle(element, null);
 function getStyle(el, property) {
-  return getComputedStyle(el).getPropertyValue(property);
+  return getComputedStyle$1(el).getPropertyValue(property);
 }
 const positions = [
   "top",
@@ -15142,7 +15196,7 @@ function getRelativePosition(event, chart) {
     return event;
   }
   const { canvas, currentDevicePixelRatio } = chart;
-  const style2 = getComputedStyle(canvas);
+  const style2 = getComputedStyle$1(canvas);
   const borderBox = style2.boxSizing === "border-box";
   const paddings = getPositionedStyle(style2, "padding");
   const borders = getPositionedStyle(style2, "border", "width");
@@ -15168,7 +15222,7 @@ function getContainerSize(canvas, width, height) {
       height = canvas.clientHeight;
     } else {
       const rect = container.getBoundingClientRect();
-      const containerStyle = getComputedStyle(container);
+      const containerStyle = getComputedStyle$1(container);
       const containerBorder = getPositionedStyle(containerStyle, "border", "width");
       const containerPadding = getPositionedStyle(containerStyle, "padding");
       width = rect.width - containerPadding.width - containerBorder.width;
@@ -15186,7 +15240,7 @@ function getContainerSize(canvas, width, height) {
 }
 const round1 = (v2) => Math.round(v2 * 10) / 10;
 function getMaximumSize(canvas, bbWidth, bbHeight, aspectRatio) {
-  const style2 = getComputedStyle(canvas);
+  const style2 = getComputedStyle$1(canvas);
   const margins = getPositionedStyle(style2, "margin");
   const maxWidth = parseMaxStyle(style2.maxWidth, canvas, "clientWidth") || INFINITY;
   const maxHeight = parseMaxStyle(style2.maxHeight, canvas, "clientHeight") || INFINITY;

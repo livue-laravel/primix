@@ -2,6 +2,7 @@
 
 namespace Primix\Widgets;
 
+use InvalidArgumentException;
 use Primix\Support\Colors\Color;
 use Primix\Support\Concerns\EvaluatesClosures;
 use Primix\Support\Concerns\HasColor;
@@ -30,6 +31,16 @@ class Stat
     protected ?array $chart = null;
 
     protected Color|string|null $chartColor = null;
+
+    protected Color|string|null $iconBackgroundColor = null;
+
+    protected string $iconBoxShape = 'soft-square';
+
+    protected ?string $trend = null;
+
+    protected ?string $trendIcon = null;
+
+    protected Color|string|null $trendColor = null;
 
     public static function make(string $label, mixed $value): static
     {
@@ -70,6 +81,29 @@ class Stat
         return $this;
     }
 
+    public function iconBackground(Color|string|null $color): static
+    {
+        $this->iconBackgroundColor = $color;
+
+        return $this;
+    }
+
+    public function iconBoxShape(string $shape): static
+    {
+        $this->iconBoxShape = $shape;
+
+        return $this;
+    }
+
+    public function trend(mixed $trend, ?string $icon = null, Color|string|null $color = null): static
+    {
+        $this->trend = $trend !== null ? (string) $trend : null;
+        $this->trendIcon = $icon;
+        $this->trendColor = $color;
+
+        return $this;
+    }
+
     public function getLabel(): string
     {
         return $this->label;
@@ -92,13 +126,7 @@ class Stat
 
     public function getDescriptionColor(): ?string
     {
-        $color = $this->descriptionColor;
-
-        if ($color instanceof Color) {
-            return $color->toHex();
-        }
-
-        return $color;
+        return $this->resolveOutputColor($this->descriptionColor);
     }
 
     public function getChart(): ?array
@@ -108,13 +136,58 @@ class Stat
 
     public function getChartColor(): ?string
     {
-        $color = $this->chartColor;
+        return $this->resolveOutputColor($this->chartColor);
+    }
 
-        if ($color instanceof Color) {
-            return $color->toHex();
+    public function getTrend(): ?string
+    {
+        return $this->trend;
+    }
+
+    public function getIconBackgroundColor(): ?string
+    {
+        return $this->resolveOutputColor($this->iconBackgroundColor);
+    }
+
+    public function getResolvedColor(): ?string
+    {
+        return $this->resolveOutputColor($this->evaluate($this->color));
+    }
+
+    public function getIconBoxShape(): string
+    {
+        return match ($this->iconBoxShape) {
+            'square' => 'square',
+            'circle', 'rounded', 'round' => 'circle',
+            'soft-square', 'softSquare', 'soft_square' => 'soft-square',
+            default => 'soft-square',
+        };
+    }
+
+    public function getTrendIcon(): ?string
+    {
+        if ($this->trendIcon !== null) {
+            return $this->trendIcon;
         }
 
-        return $color;
+        return match ($this->getTrendDirection()) {
+            'up' => 'primix-trend-up',
+            'down' => 'primix-trend-down',
+            default => null,
+        };
+    }
+
+    public function getTrendColor(): ?string
+    {
+        if ($this->trendColor !== null) {
+            return $this->resolveOutputColor($this->trendColor);
+        }
+
+        return match ($this->getTrendDirection()) {
+            'up' => $this->resolveOutputColor('success'),
+            'down' => $this->resolveOutputColor('danger'),
+            default => null,
+        };
     }
 
     public function toArray(): array
@@ -126,10 +199,82 @@ class Stat
             'descriptionIcon' => $this->descriptionIcon,
             'descriptionColor' => $this->getDescriptionColor(),
             'icon' => $this->getIcon(),
-            'color' => $this->getColor(),
+            'color' => $this->getResolvedColor(),
+            'iconBackgroundColor' => $this->getIconBackgroundColor(),
+            'iconBoxShape' => $this->getIconBoxShape(),
             'chart' => $this->chart,
             'chartColor' => $this->getChartColor(),
+            'trend' => $this->trend,
+            'trendIcon' => $this->getTrendIcon(),
+            'trendColor' => $this->getTrendColor(),
             'columnSpan' => $this->columnSpan,
         ];
+    }
+
+    protected function getTrendDirection(): ?string
+    {
+        if ($this->trend === null) {
+            return null;
+        }
+
+        $value = trim($this->trend);
+
+        if ($value === '') {
+            return null;
+        }
+
+        if (preg_match('/^-/', $value) === 1) {
+            return 'down';
+        }
+
+        if (preg_match('/^\+/', $value) === 1) {
+            return 'up';
+        }
+
+        if (! is_numeric($value)) {
+            return null;
+        }
+
+        $numeric = (float) $value;
+
+        return match (true) {
+            $numeric > 0 => 'up',
+            $numeric < 0 => 'down',
+            default => null,
+        };
+    }
+
+    protected function resolveOutputColor(Color|string|null $color): ?string
+    {
+        if ($color === null) {
+            return null;
+        }
+
+        if ($color instanceof Color) {
+            return $color->toHex();
+        }
+
+        $trimmed = trim($color);
+
+        if ($trimmed === '') {
+            return null;
+        }
+
+        if (
+            str_starts_with($trimmed, '#') ||
+            str_starts_with($trimmed, 'rgb(') ||
+            str_starts_with($trimmed, 'rgba(') ||
+            str_starts_with($trimmed, 'hsl(') ||
+            str_starts_with($trimmed, 'hsla(') ||
+            str_starts_with($trimmed, 'var(')
+        ) {
+            return $trimmed;
+        }
+
+        try {
+            return app(\Primix\Support\Colors\ColorManager::class)->toHex($trimmed);
+        } catch (InvalidArgumentException) {
+            return $trimmed;
+        }
     }
 }
