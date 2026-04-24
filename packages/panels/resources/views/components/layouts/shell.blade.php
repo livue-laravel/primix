@@ -63,8 +63,6 @@
         'lg:pl-64' => $showSidebar && ! $topBarNavigation,
         $topbarPt => $showTopbar && $fixedTopbar,
     ])>
-        <div class="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.2),_transparent_70%)] dark:bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_70%)]"></div>
-
         @if($showSidebar && ! $topBarNavigation)
             @if($resolvedSidebar instanceof \Illuminate\Contracts\Support\Htmlable)
                 {{ $resolvedSidebar }}
