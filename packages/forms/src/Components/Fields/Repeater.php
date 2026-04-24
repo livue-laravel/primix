@@ -316,7 +316,13 @@ class Repeater extends Field
 
     protected function getAutoRules(): array
     {
-        $rules = ['array'];
+        $rules = [];
+
+        if (! $this->isRequired()) {
+            $rules[] = 'nullable';
+        }
+
+        $rules[] = 'array';
 
         $minItems = $this->getMinItems();
         if ($minItems !== null) {
