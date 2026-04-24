@@ -7,3 +7,19 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+body {
+    font-family: var(--px-body-font-family, var(--p-font-family, inherit));
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+}
+
+:where(h1, h2, h3, h4, h5, h6, [data-primix-heading]) {
+    font-family: var(--px-heading-font-family, var(--px-body-font-family, var(--p-font-family, inherit)));
+}

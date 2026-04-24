@@ -24,6 +24,10 @@ class ThemeConfig
 
     protected ?string $font = null;
 
+    protected ?string $bodyFont = null;
+
+    protected ?string $headingFont = null;
+
     protected array $tokens = [];
 
     protected array $darkTokens = [];
@@ -129,6 +133,30 @@ class ThemeConfig
         return $this->font;
     }
 
+    public function bodyFont(string $font): static
+    {
+        $this->bodyFont = $font;
+
+        return $this;
+    }
+
+    public function getBodyFont(): ?string
+    {
+        return $this->bodyFont;
+    }
+
+    public function headingFont(string $font): static
+    {
+        $this->headingFont = $font;
+
+        return $this;
+    }
+
+    public function getHeadingFont(): ?string
+    {
+        return $this->headingFont;
+    }
+
     public function token(string $path, string $value): static
     {
         $this->setNestedValue($this->tokens, $path, $value);
@@ -226,6 +254,14 @@ class ThemeConfig
 
         if ($this->font !== null) {
             $config['font'] = $this->font;
+        }
+
+        if ($this->bodyFont !== null) {
+            $config['bodyFont'] = $this->bodyFont;
+        }
+
+        if ($this->headingFont !== null) {
+            $config['headingFont'] = $this->headingFont;
         }
 
         if (! empty($this->tokens)) {

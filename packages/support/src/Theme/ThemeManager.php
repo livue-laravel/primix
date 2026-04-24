@@ -52,12 +52,22 @@ class ThemeManager
             $this->assetManager->registerScriptData($data, 'primix');
         }
 
-        // Register font CSS variable if configured
-        $font = $themeConfig->getFont();
-        if ($font !== null) {
-            $this->assetManager->registerCssVariables([
-                '--p-font-family' => $font,
-            ], 'primix');
+        $bodyFont = $themeConfig->getBodyFont() ?? $themeConfig->getFont();
+        $headingFont = $themeConfig->getHeadingFont() ?? $themeConfig->getFont() ?? $themeConfig->getBodyFont();
+
+        $cssVariables = [];
+
+        if ($bodyFont !== null) {
+            $cssVariables['--p-font-family'] = $bodyFont;
+            $cssVariables['--px-body-font-family'] = $bodyFont;
+        }
+
+        if ($headingFont !== null) {
+            $cssVariables['--px-heading-font-family'] = $headingFont;
+        }
+
+        if ($cssVariables !== []) {
+            $this->assetManager->registerCssVariables($cssVariables, 'primix');
         }
     }
 
