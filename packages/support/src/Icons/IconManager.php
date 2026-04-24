@@ -3,6 +3,7 @@
 namespace Primix\Support\Icons;
 
 use Primix\Support\Icons\Sets\HeroiconSet;
+use Primix\Support\Icons\Sets\PrimixIconSet;
 use Primix\Support\Icons\Sets\PrimeIconSet;
 
 class IconManager
@@ -12,6 +13,7 @@ class IconManager
 
     public function __construct()
     {
+        $this->registerSet(new PrimixIconSet());
         $this->registerSet(new PrimeIconSet());
         $this->registerSet(new HeroiconSet());
     }
