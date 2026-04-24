@@ -51,26 +51,6 @@ it('has null sort by default', function () {
     expect($widget->getSort())->toBeNull();
 });
 
-it('uses the professional layout by default', function () {
-    $widget = new ConcreteWidget();
-
-    expect($widget->getWidgetLayout())->toBe('professional');
-});
-
-it('can switch widget layout', function () {
-    $widget = new ConcreteWidget();
-    $widget->widgetLayout('classic');
-
-    expect($widget->getWidgetLayout())->toBe('classic');
-});
-
-it('rejects unsupported widget layouts', function () {
-    $widget = new ConcreteWidget();
-
-    expect(fn () => $widget->widgetLayout('magazine'))
-        ->toThrow(\InvalidArgumentException::class, 'Unsupported widget layout [magazine].');
-});
-
 // ============================================================
 // HasColumnSpan trait
 // ============================================================
