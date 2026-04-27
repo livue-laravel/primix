@@ -122,7 +122,10 @@ trait HasWidgets
                     continue;
                 }
 
-                $resolved[] = $widget;
+                $resolved[] = [
+                    'widget' => $widget,
+                    'position' => count($resolved),
+                ];
             } elseif (is_string($widget) && is_subclass_of($widget, Widget::class)) {
                 if (! $widget::canView()) {
                     continue;
@@ -132,7 +135,10 @@ trait HasWidgets
                     continue;
                 }
 
-                $resolved[] = $widget;
+                $resolved[] = [
+                    'widget' => $widget,
+                    'position' => count($resolved),
+                ];
             } elseif ($widget instanceof Widget) {
                 if (! $widget::canView()) {
                     continue;
@@ -142,18 +148,30 @@ trait HasWidgets
                     continue;
                 }
 
-                $resolved[] = $widget;
+                $resolved[] = [
+                    'widget' => $widget,
+                    'position' => count($resolved),
+                ];
             }
         }
 
-        usort($resolved, function ($a, $b) {
-            $sortA = $this->getWidgetSort($a);
-            $sortB = $this->getWidgetSort($b);
+        usort($resolved, function (array $a, array $b) {
+            $sortA = $this->getResolvedWidgetSort($a['widget'], $a['position']);
+            $sortB = $this->getResolvedWidgetSort($b['widget'], $b['position']);
 
-            return ($sortA ?? PHP_INT_MAX) <=> ($sortB ?? PHP_INT_MAX);
+            if ($sortA === $sortB) {
+                return $a['position'] <=> $b['position'];
+            }
+
+            return $sortA <=> $sortB;
         });
 
-        return $resolved;
+        return array_column($resolved, 'widget');
+    }
+
+    protected function getResolvedWidgetSort(string|Widget|WidgetConfiguration $widget, int $position): int
+    {
+        return $this->getWidgetSort($widget) ?? $position;
     }
 
     protected function getWidgetSort(string|Widget|WidgetConfiguration $widget): ?int
