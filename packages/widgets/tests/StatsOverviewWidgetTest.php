@@ -141,6 +141,26 @@ it('normalizes stat card sections set at runtime', function () {
         ->and($widget->hasStatCardSection('chart'))->toBeFalse();
 });
 
+it('uses compact min height for trend-only stats', function () {
+    $widget = new StatsOverviewWidgetWithCustomSections();
+
+    expect($widget->getStatCardMinHeightClass([
+        'description' => null,
+        'trend' => '+12% vs last week',
+        'chart' => null,
+    ]))->toBe('min-h-[9rem]');
+});
+
+it('keeps larger min height when chart content is present', function () {
+    $widget = new ConcreteStatsOverviewWidget();
+
+    expect($widget->getStatCardMinHeightClass([
+        'description' => null,
+        'trend' => null,
+        'chart' => [1, 2, 3],
+    ]))->toBe('min-h-[13.5rem]');
+});
+
 // ============================================================
 // Render
 // ============================================================

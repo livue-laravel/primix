@@ -39,12 +39,7 @@
                         'border-color: color-mix(in srgb, ' . $stat['iconBackgroundColor'] . ' 82%, transparent);',
                     ]));
                 }
-
-                $cardMinHeightClass = match (true) {
-                    $hasChartSection => 'min-h-[13.5rem]',
-                    $hasDescriptionSection || $hasTrendSection => 'min-h-[11rem]',
-                    default => 'min-h-[8.75rem]',
-                };
+                $cardMinHeightClass = $this->getStatCardMinHeightClass($stat);
             @endphp
             <div
                 class="primix-stat-card primix-grid-item flex h-full {{ $cardMinHeightClass }} flex-col rounded-[1.75rem] border border-[var(--px-stat-card-border)] bg-surface-0 p-5 shadow-[0_12px_30px_-18px_rgba(15,23,42,0.18),0_2px_8px_-4px_rgba(15,23,42,0.08)] dark:border-[var(--px-stat-card-border-dark)] dark:bg-surface-900 dark:shadow-[0_16px_36px_-22px_rgba(2,6,23,0.55),0_2px_10px_-6px_rgba(2,6,23,0.35)]"
@@ -55,18 +50,18 @@
                 "
             >
                 <div class="flex items-start justify-between gap-4">
-                    <div class="min-w-0 space-y-2">
-                        <p class="text-[0.72rem] font-light uppercase tracking-[0.24em] text-surface-500 dark:text-surface-400">
+                    <div class="min-w-0 flex-1">
+                        <p class="flex min-h-[2.4rem] items-start text-[0.72rem] font-light uppercase tracking-[0.24em] leading-[1.2rem] text-surface-500 dark:text-surface-400">
                             {{ $stat['label'] }}
                         </p>
-                        <h3 data-primix-heading class="text-4xl font-semibold leading-none tracking-tight text-surface-950 dark:text-surface-50">
+                        <h3 data-primix-heading class="mt-2 text-4xl font-semibold leading-none tracking-tight text-surface-950 dark:text-surface-50">
                             {{ $stat['value'] }}
                         </h3>
                     </div>
 
                     @if($stat['icon'])
                         <div
-                            class="{{ $iconBoxRadiusClasses }} flex size-12 shrink-0 items-center justify-center border border-surface-200 bg-surface-100 p-3 text-surface-700 shadow-sm dark:border-surface-700 dark:bg-surface-800 dark:text-surface-200"
+                            class="{{ $iconBoxRadiusClasses }} flex size-12 shrink-0 items-center justify-center border border-surface-200 bg-surface-100 text-surface-700 leading-none shadow-sm [&>i]:block [&>i]:leading-none [&>svg]:block [&>svg]:shrink-0 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-200"
                             @if($iconBoxStyle) style="{{ $iconBoxStyle }}" @endif
                         >
                             {!! app(\Primix\Support\Icons\IconManager::class)->render($stat['icon'], 'h-5 w-5') !!}

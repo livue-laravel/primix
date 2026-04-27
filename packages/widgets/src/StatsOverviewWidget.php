@@ -94,6 +94,21 @@ abstract class StatsOverviewWidget extends Widget
         return in_array($section, $this->getStatCardSections(), true);
     }
 
+    public function getStatCardMinHeightClass(array $stat): string
+    {
+        $hasDescriptionContent = $this->hasStatCardSection('description') && filled($stat['description'] ?? null);
+        $hasTrendContent = $this->hasStatCardSection('trend') && filled($stat['trend'] ?? null);
+        $hasChartContent = $this->hasStatCardSection('chart') && is_array($stat['chart'] ?? null) && ($stat['chart'] !== []);
+
+        return match (true) {
+            $hasChartContent => 'min-h-[13.5rem]',
+            $hasDescriptionContent && $hasTrendContent => 'min-h-[11rem]',
+            $hasDescriptionContent => 'min-h-[10rem]',
+            $hasTrendContent => 'min-h-[9rem]',
+            default => 'min-h-[8.75rem]',
+        };
+    }
+
     protected function getStats(): array
     {
         return [];
