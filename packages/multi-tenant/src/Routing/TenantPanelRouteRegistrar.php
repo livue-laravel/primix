@@ -98,9 +98,12 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
         }
 
         // For path identification: also register auth routes under /{tenant}/{panel} prefix.
-        // These override the central route names so that route() generates tenant-aware URLs
-        // (e.g. /apple/admin/login instead of /admin/login). They carry InitializeTenancyByPath
-        // for tenant context but NOT Authenticate (to avoid redirect loops).
+        // These use the distinct `primix.tenant.{panelId}.*` name so they don't collide with
+        // the central names registered by parent::registerAuthRoutes() — keeping
+        // `php artisan route:cache` happy. Panel::getLoginUrl() (and siblings) pick which name
+        // to use at URL-generation time based on the current tenant scope.
+        // They carry InitializeTenancyByPath for tenant context but NOT Authenticate
+        // (to avoid redirect loops).
         if ($identification === 'path') {
             $routeParameter = config('multi-tenant.panel.route_parameter', 'tenant');
             $tenantPrefix = '{' . $routeParameter . '}/' . $panel->getPath();
@@ -108,7 +111,7 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
 
             Route::prefix($tenantPrefix)
                 ->middleware($webMiddleware)
-                ->name("primix.{$panelId}.")
+                ->name("primix.tenant.{$panelId}.")
                 ->group(function () use ($panel, $panelId) {
                     if ($panel->hasLogin()) {
                         $this->registerPageRoute($panel->getLoginPage(), $panelId);

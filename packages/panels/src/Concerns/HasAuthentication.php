@@ -47,7 +47,7 @@ trait HasAuthentication
 
         $loginClass = $this->getLoginPage();
 
-        return route("primix.{$this->getId()}.{$loginClass::getSlug()}");
+        return $this->resolvePanelAuthUrl($loginClass::getSlug());
     }
 
     public function profile(?string $pageClass = null): static
@@ -87,7 +87,7 @@ trait HasAuthentication
 
         $pageClass = $this->getRegistrationPage();
 
-        return route("primix.{$this->getId()}.{$pageClass::getSlug()}");
+        return $this->resolvePanelAuthUrl($pageClass::getSlug());
     }
 
     public function emailVerification(
@@ -122,7 +122,7 @@ trait HasAuthentication
 
         $pageClass = $this->getEmailVerificationPage();
 
-        return route("primix.{$this->getId()}.{$pageClass::getSlug()}");
+        return $this->resolvePanelAuthUrl($pageClass::getSlug());
     }
 
     public function passwordReset(
@@ -164,7 +164,27 @@ trait HasAuthentication
 
         $pageClass = $this->getRequestPasswordResetPage();
 
-        return route("primix.{$this->getId()}.{$pageClass::getSlug()}");
+        return $this->resolvePanelAuthUrl($pageClass::getSlug());
+    }
+
+    public function getLogoutUrl(): ?string
+    {
+        if (! $this->hasLogin()) {
+            return null;
+        }
+
+        return $this->resolvePanelAuthUrl('logout');
+    }
+
+    public function getResetPasswordUrl(array $parameters = []): ?string
+    {
+        if (! $this->hasPasswordReset()) {
+            return null;
+        }
+
+        $pageClass = $this->getResetPasswordPage();
+
+        return $this->resolvePanelAuthUrl($pageClass::getSlug(), $parameters);
     }
 
     public function authGuard(?string $guard): static
@@ -177,5 +197,53 @@ trait HasAuthentication
     public function getAuthGuard(): ?string
     {
         return $this->authGuard;
+    }
+
+    /**
+     * Generate a URL for a panel auth page, picking the tenant-scoped route
+     * (`primix.tenant.{panelId}.{slug}`) when a tenant is currently in scope
+     * and the panel uses path-based identification — otherwise the central
+     * route (`primix.{panelId}.{slug}`).
+     */
+    protected function resolvePanelAuthUrl(string $slug, array $parameters = []): string
+    {
+        if ($this->shouldUseTenantScopedRoute()) {
+            return route("primix.tenant.{$this->getId()}.{$slug}", $parameters);
+        }
+
+        return route("primix.{$this->getId()}.{$slug}", $parameters);
+    }
+
+    /**
+     * Decide whether auth URLs should resolve to the tenant-prefixed route
+     * (registered by TenantPanelRouteRegistrar) or the central one
+     * (registered by PanelRouteRegistrar).
+     */
+    protected function shouldUseTenantScopedRoute(): bool
+    {
+        if (! method_exists($this, 'hasTenancy') || ! $this->hasTenancy()) {
+            return false;
+        }
+
+        $identification = method_exists($this, 'getTenantIdentification')
+            ? $this->getTenantIdentification()
+            : null;
+
+        $identification ??= config('multi-tenant.identification.default', 'path');
+
+        if ($identification !== 'path') {
+            return false;
+        }
+
+        // Tenant param must be resolvable. InitializeTenancyByPath sets it
+        // both on Tenancy::tenant() and on URL::defaults() in the same step,
+        // so the facade's presence is a reliable proxy for URL::defaults state.
+        $tenancyFacade = '\\Primix\\MultiTenant\\Facades\\Tenancy';
+
+        if (! class_exists($tenancyFacade)) {
+            return false;
+        }
+
+        return $tenancyFacade::tenant() !== null;
     }
 }
