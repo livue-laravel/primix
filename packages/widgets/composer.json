@@ -6,8 +6,8 @@
     "require": {
         "php": "^8.2",
         "livue/livue": "^1.5.0",
-        "primix/support": "self.version",
-        "primix/tables": "self.version"
+        "primix/support": "^0.3.5",
+        "primix/tables": "^0.3.5"
     },
     "autoload": {
         "psr-4": {
