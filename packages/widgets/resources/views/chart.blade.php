@@ -1,4 +1,4 @@
-<div class="primix-chart-widget rounded-2xl border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 p-5 shadow-sm">
+<x-primix-widgets::widget :widget="$this" class="primix-chart-widget">
     @if($this->getHeading() || $this->getDescription())
         <div class="mb-5 flex flex-col gap-2">
             @if($this->getHeading())
@@ -24,4 +24,4 @@
             @if($this->getMaxHeight()) style="max-height: {{ $this->getMaxHeight() }}" @endif
         ></p-chart>
     </div>
-</div>
+</x-primix-widgets::widget>

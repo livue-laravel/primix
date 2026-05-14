@@ -1,5 +1,7 @@
 @php
-    $severity = app(\Primix\Support\Colors\ColorManager::class)->toPrimeVueSeverity($color ?? 'primary');
+    $severity = $component->hasGradient()
+        ? null
+        : app(\Primix\Support\Colors\ColorManager::class)->toPrimeVueSeverity($color ?? 'primary');
 
     $buttonSize = match($size ?? 'md') {
         'xs', 'sm' => 'small',
@@ -20,7 +22,10 @@
 
     $recordKeyArg = isset($recordKey) && $recordKey !== null ? ", recordKey: '" . addslashes($recordKey) . "'" : '';
     $iconHtml = $icon ? app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') : null;
-    $renderableAttributes = $component->getRenderableExtraAttributes('primix-action-button');
+    $renderableAttributes = $component->getRenderableExtraAttributes(
+        'primix-action-button',
+        $component->getGradientExtraAttributes(),
+    );
     $buttonClass = $renderableAttributes['class'];
     $extraAttributes = $renderableAttributes['attributes'];
 @endphp

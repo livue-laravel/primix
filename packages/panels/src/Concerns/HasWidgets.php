@@ -66,7 +66,7 @@ trait HasWidgets
     /**
      * Get the CSS custom properties for a widget grid item.
      */
-    public function getWidgetGridItemStyle(string|Widget|WidgetConfiguration $widget): string
+    public function getWidgetGridItemStyle(string|Widget|WidgetConfiguration $widget, int|array $columns = 1): string
     {
         $span = $this->getWidgetColumnSpan($widget);
 
@@ -78,6 +78,10 @@ trait HasWidgets
             $styles = [];
 
             foreach ($span as $breakpoint => $value) {
+                if ($value === 'full') {
+                    $value = $this->resolveColumnsForBreakpoint($columns, $breakpoint);
+                }
+
                 $suffix = $breakpoint === 'default' ? '' : "-{$breakpoint}";
                 $styles[] = "--col-span{$suffix}: {$value}";
             }
@@ -93,7 +97,49 @@ trait HasWidgets
      */
     public function isWidgetColumnSpanFull(string|Widget|WidgetConfiguration $widget): bool
     {
-        return $this->getWidgetColumnSpan($widget) === 'full';
+        $span = $this->getWidgetColumnSpan($widget);
+
+        if ($span === 'full') {
+            return true;
+        }
+
+        if (is_array($span)) {
+            foreach ($span as $value) {
+                if ($value !== 'full') {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolve the column count for a specific breakpoint, falling back to smaller breakpoints.
+     */
+    protected function resolveColumnsForBreakpoint(int|array $columns, string $breakpoint): int
+    {
+        if (is_int($columns)) {
+            return $columns;
+        }
+
+        $breakpointOrder = ['default', 'sm', 'md', 'lg', 'xl', '2xl'];
+        $currentIdx = array_search($breakpoint, $breakpointOrder, true);
+
+        if ($currentIdx === false) {
+            $currentIdx = 0;
+        }
+
+        for ($i = $currentIdx; $i >= 0; $i--) {
+            $bp = $breakpointOrder[$i];
+            if (isset($columns[$bp])) {
+                return (int) $columns[$bp];
+            }
+        }
+
+        return 1;
     }
 
     /**

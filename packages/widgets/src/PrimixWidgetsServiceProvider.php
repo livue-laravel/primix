@@ -2,6 +2,7 @@
 
 namespace Primix\Widgets;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use LiVue\Facades\LiVueAsset;
 use LiVue\Features\SupportAssets\Css;
@@ -18,6 +19,8 @@ class PrimixWidgetsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'primix-widgets');
+        Blade::anonymousComponentPath(__DIR__ . '/../resources/views', 'primix-widgets');
+        Blade::anonymousComponentPath(__DIR__ . '/../resources/views', 'widgets');
 
         $this->registerAssets();
 

@@ -21,6 +21,25 @@ it('normalizes extra attributes for rendering with base classes', function () {
         ->and($renderable['attributes']->get('aria-label'))->toBe('foo');
 });
 
+it('merges default classes and styles into renderable extra attributes', function () {
+    $component = new class extends Component {};
+
+    $component->extraAttributes([
+        'class' => 'text-sm',
+        'style' => 'box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);',
+        'data-test' => 'value',
+    ]);
+
+    $renderable = $component->getRenderableExtraAttributes('primix-action-button', [
+        'class' => 'bg-gradient',
+        'style' => 'background: linear-gradient(red, blue);',
+    ]);
+
+    expect($renderable['class'])->toBe('primix-action-button bg-gradient text-sm')
+        ->and($renderable['attributes']->get('style'))->toBe('background: linear-gradient(red, blue); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);')
+        ->and($renderable['attributes']->get('data-test'))->toBe('value');
+});
+
 it('normalizes extra wrapper attributes for rendering with base classes', function () {
     $component = new class extends Component {};
 

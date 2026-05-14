@@ -278,6 +278,28 @@ it('can set color', function () {
     expect($action->getColor())->toBe('danger');
 });
 
+it('can build gradient background from type and segments', function () {
+    $action = Action::make('publish')
+        ->gradient('linear', '135deg', '#2563eb 0%', '#7c3aed 100%')
+        ->gradientTextColor('#ffffff');
+
+    expect($action->hasGradient())->toBeTrue()
+        ->and($action->getGradient())->toBe('linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)')
+        ->and($action->getGradientTextColor())->toBe('#ffffff')
+        ->and($action->getGradientExtraAttributes())->toBe([
+            'class' => 'primix-action-button-gradient',
+            'data-primix-gradient' => 'true',
+            'style' => 'background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-color: transparent; color: #ffffff;',
+        ]);
+});
+
+it('keeps supporting raw gradient strings', function () {
+    $action = Action::make('publish')->gradient('linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)', '#ffffff');
+
+    expect($action->getGradient())->toBe('linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)')
+        ->and($action->getGradientTextColor())->toBe('#ffffff');
+});
+
 it('has null size by default', function () {
     $action = Action::make('edit');
 
@@ -351,6 +373,8 @@ it('returns complete vue props', function () {
         ->label('Delete')
         ->icon('pi pi-trash')
         ->color('danger')
+        ->gradient('linear', '135deg', '#ef4444 0%', '#f97316 100%')
+        ->gradientTextColor('#fff')
         ->size('sm')
         ->outlined()
         ->iconButton(true, false, TooltipPosition::Bottom)
@@ -363,6 +387,8 @@ it('returns complete vue props', function () {
         ->toHaveKey('label', 'Delete')
         ->toHaveKey('icon', 'pi pi-trash')
         ->toHaveKey('color', 'danger')
+        ->toHaveKey('gradient', 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)')
+        ->toHaveKey('gradientTextColor', '#fff')
         ->toHaveKey('size', 'sm')
         ->toHaveKey('outlined', true)
         ->toHaveKey('isLink', false)
@@ -383,8 +409,30 @@ it('vue props defaults color to primary and size to md', function () {
 
     expect($props)
         ->toHaveKey('color', 'primary')
+        ->toHaveKey('gradient', null)
+        ->toHaveKey('gradientTextColor', null)
         ->toHaveKey('size', 'md')
         ->toHaveKey('isLink', false);
+});
+
+it('merges gradient attributes with custom extra attributes in rendered html', function () {
+    $html = Action::make('launch')
+        ->label('Launch')
+        ->gradient('linear', '135deg', '#0f172a 0%', '#1d4ed8 100%')
+        ->gradientTextColor('#f8fafc')
+        ->extraAttributes([
+            'class' => 'shadow-lg',
+            'style' => 'box-shadow: 0 18px 40px -24px rgba(29, 78, 216, 0.8);',
+            'data-test' => 'launch-action',
+        ])
+        ->toHtml();
+
+    expect($html)
+        ->toContain('class="primix-action-button primix-action-button-gradient shadow-lg"')
+        ->toContain('data-primix-gradient="true"')
+        ->toContain('data-test="launch-action"')
+        ->toContain('background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%); border-color: transparent; color: #f8fafc;')
+        ->toContain('box-shadow: 0 18px 40px -24px rgba(29, 78, 216, 0.8);');
 });
 
 it('can use fluent chaining', function () {

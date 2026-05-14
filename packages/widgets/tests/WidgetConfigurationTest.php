@@ -45,6 +45,34 @@ it('can set sort to null', function () {
     expect($config->getSort())->toBeNull();
 });
 
+it('has null variant by default', function () {
+    $config = WidgetConfiguration::make('App\Widgets\TestWidget');
+
+    expect($config->getVariant())->toBeNull();
+});
+
+it('can set variant', function () {
+    $config = WidgetConfiguration::make('App\Widgets\TestWidget')
+        ->variant('unboxed');
+
+    expect($config->getVariant())->toBe('unboxed');
+});
+
+it('supports boxed and unboxed helpers', function () {
+    $config = WidgetConfiguration::make('App\Widgets\TestWidget')
+        ->boxed()
+        ->unboxed();
+
+    expect($config->getVariant())->toBe('unboxed');
+});
+
+it('rejects unsupported configuration variants', function () {
+    $config = WidgetConfiguration::make('App\Widgets\TestWidget');
+
+    expect(fn () => $config->variant('floating'))
+        ->toThrow(\InvalidArgumentException::class, 'Unsupported widget variant [floating].');
+});
+
 // ============================================================
 // CanBeHidden trait
 // ============================================================
@@ -131,11 +159,13 @@ it('supports fluent chaining', function () {
     $config = WidgetConfiguration::make('App\Widgets\TestWidget')
         ->sort(3)
         ->columnSpan(2)
+        ->unboxed()
         ->hidden(false);
 
     expect($config)
         ->toBeInstanceOf(WidgetConfiguration::class)
         ->getSort()->toBe(3)
         ->getColumnSpan()->toBe(2)
+        ->getVariant()->toBe('unboxed')
         ->isVisible()->toBeTrue();
 });

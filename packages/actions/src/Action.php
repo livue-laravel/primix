@@ -5,6 +5,7 @@ namespace Primix\Actions;
 use Closure;
 use Primix\Actions\Concerns\BelongsToComponent;
 use Primix\Actions\Concerns\CanNotify;
+use Primix\Actions\Concerns\HasGradient;
 use Primix\Support\Concerns\BelongsToContainer;
 use Primix\Actions\Concerns\CanOpenModal;
 use Primix\Actions\Concerns\CanRedirect;
@@ -36,6 +37,7 @@ class Action extends ViewComponent
     use CanRequireConfirmation;
     use HasColor;
     use HasForm;
+    use HasGradient;
     use HasIcon;
     use HasId;
     use HasName;
@@ -356,6 +358,8 @@ class Action extends ViewComponent
             'icon' => $this->getIcon(),
             'iconPosition' => $this->getIconPosition(),
             'color' => $this->getColor() ?? 'primary',
+            'gradient' => $this->getGradient(),
+            'gradientTextColor' => $this->getGradientTextColor(),
             'size' => $this->getSize() ?? 'md',
             'disabled' => $this->isDisabled(),
             'outlined' => $this->isOutlined(),

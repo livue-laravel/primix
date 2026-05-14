@@ -1,4 +1,4 @@
-<div class="primix-table-widget rounded-2xl border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 p-5 shadow-sm">
+<x-primix-widgets::widget :widget="$this" class="primix-table-widget">
     @if($this->getHeading() || $this->getDescription())
         <div class="mb-5 flex flex-col gap-2">
             @if($this->getHeading())
@@ -18,4 +18,4 @@
     <div class="overflow-hidden rounded-2xl">
         {{ $this->table }}
     </div>
-</div>
+</x-primix-widgets::widget>

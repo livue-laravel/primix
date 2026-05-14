@@ -1,4 +1,4 @@
-<div class="primix-progress-bar-widget rounded-2xl border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 p-5 shadow-sm">
+<x-primix-widgets::widget :widget="$this" class="primix-progress-bar-widget">
     @if($this->getHeading())
         <div class="mb-5 flex items-center justify-between gap-3">
             <h3 class="text-xl font-semibold tracking-tight text-surface-950 dark:text-surface-50">
@@ -20,4 +20,4 @@
             :show-value="{{ $this->shouldShowValue() ? 'true' : 'false' }}"
         ></p-progress-bar>
     </div>
-</div>
+</x-primix-widgets::widget>

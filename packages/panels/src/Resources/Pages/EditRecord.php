@@ -95,7 +95,6 @@ class EditRecord extends Page
             ->statePath('data')
             ->model($this->record)
             ->submitAction('save')
-            ->wrapped()
             ->footerActions(fn () => $this->getVisibleFooterActions());
     }
 

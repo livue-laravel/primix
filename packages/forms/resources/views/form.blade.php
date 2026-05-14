@@ -5,7 +5,7 @@
 
 <form @submit.prevent="{{ $form->getSubmitAction() }}()" @class(['primix-form', 'mt-6' => $form->isWrapped()])>
     @if($form->isWrapped())
-    <div class="bg-white dark:bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg">
+    <div class="bg-[var(--p-content-background)] shadow-none ring-1 ring-[var(--p-content-border-color)] sm:rounded-lg">
         <div class="px-4 py-6 sm:p-8">
     @endif
 
@@ -24,17 +24,16 @@
 
     @if($form->isWrapped())
         </div>
-        @if($form->hasFooterActions())
-            <div class="flex items-center justify-end gap-x-3 border-t border-gray-900/10 dark:border-gray-700 px-4 py-4 sm:px-8">
-                @foreach($form->getFooterActions() as $action)
-                    {{ $action }}
-                @endforeach
-            </div>
-        @endif
     </div>
     @endif
 
-    @if(!$form->isWrapped() && $form->hasSubmitButton())
+    @if($form->hasFooterActions())
+        <div class="primix-form-actions flex items-center justify-end gap-x-3 pt-4" data-col-span-full>
+            @foreach($form->getFooterActions() as $action)
+                {{ $action }}
+            @endforeach
+        </div>
+    @elseif($form->hasSubmitButton())
         <div class="primix-form-actions pt-4" data-col-span-full>
             {{ $form->getSubmitButton() }}
         </div>

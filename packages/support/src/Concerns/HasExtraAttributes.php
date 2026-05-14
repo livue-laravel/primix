@@ -42,24 +42,28 @@ trait HasExtraAttributes
     /**
      * @return array{class: string, attributes: ComponentAttributeBag}
      */
-    public function getRenderableExtraAttributes(string $baseClass = ''): array
+    public function getRenderableExtraAttributes(string $baseClass = '', array $defaults = []): array
     {
-        return $this->prepareRenderableAttributes($this->getExtraAttributes(), $baseClass);
+        return $this->prepareRenderableAttributes($this->getExtraAttributes(), $baseClass, $defaults);
     }
 
     /**
      * @return array{class: string, attributes: ComponentAttributeBag}
      */
-    public function getRenderableExtraWrapperAttributes(string $baseClass = ''): array
+    public function getRenderableExtraWrapperAttributes(string $baseClass = '', array $defaults = []): array
     {
-        return $this->prepareRenderableAttributes($this->getExtraWrapperAttributes(), $baseClass);
+        return $this->prepareRenderableAttributes($this->getExtraWrapperAttributes(), $baseClass, $defaults);
     }
 
     /**
      * @return array{class: string, attributes: ComponentAttributeBag}
      */
-    protected function prepareRenderableAttributes(ComponentAttributeBag $attributes, string $baseClass = ''): array
+    protected function prepareRenderableAttributes(ComponentAttributeBag $attributes, string $baseClass = '', array $defaults = []): array
     {
+        if ($defaults !== []) {
+            $attributes = $attributes->merge($defaults);
+        }
+
         $class = trim($baseClass . ' ' . (string) ($attributes->get('class') ?? ''));
 
         return [

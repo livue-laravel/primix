@@ -51,7 +51,6 @@ class CreateRecord extends Page
             ->statePath('data')
             ->model($resource::getModel())
             ->submitAction('create')
-            ->wrapped()
             ->footerActions(fn () => $this->getVisibleFooterActions());
     }
 
