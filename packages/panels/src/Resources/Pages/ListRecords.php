@@ -4,6 +4,7 @@ namespace Primix\Resources\Pages;
 
 use Illuminate\Database\Eloquent\Model;
 use Primix\Actions\Action;
+use Primix\Concerns\RerendersTableAfterAction;
 use Primix\Forms\Form;
 use Primix\Forms\HasForms;
 use Primix\Notifications\Notification;
@@ -17,6 +18,7 @@ class ListRecords extends Page
 {
     use HasForms;
     use HasTable;
+    use RerendersTableAfterAction;
 
     public function mount(): void
     {

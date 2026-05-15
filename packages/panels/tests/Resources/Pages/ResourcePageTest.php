@@ -1,5 +1,6 @@
 <?php
 
+use LiVue\Attributes\Fragment;
 use Primix\Resources\Pages\CreateRecord;
 use Primix\Resources\Pages\EditRecord;
 use Primix\Resources\Pages\ListRecords;
@@ -44,6 +45,23 @@ it('ListRecords uses HasTable trait', function () {
 
 it('ListRecords extends Resources\\Pages\\Page', function () {
     expect(is_subclass_of(ListRecords::class, Page::class))->toBeTrue();
+});
+
+it('ListRecords re-renders modal and table fragments after table actions', function () {
+    $callActionFragments = (new ReflectionClass(ListRecords::class))
+        ->getMethod('callAction')
+        ->getAttributes(Fragment::class)[0]
+        ->newInstance()
+        ->names;
+
+    $submitActionFragments = (new ReflectionClass(ListRecords::class))
+        ->getMethod('submitMountedAction')
+        ->getAttributes(Fragment::class)[0]
+        ->newInstance()
+        ->names;
+
+    expect($callActionFragments)->toBe(['modal', 'table'])
+        ->and($submitActionFragments)->toBe(['modal', 'table']);
 });
 
 // ============================================================

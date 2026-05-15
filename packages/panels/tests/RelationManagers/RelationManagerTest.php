@@ -1,8 +1,10 @@
 <?php
 
+use LiVue\Attributes\Fragment;
 use Primix\Forms\Form;
 use Primix\RelationManagers\EmbeddedRecord;
 use Primix\RelationManagers\RelationManager;
+use Primix\RelationManagers\RelationManagerComponent;
 use Primix\RelationManagers\RelationManagerGroup;
 use Primix\Tables\Table;
 
@@ -20,6 +22,23 @@ it('getRelationshipName returns the relationship name', function () {
     };
 
     expect($manager::getRelationshipName())->toBe('comments');
+});
+
+it('RelationManagerComponent re-renders modal and table fragments after table actions', function () {
+    $callActionFragments = (new ReflectionClass(RelationManagerComponent::class))
+        ->getMethod('callAction')
+        ->getAttributes(Fragment::class)[0]
+        ->newInstance()
+        ->names;
+
+    $submitActionFragments = (new ReflectionClass(RelationManagerComponent::class))
+        ->getMethod('submitMountedAction')
+        ->getAttributes(Fragment::class)[0]
+        ->newInstance()
+        ->names;
+
+    expect($callActionFragments)->toBe(['modal', 'table'])
+        ->and($submitActionFragments)->toBe(['modal', 'table']);
 });
 
 it('getRecordTitleAttribute returns null by default', function () {

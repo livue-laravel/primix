@@ -5,11 +5,11 @@ namespace Primix\RelationManagers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use LiVue\Attributes\Fragment;
 use LiVue\Attributes\Modelable;
 use LiVue\Component;
 use Primix\Actions\Action;
 use Primix\Concerns\HasPageActions;
+use Primix\Concerns\RerendersTableAfterAction;
 use Primix\Forms\Form;
 use Primix\Forms\HasForms;
 use Primix\Notifications\Notification;
@@ -25,8 +25,11 @@ use Primix\Tables\Table;
 class RelationManagerComponent extends Component
 {
     use HasForms;
-    use HasPageActions;
     use HasTable;
+    use HasPageActions, RerendersTableAfterAction {
+        RerendersTableAfterAction::callAction insteadof HasPageActions;
+        RerendersTableAfterAction::submitMountedAction insteadof HasPageActions;
+    }
 
     public ?string $managerClass = null;
 
@@ -403,30 +406,6 @@ class RelationManagerComponent extends Component
         $query        = clone $relation->getQuery();
 
         return $query->where($qualifiedKey, $key)->first();
-    }
-
-    /**
-     * Override with #[Fragment('modal', 'table')] so that after saving an action
-     * both the modal (closes) and the table (shows updated data) are re-rendered.
-     */
-    #[Fragment('modal', 'table')]
-    public function callAction(array $arguments): mixed
-    {
-        return $this->executeCallAction($arguments);
-    }
-
-    /**
-     * Override with #[Fragment('modal', 'table')] so that submitting the modal
-     * form refreshes both the modal and the table.
-     */
-    #[Fragment('modal', 'table')]
-    public function submitMountedAction(): mixed
-    {
-        if ($this->mountedAction === null) {
-            return null;
-        }
-
-        return $this->callAction(['name' => $this->mountedAction]);
     }
 
     protected function render(): string
