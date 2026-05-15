@@ -137,6 +137,10 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
                         $this->registerPageRoute($panel->getRequestPasswordResetPage(), $panelId);
                         $this->registerPageRoute($panel->getResetPasswordPage(), $panelId);
                     }
+
+                    if ($panel->hasEmailVerification()) {
+                        $this->registerEmailVerificationRoutes($panel, $panelId);
+                    }
                 });
         }
     }

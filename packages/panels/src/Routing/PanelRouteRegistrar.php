@@ -50,50 +50,59 @@ class PanelRouteRegistrar
 
                 // Email verification routes (with auth middleware, but no email verification middleware)
                 if ($panel->hasEmailVerification()) {
-                    $verificationPage = $panel->getEmailVerificationPage();
-                    $authMiddleware = $panel->hasLogin()
-                        ? [\Primix\Http\Middleware\Authenticate::class]
-                        : [];
-
-                    Route::get($verificationPage::getRouteUri(), LiVuePageController::class)
-                        ->name($verificationPage::getSlug())
-                        ->defaults('_livue_component', $verificationPage)
-                        ->defaults('_panel', $panelId)
-                        ->middleware($authMiddleware);
-
-                    Route::post($verificationPage::getRouteUri(), LiVuePageController::class)
-                        ->name($verificationPage::getSlug() . '.post')
-                        ->defaults('_livue_component', $verificationPage)
-                        ->defaults('_panel', $panelId)
-                        ->middleware($authMiddleware);
-
-                    // Email verification handler route
-                    Route::get('email/verify/{id}/{hash}', function (\Illuminate\Http\Request $request) use ($panel) {
-                        $user = \Illuminate\Support\Facades\Auth::guard($panel->getAuthGuard())->user();
-
-                        if ($user === null) {
-                            abort(403);
-                        }
-
-                        if (! hash_equals((string) $request->route('id'), (string) $user->getKey())) {
-                            abort(403);
-                        }
-
-                        if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
-                            abort(403);
-                        }
-
-                        if (! $user->hasVerifiedEmail()) {
-                            $user->markEmailAsVerified();
-                            event(new \Illuminate\Auth\Events\Verified($user));
-                        }
-
-                        return redirect($panel->getUrl());
-                    })
-                        ->name('verification.verify')
-                        ->middleware(array_merge($authMiddleware, ['signed']));
+                    $this->registerEmailVerificationRoutes($panel, $panelId);
                 }
             });
+    }
+
+    /**
+     * Register the email-verification page routes plus the signed verify handler.
+     * Intended to be called from within an active Route group that has already
+     * applied the desired prefix, name prefix, and base middleware.
+     */
+    protected function registerEmailVerificationRoutes(Panel $panel, string $panelId): void
+    {
+        $verificationPage = $panel->getEmailVerificationPage();
+        $authMiddleware = $panel->hasLogin()
+            ? [\Primix\Http\Middleware\Authenticate::class]
+            : [];
+
+        Route::get($verificationPage::getRouteUri(), LiVuePageController::class)
+            ->name($verificationPage::getSlug())
+            ->defaults('_livue_component', $verificationPage)
+            ->defaults('_panel', $panelId)
+            ->middleware($authMiddleware);
+
+        Route::post($verificationPage::getRouteUri(), LiVuePageController::class)
+            ->name($verificationPage::getSlug() . '.post')
+            ->defaults('_livue_component', $verificationPage)
+            ->defaults('_panel', $panelId)
+            ->middleware($authMiddleware);
+
+        Route::get('email/verify/{id}/{hash}', function (\Illuminate\Http\Request $request) use ($panel) {
+            $user = \Illuminate\Support\Facades\Auth::guard($panel->getAuthGuard())->user();
+
+            if ($user === null) {
+                abort(403);
+            }
+
+            if (! hash_equals((string) $request->route('id'), (string) $user->getKey())) {
+                abort(403);
+            }
+
+            if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+                abort(403);
+            }
+
+            if (! $user->hasVerifiedEmail()) {
+                $user->markEmailAsVerified();
+                event(new \Illuminate\Auth\Events\Verified($user));
+            }
+
+            return redirect($panel->getUrl());
+        })
+            ->name('verification.verify')
+            ->middleware(array_merge($authMiddleware, ['signed']));
     }
 
     public function registerPageRoute(string $pageClass, string $panelId): void
