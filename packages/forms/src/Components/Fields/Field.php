@@ -110,7 +110,7 @@ abstract class Field extends FormComponent
         return $this;
     }
 
-    protected function setDedicatedRule(string $key, string $rule): static
+    protected function setDedicatedRule(string $key, string|Closure $rule): static
     {
         $this->dedicatedRules[$key] = $rule;
 
@@ -140,6 +140,10 @@ abstract class Field extends FormComponent
         }
 
         foreach ($this->dedicatedRules as $rule) {
+            if ($rule instanceof Closure) {
+                $rule = $this->evaluate($rule);
+            }
+
             $rules[] = $rule;
         }
 

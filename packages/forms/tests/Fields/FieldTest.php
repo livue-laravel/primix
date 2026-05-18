@@ -273,6 +273,64 @@ it('can set unique rule with ignore', function () {
     expect($field->getRules())->toBe('unique:users,email,1');
 });
 
+it('resolves a closure ignore on the unique rule', function () {
+    $field = TextInput::make('email')->unique('users', 'email', fn () => 42);
+
+    expect($field->getRules())->toBe('unique:users,email,42');
+});
+
+it('extracts the key from an eloquent model returned by the ignore closure', function () {
+    $model = new class extends \Illuminate\Database\Eloquent\Model {
+        protected $primaryKey = 'id';
+
+        public function getKey()
+        {
+            return 7;
+        }
+    };
+
+    $field = TextInput::make('email')->unique('users', 'email', fn () => $model);
+
+    expect($field->getRules())->toBe('unique:users,email,7');
+});
+
+it('injects the container record into the ignore closure', function () {
+    $record = new class extends \Illuminate\Database\Eloquent\Model {
+        public function getKey()
+        {
+            return 99;
+        }
+    };
+
+    $schema = new class ($record) extends \Primix\Forms\Schema {
+        public function __construct(private mixed $injectedRecord)
+        {
+        }
+
+        public function getRecord(): mixed
+        {
+            return $this->injectedRecord;
+        }
+
+        public function getContext(): \Primix\Support\Enums\SchemaContext
+        {
+            return \Primix\Support\Enums\SchemaContext::Edit;
+        }
+    };
+
+    $field = TextInput::make('email')
+        ->container($schema)
+        ->unique('users', 'email', fn ($record) => $record);
+
+    expect($field->getRules())->toBe('unique:users,email,99');
+});
+
+it('omits the ignore segment when the closure resolves to null', function () {
+    $field = TextInput::make('email')->unique('users', 'email', fn () => null);
+
+    expect($field->getRules())->toBe('unique:users,email');
+});
+
 it('can set exists rule', function () {
     $field = TextInput::make('category_id')->exists('categories');
 
