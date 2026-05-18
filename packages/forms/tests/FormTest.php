@@ -137,6 +137,29 @@ it('has null model by default', function () {
     expect($form->getModel())->toBeNull();
 });
 
+it('exposes the model as the form record when no explicit record is set', function () {
+    $model = new class {
+        public string $kind = 'fake';
+    };
+
+    $form = Form::make()->model($model);
+
+    expect($form->getRecord())->toBe($model);
+});
+
+it('prefers an explicit record over the model', function () {
+    $model = new class {
+        public string $kind = 'model';
+    };
+    $record = new class {
+        public string $kind = 'record';
+    };
+
+    $form = Form::make()->model($model)->record($record);
+
+    expect($form->getRecord())->toBe($record);
+});
+
 it('detects watchers when a field is watched', function () {
     $form = Form::make()->schema([
         TextInput::make('title')->watch(),

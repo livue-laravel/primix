@@ -67,6 +67,11 @@ class Form extends Schema implements Htmlable
         return $this->model;
     }
 
+    public function getRecord(): mixed
+    {
+        return parent::getRecord() ?? $this->model;
+    }
+
     public function submitAction(?string $action): static
     {
         $this->submitAction = $action;
