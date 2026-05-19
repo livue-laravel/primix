@@ -56,8 +56,8 @@ it('formats options for vue with descriptions', function () {
         ]);
 
     expect($field->getOptionsForVue())->toBe([
-        ['label' => 'Basic', 'value' => 'basic', 'description' => 'Limited features'],
-        ['label' => 'Pro', 'value' => 'pro', 'description' => 'All features'],
+        ['label' => 'Basic', 'value' => 'basic', 'description' => 'Limited features', 'icon' => null, 'badge' => null],
+        ['label' => 'Pro', 'value' => 'pro', 'description' => 'All features', 'icon' => null, 'badge' => null],
     ]);
 });
 
@@ -68,8 +68,8 @@ it('formats options for vue without descriptions', function () {
     ]);
 
     expect($field->getOptionsForVue())->toBe([
-        ['label' => 'Red', 'value' => 'red', 'description' => null],
-        ['label' => 'Blue', 'value' => 'blue', 'description' => null],
+        ['label' => 'Red', 'value' => 'red', 'description' => null, 'icon' => null, 'badge' => null],
+        ['label' => 'Blue', 'value' => 'blue', 'description' => null, 'icon' => null, 'badge' => null],
     ]);
 });
 
@@ -140,4 +140,70 @@ it('can filter options using disabled mode', function () {
     expect($vueOptions)->toHaveCount(3);
     expect($vueOptions[2])->toHaveKey('disabled', true);
     expect($vueOptions[0])->not->toHaveKey('disabled');
+});
+
+it('can be cards', function () {
+    $field = Radio::make('color')->cards();
+
+    expect($field->isCards())->toBeTrue();
+});
+
+it('is not cards by default', function () {
+    $field = Radio::make('color');
+
+    expect($field->isCards())->toBeFalse();
+});
+
+it('includes cards in vue props', function () {
+    $field = Radio::make('color')->cards();
+
+    expect($field->toVueProps())->toHaveKey('cards', true);
+});
+
+it('can set icons per option', function () {
+    $field = Radio::make('camera')
+        ->options(['hibox' => 'HiBox', 'external' => 'External'])
+        ->icons(['hibox' => 'pi pi-desktop', 'external' => 'pi pi-mobile']);
+
+    $vueOptions = $field->getOptionsForVue();
+
+    expect($vueOptions[0]['icon'])->toBe('pi pi-desktop');
+    expect($vueOptions[1]['icon'])->toBe('pi pi-mobile');
+});
+
+it('can set string badges per option', function () {
+    $field = Radio::make('field')
+        ->options(['1' => 'Field 1', '2' => 'Field 2'])
+        ->badges(['1' => 'HiBox Online']);
+
+    $vueOptions = $field->getOptionsForVue();
+
+    expect($vueOptions[0]['badge'])->toBe(['text' => 'HiBox Online', 'severity' => 'info']);
+    expect($vueOptions[1]['badge'])->toBeNull();
+});
+
+it('can set badges with custom severity', function () {
+    $field = Radio::make('field')
+        ->options(['online' => 'Online', 'offline' => 'Offline'])
+        ->badges([
+            'online' => ['text' => 'HiBox Online', 'severity' => 'success'],
+            'offline' => ['text' => 'HiBox Offline', 'severity' => 'danger'],
+        ]);
+
+    $vueOptions = $field->getOptionsForVue();
+
+    expect($vueOptions[0]['badge'])->toBe(['text' => 'HiBox Online', 'severity' => 'success']);
+    expect($vueOptions[1]['badge'])->toBe(['text' => 'HiBox Offline', 'severity' => 'danger']);
+});
+
+it('accepts closures for icons and badges', function () {
+    $field = Radio::make('field')
+        ->options(['a' => 'A', 'b' => 'B'])
+        ->icons(fn () => ['a' => 'pi pi-check'])
+        ->badges(fn () => ['b' => 'New']);
+
+    $vueOptions = $field->getOptionsForVue();
+
+    expect($vueOptions[0]['icon'])->toBe('pi pi-check');
+    expect($vueOptions[1]['badge']['text'])->toBe('New');
 });
