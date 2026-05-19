@@ -8,6 +8,14 @@ it('can be created with label', function () {
     expect($section->getLabel())->toBe('Personal Info');
 });
 
+it('resolves $get and $set on layout closures', function () {
+    $section = Section::make();
+
+    // Closures using $get/$set should not throw "null is not callable" on a layout.
+    expect(fn () => $section->evaluate(fn ($get, $set) => [$get, $set]))
+        ->not->toThrow(\TypeError::class);
+});
+
 it('can be created without label', function () {
     $section = Section::make();
 
