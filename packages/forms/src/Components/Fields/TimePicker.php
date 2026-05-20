@@ -83,7 +83,15 @@ class TimePicker extends Field
 
     protected function getAutoRules(): array
     {
-        return [$this->hasSeconds() ? 'date_format:H:i:s' : 'date_format:H:i'];
+        $rules = [];
+
+        if (! $this->isRequired()) {
+            $rules[] = 'nullable';
+        }
+
+        $rules[] = $this->hasSeconds() ? 'date_format:H:i:s' : 'date_format:H:i';
+
+        return $rules;
     }
 
     public function getView(): string

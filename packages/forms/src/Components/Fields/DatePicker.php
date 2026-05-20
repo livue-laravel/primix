@@ -191,7 +191,13 @@ class DatePicker extends Field
 
     protected function getAutoRules(): array
     {
-        $rules = ['date'];
+        $rules = [];
+
+        if (! $this->isRequired()) {
+            $rules[] = 'nullable';
+        }
+
+        $rules[] = 'date';
 
         $minDate = $this->getMinDate();
         if ($minDate !== null) {
