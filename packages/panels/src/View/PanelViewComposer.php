@@ -60,7 +60,13 @@ class PanelViewComposer
         $view->with('hasDatabaseNotifications', $topbarData['hasDatabaseNotifications'] ?? false);
         $view->with('databaseNotificationsMode', $topbarData['databaseNotificationsMode'] ?? 'popup');
         $view->with('databaseNotificationsPollingInterval', $topbarData['databaseNotificationsPollingInterval'] ?? 30);
-        $view->with('maxContentWidth', $panel->getMaxContentWidth());
+
+        // Page-level maxContentWidth (set via Page::getLayoutData()) wins over
+        // the panel default. Page::getMaxContentWidth() already falls back to
+        // the panel value when the page has no override, so this single read
+        // covers both cases.
+        $maxContentWidth = $view->getData()['maxContentWidth'] ?? $panel->getMaxContentWidth();
+        $view->with('maxContentWidth', $maxContentWidth);
 
         $view->with('shell', Shell::make()
             ->navigation($navigation)
@@ -83,7 +89,7 @@ class PanelViewComposer
                 $topbarData['databaseNotificationsMode'] ?? 'popup',
                 $topbarData['databaseNotificationsPollingInterval'] ?? 30
             )
-            ->maxContentWidth($panel->getMaxContentWidth())
+            ->maxContentWidth($maxContentWidth)
             ->notifications()
             ->notificationManager()
             ->favicon($panel->getFavicon()));
