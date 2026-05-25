@@ -2,6 +2,8 @@
 
 namespace Primix\Support;
 
+use Composer\InstalledVersions;
+
 final class AssetVersion
 {
     public static function resolve(): string
@@ -22,18 +24,32 @@ final class AssetVersion
 
         $packageJsonPath = base_path('packages/primix/package.json');
 
-        if (! is_file($packageJsonPath)) {
-            $version = 'dev';
+        if (is_file($packageJsonPath)) {
+            $packageJson = json_decode((string) file_get_contents($packageJsonPath), true);
+            $resolvedVersion = is_array($packageJson) ? ($packageJson['version'] ?? null) : null;
 
-            return $version;
+            if (is_string($resolvedVersion) && $resolvedVersion !== '') {
+                $version = $resolvedVersion;
+
+                return $version;
+            }
         }
 
-        $packageJson = json_decode((string) file_get_contents($packageJsonPath), true);
-        $resolvedVersion = is_array($packageJson) ? ($packageJson['version'] ?? null) : null;
+        foreach (['primix/support', 'primix/primix'] as $package) {
+            try {
+                $composerVersion = InstalledVersions::getPrettyVersion($package);
+            } catch (\OutOfBoundsException) {
+                continue;
+            }
 
-        $version = is_string($resolvedVersion) && $resolvedVersion !== ''
-            ? $resolvedVersion
-            : 'dev';
+            if (is_string($composerVersion) && $composerVersion !== '') {
+                $version = ltrim($composerVersion, 'v');
+
+                return $version;
+            }
+        }
+
+        $version = 'dev';
 
         return $version;
     }
