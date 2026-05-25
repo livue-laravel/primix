@@ -47,8 +47,8 @@ class PrimixWidgetsServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.css")->version($assetVersion),
-            Js::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.js")->module()->version($assetVersion),
+            Css::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.css")->onRequest()->version($assetVersion),
+            Js::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.js")->module()->onRequest()->version($assetVersion),
         ], 'primix/widgets');
     }
 }

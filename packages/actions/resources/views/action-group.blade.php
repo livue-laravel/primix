@@ -1,3 +1,8 @@
+@once('primix-actions-assets')
+    @livueLoadStyle('primix-actions', 'primix/actions')
+    @livueLoadScript('primix-actions', 'primix/actions', ['type' => 'module'])
+@endonce
+
 @php
     $severity = app(\Primix\Support\Colors\ColorManager::class)->toPrimeVueSeverity($color ?? 'secondary');
 

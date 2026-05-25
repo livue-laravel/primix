@@ -8,6 +8,16 @@
     align-items: center;
 }
 
+.primix-action-button-gradient {
+    border-color: transparent;
+}
+
+.primix-action-button-gradient .p-button-label,
+.primix-action-button-gradient .p-button-icon,
+.primix-action-button-gradient .primix-action-icon {
+    color: inherit;
+}
+
 .primix-action-button .p-button-label {
     display: inline-flex;
     align-items: center;

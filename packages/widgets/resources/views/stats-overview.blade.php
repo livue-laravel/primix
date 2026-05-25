@@ -1,3 +1,6 @@
+@livueLoadStyle('primix-widgets', 'primix/widgets')
+@livueLoadScript('primix-widgets', 'primix/widgets', ['type' => 'module'])
+
 @php
     $stats = collect($this->getStats())->map(fn ($stat) => $stat->toArray())->all();
     $gridStyle = $this->getGridStyle();

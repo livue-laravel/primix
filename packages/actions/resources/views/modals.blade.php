@@ -11,6 +11,11 @@
         @endfragment
 --}}
 
+@once('primix-actions-assets')
+    @livueLoadStyle('primix-actions', 'primix/actions')
+    @livueLoadScript('primix-actions', 'primix/actions', ['type' => 'module'])
+@endonce
+
 {{-- Stacked modals (se il componente supporta HasModalStack) --}}
 @if(method_exists($this, 'shouldStackModals') && $this->shouldStackModals())
     @foreach($this->modalStack as $entry)

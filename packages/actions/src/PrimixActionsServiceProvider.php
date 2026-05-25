@@ -64,8 +64,8 @@ class PrimixActionsServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.css")->version($assetVersion),
-            Js::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.js")->module()->version($assetVersion),
+            Css::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.css")->onRequest()->version($assetVersion),
+            Js::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.js")->module()->onRequest()->version($assetVersion),
         ], 'primix/actions');
     }
 }
