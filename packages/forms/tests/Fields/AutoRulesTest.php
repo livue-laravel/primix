@@ -45,31 +45,37 @@ describe('Textarea', function () {
 // === DatePicker ===
 
 describe('DatePicker', function () {
-    it('always adds date auto-rule', function () {
+    it('prepends nullable to the date auto-rule when not required', function () {
         $field = DatePicker::make('date');
 
-        expect($field->getRules())->toBe('date');
+        expect($field->getRules())->toBe('nullable|date');
     });
 
-    it('adds after_or_equal auto-rule with minDate', function () {
+    it('drops nullable from the date auto-rule when required', function () {
+        $field = DatePicker::make('date')->required();
+
+        expect($field->getRules())->toBe('required|date');
+    });
+
+    it('adds after_or_equal auto-rule with minDate (nullable when optional)', function () {
         $field = DatePicker::make('date')->minDate('2024-01-01');
 
-        expect($field->getRules())->toBe('date|after_or_equal:2024-01-01');
+        expect($field->getRules())->toBe('nullable|date|after_or_equal:2024-01-01');
     });
 
-    it('adds before_or_equal auto-rule with maxDate', function () {
+    it('adds before_or_equal auto-rule with maxDate (nullable when optional)', function () {
         $field = DatePicker::make('date')->maxDate('2024-12-31');
 
-        expect($field->getRules())->toBe('date|before_or_equal:2024-12-31');
+        expect($field->getRules())->toBe('nullable|date|before_or_equal:2024-12-31');
     });
 
     it('adds both date boundary auto-rules', function () {
         $field = DatePicker::make('date')->minDate('2024-01-01')->maxDate('2024-12-31');
 
-        expect($field->getRules())->toBe('date|after_or_equal:2024-01-01|before_or_equal:2024-12-31');
+        expect($field->getRules())->toBe('nullable|date|after_or_equal:2024-01-01|before_or_equal:2024-12-31');
     });
 
-    it('combines required + date auto-rules', function () {
+    it('combines required + date auto-rules without nullable', function () {
         $field = DatePicker::make('date')->required()->minDate('2024-01-01');
 
         expect($field->getRules())->toBe('required|date|after_or_equal:2024-01-01');
@@ -79,19 +85,19 @@ describe('DatePicker', function () {
 // === TimePicker ===
 
 describe('TimePicker', function () {
-    it('adds date_format:H:i auto-rule by default', function () {
+    it('prepends nullable to the date_format:H:i auto-rule by default', function () {
         $field = TimePicker::make('time');
 
-        expect($field->getRules())->toBe('date_format:H:i');
+        expect($field->getRules())->toBe('nullable|date_format:H:i');
     });
 
-    it('adds date_format:H:i:s auto-rule with seconds', function () {
+    it('uses date_format:H:i:s when seconds are enabled (nullable when optional)', function () {
         $field = TimePicker::make('time')->withSeconds();
 
-        expect($field->getRules())->toBe('date_format:H:i:s');
+        expect($field->getRules())->toBe('nullable|date_format:H:i:s');
     });
 
-    it('combines required + time format auto-rule', function () {
+    it('combines required + time format auto-rule without nullable', function () {
         $field = TimePicker::make('time')->required();
 
         expect($field->getRules())->toBe('required|date_format:H:i');
