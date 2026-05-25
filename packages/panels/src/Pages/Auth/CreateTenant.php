@@ -66,14 +66,22 @@ class CreateTenant extends SimplePage
         $rules = $form->getValidationRulesForWizardStep($step);
 
         if ($rules) {
-            $this->validate($rules);
+            $this->validate(
+                $rules,
+                $form->getValidationMessages(),
+                $form->getValidationAttributes(),
+            );
         }
     }
 
     public function create(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         $panel = Primix::getCurrentPanel();
         $user = Auth::guard($panel->getAuthGuard())->user();

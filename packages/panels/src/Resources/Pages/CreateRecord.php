@@ -57,7 +57,11 @@ class CreateRecord extends Page
     public function create(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         $resource = $this->resolveResource();
         $model = $resource::getModel();

@@ -101,7 +101,11 @@ class EditRecord extends Page
     public function save(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         $form = $this->getForm('form');
 

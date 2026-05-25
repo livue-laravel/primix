@@ -62,7 +62,11 @@ class RequestPasswordReset extends SimplePage
     public function sendResetLink(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         $status = Password::sendResetLink([
             'email' => $this->data['email'],

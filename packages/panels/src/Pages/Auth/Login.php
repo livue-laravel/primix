@@ -67,7 +67,11 @@ class Login extends SimplePage
     public function authenticate(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         $credentials = [
             'email' => $this->data['email'],

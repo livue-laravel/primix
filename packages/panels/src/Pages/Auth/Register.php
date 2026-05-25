@@ -78,7 +78,11 @@ class Register extends SimplePage
     public function register(): void
     {
         $rules = $this->getFormValidationRules('form');
-        $this->validate($rules);
+        $this->validate(
+            $rules,
+            $this->getFormValidationMessages('form'),
+            $this->getFormValidationAttributes('form'),
+        );
 
         if ($this->data['password'] !== $this->data['password_confirmation']) {
             $this->addError('data.password_confirmation', __('The password confirmation does not match.'));

@@ -91,6 +91,13 @@ trait HasForms
         return $form ? $form->getValidationMessages() : [];
     }
 
+    protected function getFormValidationAttributes(string $formName): array
+    {
+        $form = $this->getForm($formName);
+
+        return $form ? $form->getValidationAttributes() : [];
+    }
+
     protected function fillForm(string $formName, array $data): void
     {
         $form = $this->getForm($formName);

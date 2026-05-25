@@ -136,7 +136,7 @@ trait HasFormFieldActions
         $rules = $this->buildFieldActionValidationRules($action);
 
         if (! empty($rules)) {
-            $this->validate($rules);
+            $this->validate($rules, [], $this->buildFieldActionValidationAttributes($action));
         }
 
         $data = $this->mountedFormFieldActionData;
@@ -363,6 +363,27 @@ trait HasFormFieldActions
         }
 
         return $rules;
+    }
+
+    /**
+     * Build validation attribute names from an action's form schema,
+     * so error messages display the field label instead of the state path.
+     */
+    protected function buildFieldActionValidationAttributes(Action $action): array
+    {
+        $attributes = [];
+
+        foreach ($action->getFormSchema() as $component) {
+            if (method_exists($component, 'getName') && method_exists($component, 'getLabel')) {
+                $label = $component->getLabel();
+
+                if ($label !== null) {
+                    $attributes['mountedFormFieldActionData.' . $component->getName()] = $label;
+                }
+            }
+        }
+
+        return $attributes;
     }
 
     /**
