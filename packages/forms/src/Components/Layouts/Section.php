@@ -61,6 +61,11 @@ class Section extends LayoutComponent
         return $this->getLabel();
     }
 
+    public function rendersOwnHeading(): bool
+    {
+        return $this->getHeading() !== null;
+    }
+
     public function isCollapsible(): bool
     {
         return (bool) $this->evaluate($this->isCollapsible);

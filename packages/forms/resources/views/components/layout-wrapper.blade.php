@@ -2,7 +2,10 @@
 $label = $component->getLabel();
 $description = method_exists($component, 'getDescription') ? $component->getDescription() : null;
 $isAside = method_exists($component, 'isAside') && $component->isAside();
-$hasLabel = $label && !$component->isLabelHidden();
+// Layout components that render their own heading (Section panel header,
+// Fieldset legend, etc.) skip the external wrapper label to avoid a duplicate.
+$rendersOwnHeading = method_exists($component, 'rendersOwnHeading') && $component->rendersOwnHeading();
+$hasLabel = $label && !$component->isLabelHidden() && !$rendersOwnHeading;
 $hasExtraAttributes = $component->getExtraWrapperAttributes()->isNotEmpty();
 $needsWrapper = $hasLabel || $description || $hasExtraAttributes || $isAside;
 

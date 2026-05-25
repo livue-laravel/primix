@@ -53,6 +53,16 @@ abstract class LayoutComponent extends FormComponent
         return (bool) $this->evaluate($this->isContained);
     }
 
+    /**
+     * Whether this layout component already renders its own heading (e.g. a
+     * Section's panel header, a Fieldset legend). When true the surrounding
+     * layout-wrapper omits the duplicate external label.
+     */
+    public function rendersOwnHeading(): bool
+    {
+        return false;
+    }
+
     protected function getChildComponentsVuePropKey(): string
     {
         return 'components';

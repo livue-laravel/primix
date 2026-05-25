@@ -23,6 +23,8 @@ class Radio extends Field
 
     protected array|Closure $optionBadges = [];
 
+    protected int|array|Closure|null $maxItemsPerRow = null;
+
     public function inline(bool|Closure $condition = true): static
     {
         $this->isInline = $condition;
@@ -93,6 +95,41 @@ class Radio extends Field
     public function getBadges(): array
     {
         return $this->evaluate($this->optionBadges);
+    }
+
+    /**
+     * Limit the number of card-mode options per row. Pass an integer for a
+     * single value, or an array keyed by breakpoint (default, sm, md, lg, xl, 2xl)
+     * for responsive limits. When unset, cards default to 1 / 2 / 3 across
+     * default / sm / lg (preserves prior behaviour).
+     */
+    public function maxItemsPerRow(int|array|Closure|null $value): static
+    {
+        $this->maxItemsPerRow = $value;
+
+        return $this;
+    }
+
+    public function getMaxItemsPerRow(): int|array|null
+    {
+        return $this->evaluate($this->maxItemsPerRow);
+    }
+
+    public function getMaxItemsPerRowStyle(): string
+    {
+        $value = $this->getMaxItemsPerRow() ?? ['default' => 1, 'sm' => 2, 'lg' => 3];
+
+        if (is_int($value)) {
+            return "--max-per-row: {$value};";
+        }
+
+        $styles = [];
+        foreach ($value as $breakpoint => $n) {
+            $suffix = $breakpoint === 'default' ? '' : "-{$breakpoint}";
+            $styles[] = "--max-per-row{$suffix}: {$n}";
+        }
+
+        return implode('; ', $styles) . ';';
     }
 
     public function getOptionsForVue(): array

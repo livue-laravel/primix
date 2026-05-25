@@ -174,8 +174,10 @@
     padding-top: 1.25rem;
 }
 
-/* Hidden label - visually hide all labels */
-.primix-label-hidden label,
+/* Hidden label - visually hide labels associated with the field.
+   Excludes label elements used as interactive wrappers (e.g. Radio cards),
+   which would otherwise collapse to 1x1 sr-only boxes. */
+.primix-label-hidden label:not(.primix-radio-card),
 .primix-label-hidden .primix-layout-label {
     position: absolute;
     width: 1px;
@@ -248,6 +250,95 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+/* ===== Radio Cards Layout =====
+   Flex grid with a configurable max items per row. Cards always fill the
+   remaining row width (flex-grow: 1), so 2 options span the full row
+   regardless of --max-per-row; once the limit is exceeded the row wraps. */
+
+.primix-radio-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.primix-radio-cards > .primix-radio-card {
+    flex: 1 1 calc((100% - 0.75rem * (var(--max-per-row, 1) - 1)) / var(--max-per-row, 1));
+    min-width: 0;
+}
+
+@media (min-width: 640px) {
+    .primix-radio-cards > .primix-radio-card {
+        flex-basis: calc((100% - 0.75rem * (var(--max-per-row-sm, var(--max-per-row, 1)) - 1)) / var(--max-per-row-sm, var(--max-per-row, 1)));
+    }
+}
+
+@media (min-width: 768px) {
+    .primix-radio-cards > .primix-radio-card {
+        flex-basis: calc((100% - 0.75rem * (var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1))) - 1)) / var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1))));
+    }
+}
+
+@media (min-width: 1024px) {
+    .primix-radio-cards > .primix-radio-card {
+        flex-basis: calc((100% - 0.75rem * (var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1)))) - 1)) / var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1)))));
+    }
+}
+
+@media (min-width: 1280px) {
+    .primix-radio-cards > .primix-radio-card {
+        flex-basis: calc((100% - 0.75rem * (var(--max-per-row-xl, var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1))))) - 1)) / var(--max-per-row-xl, var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1))))));
+    }
+}
+
+@media (min-width: 1536px) {
+    .primix-radio-cards > .primix-radio-card {
+        flex-basis: calc((100% - 0.75rem * (var(--max-per-row-2xl, var(--max-per-row-xl, var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1)))))) - 1)) / var(--max-per-row-2xl, var(--max-per-row-xl, var(--max-per-row-lg, var(--max-per-row-md, var(--max-per-row-sm, var(--max-per-row, 1)))))));
+    }
+}
+
+/* ===== Slider Layout =====
+   - Default: PrimeVue `<p-slider>` only (no wrapping behaviour).
+   - With ->ticks(): tick labels rendered below the track (flex row,
+     justify-between so first/last align to track edges).
+   - With ->showCurrentValue(): value rendered to the right of the track. */
+
+.primix-slider-with-value {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.primix-slider-with-value > .primix-slider-track {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.primix-slider-with-ticks .primix-slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--p-text-muted-color);
+}
+
+.primix-slider-with-ticks .primix-slider-tick {
+    white-space: nowrap;
+}
+
+.primix-slider-current-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--p-primary-color);
+    flex-shrink: 0;
+}
+
+/* The PrimeVue range fill sits on top of the handle by default; lift the
+   handle so it stays visible above its own progress bar. */
+.primix-slider .p-slider-handle {
+    z-index: 1;
 }
 
 /* ===== Repeater Table Layout ===== */

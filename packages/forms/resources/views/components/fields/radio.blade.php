@@ -9,7 +9,7 @@
 
 @if($isCards)
     <div>
-        @if($component->getLabel())
+        @if($component->getLabel() && !$component->isLabelHidden())
             <label class="block mb-2 font-medium text-surface-700 dark:text-surface-200">
                 {{ $component->getLabel() }}
                 @if($required)
@@ -17,7 +17,7 @@
                 @endif
             </label>
         @endif
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="primix-radio-cards" style="{{ $component->getMaxItemsPerRowStyle() }}">
             @foreach($options as $option)
                 @php
                     $optionValueJs = \Illuminate\Support\Js::from($option['value']);
@@ -81,7 +81,7 @@
 @elseif($isButtons)
     {{-- SelectButton mode (single selection) --}}
     <div>
-        @if($component->getLabel())
+        @if($component->getLabel() && !$component->isLabelHidden())
             <label class="block mb-2 font-medium text-surface-700 dark:text-surface-200">
                 {{ $component->getLabel() }}
                 @if($required)
