@@ -8,6 +8,8 @@ import LiVue from 'livue';
 
 import '../css/index.css';
 
+import Drawer from 'primevue/drawer';
+
 import Dropdown from './components/Dropdown.vue';
 import Collapsible from './components/Collapsible.vue';
 import Toast from './components/Toast.vue';
@@ -25,6 +27,8 @@ const registerPanelComponents = (app) => {
     }
 
     app.config.globalProperties.__primixPanelsReady = true;
+
+    app.component('PDrawer', Drawer);
 
     app.component('PrimixDropdown', Dropdown);
     app.component('PrimixCollapsible', Collapsible);

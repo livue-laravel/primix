@@ -34,7 +34,7 @@
         </div>
 
         @if(!$topBarNavigation)
-            <x-primix::mobile-menu-button />
+            <x-primix::mobile-menu-button @click="mobileSidebarOpen = true" />
 
             <div class="h-6 w-px bg-surface-200 dark:bg-surface-700 lg:hidden"></div>
         @endif
@@ -105,6 +105,44 @@
 
         @renderHook(\Primix\Enums\PanelsRenderHook::TOPBAR_END)
     </header>
+
+    @if(!$topBarNavigation)
+        <p-drawer
+            v-model:visible="mobileSidebarOpen"
+            position="left"
+            :pt="{ root: { class: 'lg:hidden w-64' }, content: { class: 'p-0' } }"
+        >
+            <template #header>
+                <x-primix::brand
+                    :brandLogo="$brandLogo"
+                    :brandLogoDark="$brandLogoDark"
+                    :brandName="$brandName"
+                    inlineClass="inline-block"
+                    textClasses="text-lg font-semibold tracking-tight text-surface-950 dark:text-surface-50"
+                />
+            </template>
+            <nav class="space-y-1 px-3 pb-6" @click="mobileSidebarOpen = false">
+                @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_START)
+
+                @foreach($navigation as $item)
+                    @if(isset($item['items']))
+                        <x-primix::navigation-group :item="$item" :spa="$spa" />
+                    @else
+                        <x-primix::navigation-item :item="$item" :spa="$spa" />
+                    @endif
+                @endforeach
+
+                @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_END)
+            </nav>
+        </p-drawer>
+    @endif
 </div>
+
+@script
+<script>
+const mobileSidebarOpen = ref(false);
+return { mobileSidebarOpen };
+</script>
+@endscript
 
 @endpersist
