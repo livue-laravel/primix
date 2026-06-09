@@ -11,13 +11,7 @@
     <nav class="mt-6 space-y-1 px-3 pb-6">
         @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_START)
 
-        @foreach($navigation as $item)
-            @if(isset($item['items']))
-                <x-primix::navigation-group :item="$item" :spa="$spa" />
-            @else
-                <x-primix::navigation-item :item="$item" :spa="$spa" />
-            @endif
-        @endforeach
+        <x-primix::navigation-list :navigation="$navigation" :spa="$spa" />
 
         @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_END)
     </nav>

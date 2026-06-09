@@ -3,3 +3,25 @@
  */
 
 .primix-panels-css-marker {}
+
+.p-drawer {
+    background-color: rgb(255 255 255);
+}
+
+.dark .p-drawer {
+    background-color: rgb(17 24 39);
+}
+
+.p-drawer .p-drawer-close-button {
+    border: none;
+    border-radius: 0.375rem;
+    box-shadow: none;
+}
+
+.p-drawer .p-drawer-close-button:hover {
+    background-color: rgb(243 244 246);
+}
+
+.dark .p-drawer .p-drawer-close-button:hover {
+    background-color: rgb(31 41 55);
+}

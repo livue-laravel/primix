@@ -9,6 +9,19 @@
         'load_more' => __('primix::panel.notifications_panel.load_more'),
         'close' => __('primix::panel.actions.close'),
     ];
+
+    $mobileDrawerPt = [
+        'header' => ['class' => 'border-b border-gray-100 dark:border-gray-700/50 px-4 py-3'],
+        'content' => ['class' => 'p-0'],
+        'mask' => ['class' => 'bg-gray-900/50'],
+    ];
+
+    $mobileDrawerCloseProps = [
+        'severity' => 'secondary',
+        'text' => true,
+        'rounded' => false,
+        'size' => 'small',
+    ];
 @endphp
 <div class="{{ $fixedTopbar ? 'fixed' : 'sticky' }} top-0 left-0 right-0 z-50">
     {{-- === NAVIGATION BAR (topbar mode only) === --}}
@@ -34,7 +47,15 @@
         </div>
 
         @if(!$topBarNavigation)
-            <x-primix::mobile-menu-button @click="mobileSidebarOpen = true" />
+            <p-button
+                icon="pi pi-bars"
+                severity="secondary"
+                text
+                rounded
+                aria-label="Open sidebar"
+                class="lg:hidden -m-2.5 p-2.5 text-gray-700 dark:text-gray-300"
+                @click="mobileSidebarOpen = true"
+            ></p-button>
 
             <div class="h-6 w-px bg-surface-200 dark:bg-surface-700 lg:hidden"></div>
         @endif
@@ -110,7 +131,7 @@
         <p-drawer
             v-model:visible="mobileSidebarOpen"
             position="left"
-            :pt="{ root: { class: 'lg:hidden w-64' }, content: { class: 'p-0' } }"
+            class="lg:hidden w-64 bg-white dark:bg-gray-900"
         >
             <template #header>
                 <x-primix::brand
@@ -124,25 +145,12 @@
             <nav class="space-y-1 px-3 pb-6" @click="mobileSidebarOpen = false">
                 @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_START)
 
-                @foreach($navigation as $item)
-                    @if(isset($item['items']))
-                        <x-primix::navigation-group :item="$item" :spa="$spa" />
-                    @else
-                        <x-primix::navigation-item :item="$item" :spa="$spa" />
-                    @endif
-                @endforeach
+                <x-primix::navigation-list :navigation="$navigation" :spa="$spa" />
 
                 @renderHook(\Primix\Enums\PanelsRenderHook::SIDEBAR_NAV_END)
             </nav>
         </p-drawer>
     @endif
 </div>
-
-@script
-<script>
-const mobileSidebarOpen = ref(false);
-return { mobileSidebarOpen };
-</script>
-@endscript
 
 @endpersist

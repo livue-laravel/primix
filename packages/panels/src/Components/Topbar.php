@@ -58,6 +58,8 @@ class Topbar extends Component
 
     public int $databaseNotificationsPollingInterval = 30;
 
+    public bool $mobileSidebarOpen = false;
+
     #[Json]
     public function search(string $query): array
     {
