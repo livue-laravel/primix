@@ -12,7 +12,6 @@
 --}}
 
 @once('primix-actions-assets')
-    @livueLoadStyle('primix-actions', 'primix/actions')
     @livueLoadScript('primix-actions', 'primix/actions', ['type' => 'module'])
 @endonce
 

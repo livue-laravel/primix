@@ -3,7 +3,6 @@
     'variant' => null,
 ])
 
-@livueLoadStyle('primix-widgets', 'primix/widgets')
 @livueLoadScript('primix-widgets', 'primix/widgets', ['type' => 'module'])
 
 @php

@@ -5,7 +5,6 @@ namespace Primix\Widgets;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use LiVue\Facades\LiVueAsset;
-use LiVue\Features\SupportAssets\Css;
 use LiVue\Features\SupportAssets\Js;
 use Primix\Support\AssetVersion;
 
@@ -30,7 +29,6 @@ class PrimixWidgetsServiceProvider extends ServiceProvider
             ], 'primix-widgets-views');
 
             $assets = [
-                __DIR__ . '/../dist/primix-widgets.css' => public_path('vendor/livue/primix/widgets/primix-widgets.css'),
                 __DIR__ . '/../dist/primix-widgets.js' => public_path('vendor/livue/primix/widgets/primix-widgets.js'),
                 __DIR__ . '/../dist/primix-widgets.js.map' => public_path('vendor/livue/primix/widgets/primix-widgets.js.map'),
             ];
@@ -47,7 +45,6 @@ class PrimixWidgetsServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.css")->onRequest()->version($assetVersion),
             Js::make('primix-widgets', "{$assetsBasePath}/primix/widgets/primix-widgets.js")->module()->onRequest()->version($assetVersion),
         ], 'primix/widgets');
     }

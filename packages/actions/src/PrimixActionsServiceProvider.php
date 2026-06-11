@@ -5,7 +5,6 @@ namespace Primix\Actions;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use LiVue\Facades\LiVueAsset;
-use LiVue\Features\SupportAssets\Css;
 use LiVue\Features\SupportAssets\Js;
 use Primix\Support\AssetVersion;
 use Primix\Support\ComponentTypeRegistry;
@@ -37,7 +36,6 @@ class PrimixActionsServiceProvider extends ServiceProvider
             ], 'primix-actions-translations');
 
             $assets = [
-                __DIR__ . '/../dist/primix-actions.css' => public_path('vendor/livue/primix/actions/primix-actions.css'),
                 __DIR__ . '/../dist/primix-actions.js' => public_path('vendor/livue/primix/actions/primix-actions.js'),
                 __DIR__ . '/../dist/primix-actions.js.map' => public_path('vendor/livue/primix/actions/primix-actions.js.map'),
             ];
@@ -64,7 +62,6 @@ class PrimixActionsServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.css")->onRequest()->version($assetVersion),
             Js::make('primix-actions', "{$assetsBasePath}/primix/actions/primix-actions.js")->module()->onRequest()->version($assetVersion),
         ], 'primix/actions');
     }

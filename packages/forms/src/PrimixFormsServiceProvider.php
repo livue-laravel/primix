@@ -66,7 +66,6 @@ class PrimixFormsServiceProvider extends ServiceProvider
             ], 'primix-forms-translations');
 
             $assets = [
-                __DIR__ . '/../dist/primix-forms.css' => public_path('vendor/livue/primix/forms/primix-forms.css'),
                 __DIR__ . '/../dist/primix-forms.js' => public_path('vendor/livue/primix/forms/primix-forms.js'),
                 __DIR__ . '/../dist/primix-forms.js.map' => public_path('vendor/livue/primix/forms/primix-forms.js.map'),
             ];
@@ -83,7 +82,6 @@ class PrimixFormsServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-forms', "{$assetsBasePath}/primix/forms/primix-forms.css")->onRequest()->version($assetVersion),
             Js::make('primix-forms', "{$assetsBasePath}/primix/forms/primix-forms.js")->module()->onRequest()->version($assetVersion),
         ], 'primix/forms');
     }

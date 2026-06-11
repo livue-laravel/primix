@@ -9,8 +9,10 @@ import { ensurePrimeVueTheme } from './primix.js';
 
 import '../css/index.css';
 
-// PrimeIcons - used across all packages
-import 'primeicons/primeicons.css';
+// PrimeIcons is NOT imported here: Vite lib mode would inline its font files
+// as base64 into primix-support.css (~270 KB). It is shipped as a standalone
+// stylesheet with external font files (see scripts/build-packages.mjs and
+// PrimixSupportServiceProvider::registerAssetsWithLiVue).
 
 // Layout Components
 import Card from 'primevue/card';

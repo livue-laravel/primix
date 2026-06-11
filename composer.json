@@ -18,7 +18,7 @@
         "illuminate/events": "^12.0|^13.0",
         "illuminate/queue": "^12.0|^13.0",
         "illuminate/support": "^12.0|^13.0",
-        "livue/livue": "^1.5.0"
+        "livue/livue": "^1.6.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

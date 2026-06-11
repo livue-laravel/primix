@@ -70,16 +70,21 @@ class PrimixSupportServiceProvider extends ServiceProvider
             $assetVersion = AssetVersion::resolve();
             $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
-            // Register import map entries for ES module resolution
+            // Register import map entries for ES module resolution.
+            // Vue is self-hosted (published with the support assets) to avoid
+            // an external CDN dependency and its redirect round-trip.
             $assetManager->registerImports([
                 'livue' => '/livue/livue.js?module',
-                'vue' => 'https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js',
+                'vue' => "{$assetsBasePath}/primix/support/vue.esm-browser.prod.js?v={$assetVersion}",
                 '@imgly/background-removal' => 'https://esm.run/@imgly/background-removal@1.7.0',
             ]);
 
             // Register support bundle globally. Other package bundles are
-            // registered by their own providers.
+            // registered by their own providers. PrimeIcons ships as a
+            // standalone stylesheet so its font files stay external instead
+            // of being inlined as base64 into primix-support.css.
             $assetManager->register([
+                Css::make('primeicons', "{$assetsBasePath}/primix/support/primeicons/primeicons.css")->version($assetVersion),
                 Css::make('primix-support', "{$assetsBasePath}/primix/support/primix-support.css")->version($assetVersion),
                 Js::make('primix-support', "{$assetsBasePath}/primix/support/primix-support.js")->module()->version($assetVersion),
             ], 'primix/support');
@@ -92,6 +97,12 @@ class PrimixSupportServiceProvider extends ServiceProvider
             __DIR__ . '/../dist/primix-support.css' => public_path('vendor/livue/primix/support/primix-support.css'),
             __DIR__ . '/../dist/primix-support.js' => public_path('vendor/livue/primix/support/primix-support.js'),
             __DIR__ . '/../dist/primix-support.js.map' => public_path('vendor/livue/primix/support/primix-support.js.map'),
+            __DIR__ . '/../dist/vue.esm-browser.prod.js' => public_path('vendor/livue/primix/support/vue.esm-browser.prod.js'),
+            __DIR__ . '/../dist/primeicons' => public_path('vendor/livue/primix/support/primeicons'),
+            // Shared + lazy chunks of ALL Primix packages: the bundles are
+            // compiled in a single multi-entry build and every entry imports
+            // the common chunks from ../support/chunks/.
+            __DIR__ . '/../dist/chunks' => public_path('vendor/livue/primix/support/chunks'),
         ];
 
         $this->publishes($assets, 'primix-assets');

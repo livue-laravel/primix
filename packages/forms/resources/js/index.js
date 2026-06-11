@@ -17,37 +17,22 @@ import CheckboxList from './components/CheckboxList.vue';
 
 // Text Inputs
 import InputText from 'primevue/inputtext';
-import InputMask from 'primevue/inputmask';
 import Textarea from 'primevue/textarea';
 
 // Selection
 import Select from 'primevue/select';
-import MultiSelect from 'primevue/multiselect';
-import AutoComplete from 'primevue/autocomplete';
-import Listbox from 'primevue/listbox';
 
 // Boolean
 import Checkbox from 'primevue/checkbox';
 import RadioButton from 'primevue/radiobutton';
 import ToggleSwitch from 'primevue/toggleswitch';
 
-// Date & Time
-import DatePicker from 'primevue/datepicker';
-
-// Advanced
-import ColorPicker from 'primevue/colorpicker';
-import Slider from 'primevue/slider';
+// Advanced (small)
 import Rating from 'primevue/rating';
 import Knob from 'primevue/knob';
 
-// Select Variants
-import TreeSelect from 'primevue/treeselect';
-import CascadeSelect from 'primevue/cascadeselect';
-
-// Input Variants
+// Input Variants (small)
 import InputOtp from 'primevue/inputotp';
-import Password from 'primevue/password';
-import InputNumber from 'primevue/inputnumber';
 
 // Toggle Variants
 import ToggleButton from 'primevue/togglebutton';
@@ -58,10 +43,6 @@ import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
-
-// Data Components
-import PickList from 'primevue/picklist';
-import OrderList from 'primevue/orderlist';
 
 // Stepper (Wizard)
 import Stepper from 'primevue/stepper';
@@ -93,39 +74,40 @@ const registerFormsComponents = (app) => {
     app.component('PrimixImageEditor', defineAsyncComponent(() => import('./components/ImageEditor.vue')));
     app.component('PrimixRichEditor', defineAsyncComponent(() => import('./components/RichEditor.vue')));
 
+    // Heavy PrimeVue fields (lazy - each becomes its own chunk, downloaded
+    // only when a form on the page actually uses the component)
+    app.component('PDatePicker', defineAsyncComponent(() => import('primevue/datepicker')));
+    app.component('PMultiSelect', defineAsyncComponent(() => import('primevue/multiselect')));
+    app.component('PAutoComplete', defineAsyncComponent(() => import('primevue/autocomplete')));
+    app.component('PListbox', defineAsyncComponent(() => import('primevue/listbox')));
+    app.component('PTreeSelect', defineAsyncComponent(() => import('primevue/treeselect')));
+    app.component('PCascadeSelect', defineAsyncComponent(() => import('primevue/cascadeselect')));
+    app.component('PInputNumber', defineAsyncComponent(() => import('primevue/inputnumber')));
+    app.component('PInputMask', defineAsyncComponent(() => import('primevue/inputmask')));
+    app.component('PPassword', defineAsyncComponent(() => import('primevue/password')));
+    app.component('PColorPicker', defineAsyncComponent(() => import('primevue/colorpicker')));
+    app.component('PSlider', defineAsyncComponent(() => import('primevue/slider')));
+    app.component('PPickList', defineAsyncComponent(() => import('primevue/picklist')));
+    app.component('POrderList', defineAsyncComponent(() => import('primevue/orderlist')));
+
     // Text Inputs
     app.component('PInputText', InputText);
-    app.component('PInputMask', InputMask);
     app.component('PTextarea', Textarea);
 
     // Selection
     app.component('PSelect', Select);
-    app.component('PMultiSelect', MultiSelect);
-    app.component('PAutoComplete', AutoComplete);
-    app.component('PListbox', Listbox);
 
     // Boolean
     app.component('PCheckbox', Checkbox);
     app.component('PRadioButton', RadioButton);
     app.component('PToggleSwitch', ToggleSwitch);
 
-    // Date & Time
-    app.component('PDatePicker', DatePicker);
-
-    // Advanced
-    app.component('PColorPicker', ColorPicker);
-    app.component('PSlider', Slider);
+    // Advanced (small)
     app.component('PRating', Rating);
     app.component('PKnob', Knob);
 
-    // Select Variants
-    app.component('PTreeSelect', TreeSelect);
-    app.component('PCascadeSelect', CascadeSelect);
-
-    // Input Variants
+    // Input Variants (small)
     app.component('PInputOtp', InputOtp);
-    app.component('PPassword', Password);
-    app.component('PInputNumber', InputNumber);
 
     // Toggle Variants
     app.component('PToggleButton', ToggleButton);
@@ -136,10 +118,6 @@ const registerFormsComponents = (app) => {
     app.component('PAccordionPanel', AccordionPanel);
     app.component('PAccordionHeader', AccordionHeader);
     app.component('PAccordionContent', AccordionContent);
-
-    // Data Components
-    app.component('PPickList', PickList);
-    app.component('POrderList', OrderList);
 
     // Stepper (Wizard)
     app.component('PStepper', Stepper);

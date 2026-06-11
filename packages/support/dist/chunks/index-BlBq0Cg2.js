@@ -1,0 +1,42 @@
+import { M as t, m as r } from "./index-DCgEjc3y.js";
+const s = t.create({
+  name: "underline",
+  addOptions() {
+    return {
+      HTMLAttributes: {}
+    };
+  },
+  parseHTML() {
+    return [
+      {
+        tag: "u"
+      },
+      {
+        style: "text-decoration",
+        consuming: !1,
+        getAttrs: (e) => e.includes("underline") ? {} : !1
+      }
+    ];
+  },
+  renderHTML({ HTMLAttributes: e }) {
+    return ["u", r(this.options.HTMLAttributes, e), 0];
+  },
+  addCommands() {
+    return {
+      setUnderline: () => ({ commands: e }) => e.setMark(this.name),
+      toggleUnderline: () => ({ commands: e }) => e.toggleMark(this.name),
+      unsetUnderline: () => ({ commands: e }) => e.unsetMark(this.name)
+    };
+  },
+  addKeyboardShortcuts() {
+    return {
+      "Mod-u": () => this.editor.commands.toggleUnderline(),
+      "Mod-U": () => this.editor.commands.toggleUnderline()
+    };
+  }
+});
+export {
+  s as Underline,
+  s as default
+};
+//# sourceMappingURL=index-BlBq0Cg2.js.map

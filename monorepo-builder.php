@@ -27,7 +27,7 @@ return static function (MBConfig $mbConfig): void {
         ],
         'require' => [
             'php' => '^8.2',
-            'livue/livue' => '^1.5.0'
+            'livue/livue' => '^1.6.0'
         ],
     ]);
 

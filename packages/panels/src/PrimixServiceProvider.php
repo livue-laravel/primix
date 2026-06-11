@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use LiVue\Facades\LiVueAsset;
-use LiVue\Features\SupportAssets\Css;
 use LiVue\Features\SupportAssets\Js;
 use Primix\Components\NotificationManager;
 use Primix\Routing\PanelRouteRegistrar;
@@ -53,7 +52,6 @@ class PrimixServiceProvider extends ServiceProvider
             ], 'primix-translations');
 
             $assets = [
-                __DIR__ . '/../dist/primix-panels.css' => public_path('vendor/livue/primix/panels/primix-panels.css'),
                 __DIR__ . '/../dist/primix-panels.js' => public_path('vendor/livue/primix/panels/primix-panels.js'),
                 __DIR__ . '/../dist/primix-panels.js.map' => public_path('vendor/livue/primix/panels/primix-panels.js.map'),
             ];
@@ -94,7 +92,6 @@ class PrimixServiceProvider extends ServiceProvider
         $assetsBasePath = '/' . trim(config('livue.assets_path', 'vendor/livue'), '/');
 
         LiVueAsset::register([
-            Css::make('primix-panels', "{$assetsBasePath}/primix/panels/primix-panels.css")->version($assetVersion),
             Js::make('primix-panels', "{$assetsBasePath}/primix/panels/primix-panels.js")->module()->version($assetVersion),
         ], 'primix/panels');
     }

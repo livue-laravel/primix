@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
@@ -20,6 +20,23 @@ if (!liVueEsmPath) {
     throw new Error('Unable to resolve LiVue ESM runtime for Primix package build.');
 }
 
+const nodeModulesCandidates = [
+    path.resolve(rootDir, 'node_modules'),
+    path.resolve(projectRoot, 'node_modules'),
+];
+
+function resolveNodeModule(name) {
+    const dir = nodeModulesCandidates
+        .map((base) => path.join(base, name))
+        .find((candidate) => existsSync(candidate));
+
+    if (!dir) {
+        throw new Error(`Unable to resolve node module "${name}" for Primix package build.`);
+    }
+
+    return dir;
+}
+
 const aliases = {
     livue: liVueEsmPath,
     '@primix/support': path.resolve(rootDir, 'packages/support/resources/js'),
@@ -31,141 +48,130 @@ const aliases = {
     '@primix/panels': path.resolve(rootDir, 'packages/panels/resources/js'),
 };
 
-const targets = [
-    {
-        label: 'support',
-        entry: 'packages/support/resources/js/index.js',
-        outDir: 'packages/support/dist',
-        fileName: 'primix-support',
-        publicVendorDir: 'primix/support',
-    },
-    {
-        label: 'forms',
-        entry: 'packages/forms/resources/js/index.js',
-        outDir: 'packages/forms/dist',
-        fileName: 'primix-forms',
-        publicVendorDir: 'primix/forms',
-    },
-    {
-        label: 'tables',
-        entry: 'packages/tables/resources/js/index.js',
-        outDir: 'packages/tables/dist',
-        fileName: 'primix-tables',
-        publicVendorDir: 'primix/tables',
-    },
-    {
-        label: 'actions',
-        entry: 'packages/actions/resources/js/index.js',
-        outDir: 'packages/actions/dist',
-        fileName: 'primix-actions',
-        publicVendorDir: 'primix/actions',
-    },
-    {
-        label: 'notifications',
-        entry: 'packages/notifications/resources/js/index.js',
-        outDir: 'packages/notifications/dist',
-        fileName: 'primix-notifications',
-        publicVendorDir: 'primix/notifications',
-    },
-    {
-        label: 'widgets',
-        entry: 'packages/widgets/resources/js/index.js',
-        outDir: 'packages/widgets/dist',
-        fileName: 'primix-widgets',
-        publicVendorDir: 'primix/widgets',
-    },
-    {
-        label: 'panels',
-        entry: 'packages/panels/resources/js/index.js',
-        outDir: 'packages/panels/dist',
-        fileName: 'primix-panels',
-        publicVendorDir: 'primix/panels',
-    },
-];
+/**
+ * All packages are compiled in a SINGLE multi-entry build so Rollup extracts
+ * the modules shared between entries (PrimeVue core, theme preset, Primix
+ * support utilities, ...) into common chunks instead of duplicating them in
+ * every bundle.
+ *
+ * Output layout mirrors the published URL layout (public/vendor/livue/primix):
+ *
+ *   dist/<pkg>/primix-<pkg>.js          one entry per package
+ *   dist/support/chunks/<name>-<hash>.js shared + lazy chunks (shipped by the
+ *                                        support package, required by all);
+ *                                        entries import them via relative
+ *                                        paths such as ../support/chunks/x.js
+ *   dist/support/primix-support.css     single merged stylesheet (per-package
+ *                                        CSS is negligible and merging keeps
+ *                                        lazy-chunk styles eagerly available)
+ */
+const packages = ['support', 'forms', 'tables', 'actions', 'notifications', 'widgets', 'panels'];
+const buildDir = path.resolve(rootDir, 'dist');
 
 /**
- * Vite plugin that copies built assets to public/vendor after every build.
- * Works in both normal build and watch mode (fires after each rebuild).
+ * Stage non-bundled runtime files into dist/support so they are distributed
+ * and published together with the compiled bundles: self-hosted Vue for the
+ * import map and primeicons with external font files (fonts inlined as
+ * base64 by Vite lib mode would bloat the CSS bundle).
  */
-function autoCopyPlugin(target, absoluteOutDir) {
+function stageStaticAssets() {
+    const supportOut = path.join(buildDir, 'support');
+    mkdirSync(supportOut, { recursive: true });
+
+    const vueDir = resolveNodeModule('vue');
+    copyFileSync(
+        path.join(vueDir, 'dist/vue.esm-browser.prod.js'),
+        path.join(supportOut, 'vue.esm-browser.prod.js'),
+    );
+
+    const primeiconsDir = resolveNodeModule('primeicons');
+    const iconsOutDir = path.join(supportOut, 'primeicons');
+    mkdirSync(path.join(iconsOutDir, 'fonts'), { recursive: true });
+    copyFileSync(
+        path.join(primeiconsDir, 'primeicons.css'),
+        path.join(iconsOutDir, 'primeicons.css'),
+    );
+    cpSync(path.join(primeiconsDir, 'fonts'), path.join(iconsOutDir, 'fonts'), { recursive: true });
+}
+
+/**
+ * Vite plugin that distributes the build output after every build (works in
+ * both normal build and watch mode):
+ *   1. dist/<pkg>/ -> packages/<pkg>/dist/   (shipped with each composer package)
+ *   2. dist/<pkg>/ -> public/vendor/livue/primix/<pkg>/   (local dev app)
+ */
+function distributePlugin() {
     return {
-        name: 'primix-auto-copy',
+        name: 'primix-distribute',
         closeBundle() {
-            if (!target.publicVendorDir) return;
+            stageStaticAssets();
 
-            const destDir = path.resolve(projectRoot, 'public/vendor/livue', target.publicVendorDir);
-            mkdirSync(destDir, { recursive: true });
+            const publicBase = path.resolve(projectRoot, 'public/vendor/livue/primix');
 
-            for (const ext of ['.js', '.css', '.js.map']) {
-                const src = path.join(absoluteOutDir, `${target.fileName}${ext}`);
-                const dest = path.join(destDir, `${target.fileName}${ext}`);
-                if (existsSync(src)) {
-                    copyFileSync(src, dest);
-                }
+            for (const pkg of packages) {
+                const src = path.join(buildDir, pkg);
+                if (!existsSync(src)) continue;
+
+                const packageDist = path.resolve(rootDir, `packages/${pkg}/dist`);
+                rmSync(packageDist, { recursive: true, force: true });
+                cpSync(src, packageDist, { recursive: true });
+
+                const publicDest = path.join(publicBase, pkg);
+                rmSync(publicDest, { recursive: true, force: true });
+                cpSync(src, publicDest, { recursive: true });
             }
 
-            console.log(`  → copied to public/vendor/livue/${target.publicVendorDir}/`);
+            console.log('  → distributed to packages/*/dist/ and public/vendor/livue/primix/');
         },
     };
 }
 
-if (!watchMode) {
-    rmSync(path.resolve(rootDir, 'dist'), { recursive: true, force: true });
-}
-
-const cleanedOutDirs = new Set();
-
-for (const target of targets) {
-    const absoluteOutDir = path.resolve(rootDir, target.outDir);
-    const emptyOutDir = !cleanedOutDirs.has(absoluteOutDir);
-
-    cleanedOutDirs.add(absoluteOutDir);
-
-    // eslint-disable-next-line no-console
-    console.log(`Building ${target.label} -> ${target.outDir}/${target.fileName}.{js,css}`);
-
-    await build({
-        configFile: false,
-        root: rootDir,
-        plugins: [vue(), autoCopyPlugin(target, absoluteOutDir)],
-        css: {
-            postcss: path.resolve(rootDir, 'postcss.config.js'),
+await build({
+    configFile: false,
+    root: rootDir,
+    plugins: [vue(), distributePlugin()],
+    css: {
+        postcss: path.resolve(rootDir, 'postcss.config.js'),
+    },
+    resolve: {
+        alias: aliases,
+    },
+    build: {
+        outDir: buildDir,
+        emptyOutDir: true,
+        sourcemap: true,
+        minify: true,
+        // Single merged stylesheet: keeps styles of lazy chunks (editors)
+        // eagerly available and avoids per-chunk CSS that lib mode would
+        // never inject at runtime.
+        cssCodeSplit: false,
+        watch: watchMode ? {
+                exclude: ['**/dist/**', '**/node_modules/**', '**/public/vendor/**'],
+            } : undefined,
+        lib: {
+            entry: Object.fromEntries(packages.map((pkg) => [
+                `primix-${pkg}`,
+                path.resolve(rootDir, `packages/${pkg}/resources/js/index.js`),
+            ])),
+            name: 'Primix',
+            formats: ['es'],
         },
-        resolve: {
-            alias: aliases,
-        },
-        build: {
-            outDir: absoluteOutDir,
-            emptyOutDir,
-            sourcemap: true,
-            minify: false,
-            cssCodeSplit: false,
-            watch: watchMode ? {
-                    exclude: ['**/dist/**', '**/node_modules/**', '**/public/vendor/**'],
-                } : undefined,
-            lib: {
-                entry: {
-                    [target.fileName]: path.resolve(rootDir, target.entry),
-                },
-                name: 'Primix',
-                formats: ['es'],
-            },
-            rollupOptions: {
-                external: [
-                    'vue',
-                    'livue',
-                    /^@imgly\//,
-                ],
-                output: {
-                    inlineDynamicImports: true,
-                    entryFileNames: '[name].js',
-                    assetFileNames: (assetInfo) => (
-                        assetInfo.name?.endsWith('.css')
-                            ? `${target.fileName}.css`
-                            : '[name][extname]'
-                    ),
-                },
+        rollupOptions: {
+            external: [
+                'vue',
+                'livue',
+                // @imgly pulls in ONNX Runtime (~124MB) - load from CDN via import map
+                /^@imgly\//,
+            ],
+            output: {
+                entryFileNames: (chunk) => `${chunk.name.replace(/^primix-/, '')}/[name].js`,
+                chunkFileNames: 'support/chunks/[name]-[hash].js',
+                assetFileNames: (assetInfo) => (
+                    assetInfo.name?.endsWith('.css')
+                        ? 'support/primix-support.css'
+                        : 'support/[name][extname]'
+                ),
             },
         },
-    });
-}
+    },
+});

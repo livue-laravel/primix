@@ -4,7 +4,16 @@
  * Contains shared Tailwind layers used across packages.
  */
 
-@import "tailwindcss";
+/*
+ * Limit Tailwind content scanning to Primix package sources only.
+ * Without source(none), Tailwind v4 auto-detection scans the whole build
+ * root (including the prebuilt dist bundles), inflating the generated CSS.
+ */
+@import "tailwindcss" source(none);
+
+@source "../../../*/resources/views/**/*.blade.php";
+@source "../../../*/resources/js/**/*.{js,vue}";
+@source "../../../*/src/**/*.php";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

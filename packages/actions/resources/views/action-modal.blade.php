@@ -7,7 +7,6 @@
 ])
 
 @once('primix-forms-assets')
-    @livueLoadStyle('primix-forms', 'primix/forms')
     @livueLoadScript('primix-forms', 'primix/forms', ['type' => 'module'])
 @endonce
 
