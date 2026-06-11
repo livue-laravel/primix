@@ -12,7 +12,7 @@
     $extraAttributes = $mergedAttributes->except('@click')->getAttributes();
 
     $mobileMenuAction = \Primix\Actions\Action::make('openSidebar')
-        ->label('Open sidebar')
+        ->label(__('primix::panel.buttons.open_sidebar'))
         ->icon('pi pi-bars')
         ->iconButton(true, false)
         ->color('gray')

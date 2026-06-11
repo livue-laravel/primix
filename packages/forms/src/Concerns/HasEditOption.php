@@ -57,9 +57,9 @@ trait HasEditOption
     {
         $action = Action::make('edit')
             ->modal()
-            ->modalHeading(__('Edit') . ' ' . ($this->getLabel() ?? __('primix-forms::forms.option')))
-            ->modalSubmitActionLabel(__('Save'))
-            ->modalCancelActionLabel(__('Cancel'))
+            ->modalHeading(__('primix-forms::forms.edit') . ' ' . ($this->getLabel() ?? __('primix-forms::forms.option')))
+            ->modalSubmitActionLabel(__('primix-forms::forms.save'))
+            ->modalCancelActionLabel(__('primix-forms::forms.cancel'))
             ->form($this->getEditOptionFormSchema());
 
         if ($this->editOptionActionModifier) {

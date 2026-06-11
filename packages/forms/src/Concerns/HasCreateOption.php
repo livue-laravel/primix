@@ -57,9 +57,9 @@ trait HasCreateOption
     {
         $action = Action::make('create')
             ->modal()
-            ->modalHeading(__('Create') . ' ' . ($this->getLabel() ?? __('primix-forms::forms.option')))
-            ->modalSubmitActionLabel(__('Create'))
-            ->modalCancelActionLabel(__('Cancel'))
+            ->modalHeading(__('primix-forms::forms.create') . ' ' . ($this->getLabel() ?? __('primix-forms::forms.option')))
+            ->modalSubmitActionLabel(__('primix-forms::forms.create'))
+            ->modalCancelActionLabel(__('primix-forms::forms.cancel'))
             ->form($this->getCreateOptionFormSchema());
 
         if ($this->createOptionActionModifier) {

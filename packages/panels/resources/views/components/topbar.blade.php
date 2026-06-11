@@ -52,7 +52,7 @@
                 severity="secondary"
                 text
                 rounded
-                aria-label="Open sidebar"
+                aria-label="{{ __('primix::panel.buttons.open_sidebar') }}"
                 class="lg:hidden -m-2.5 p-2.5 text-gray-700 dark:text-gray-300"
                 @click="mobileSidebarOpen = true"
             ></p-button>

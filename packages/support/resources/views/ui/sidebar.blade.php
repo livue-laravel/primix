@@ -9,7 +9,7 @@
         {{ $brandLabel }}
     </div>
 
-    <nav class="space-y-1 px-2 py-3" aria-label="Sidebar navigation">
+    <nav class="space-y-1 px-2 py-3" aria-label="{{ __('primix-support::support.sidebar_navigation') }}">
         @foreach($navigation as $item)
             @php
                 $itemType = $item['type'] ?? (isset($item['items']) ? 'group' : 'link');

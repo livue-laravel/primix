@@ -11,7 +11,7 @@
         </div>
 
         @if(! empty($navigation))
-            <nav class="flex flex-wrap items-center gap-2" aria-label="Topbar navigation">
+            <nav class="flex flex-wrap items-center gap-2" aria-label="{{ __('primix-support::support.topbar_navigation') }}">
                 @foreach($navigation as $item)
                     @php
                         $itemType = $item['type'] ?? (isset($item['items']) ? 'group' : 'link');

@@ -5,10 +5,14 @@ return [
     'previous' => 'Previous',
     'next' => 'Next',
     'cancel' => 'Cancel',
+    'create' => 'Create',
+    'edit' => 'Edit',
+    'save' => 'Save',
     'add_item' => 'Add item',
     'edit_image' => 'Edit image',
     'option' => 'Option',
     'morph_type_label' => 'Type',
+    'repeater_empty_state' => 'No items yet. Click below to add one.',
 
     'file_upload' => [
         'uploading' => 'Uploading...',

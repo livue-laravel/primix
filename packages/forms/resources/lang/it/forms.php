@@ -5,10 +5,14 @@ return [
     'previous' => 'Precedente',
     'next' => 'Avanti',
     'cancel' => 'Annulla',
+    'create' => 'Crea',
+    'edit' => 'Modifica',
+    'save' => 'Salva',
     'add_item' => 'Aggiungi elemento',
     'edit_image' => 'Modifica immagine',
     'option' => 'Opzione',
     'morph_type_label' => 'Tipo',
+    'repeater_empty_state' => 'Nessun elemento. Clicca sotto per aggiungerne uno.',
 
     'file_upload' => [
         'uploading' => 'Caricamento...',

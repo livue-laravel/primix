@@ -94,6 +94,12 @@ return [
         'organization_name' => 'Nome organizzazione',
         'forgot_password_title' => 'Password dimenticata?',
         'verification_link_sent' => 'Un nuovo link di verifica è stato inviato al tuo indirizzo email.',
+        'forgot_password_link' => 'Password dimenticata?',
+        'no_account_prompt' => 'Non hai un account?',
+        'create_account_link' => 'Crea un account',
+        'have_account_prompt' => 'Hai già un account?',
+        'sign_in_link' => 'Accedi',
+        'back_to_sign_in' => 'Torna al login',
     ],
 
     'notifications_panel' => [
@@ -107,5 +113,9 @@ return [
 
     'workspace' => [
         'close_tab' => 'Chiudi scheda',
+    ],
+
+    'buttons' => [
+        'open_sidebar' => 'Apri menu laterale',
     ],
 ];

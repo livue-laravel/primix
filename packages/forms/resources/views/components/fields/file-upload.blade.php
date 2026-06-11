@@ -350,7 +350,7 @@
                     @if($isDownloadable)
                         @php
                             $downloadUploadedFileAction = \Primix\Actions\Action::make('downloadUploadedFile')
-                                ->label('Download')
+                                ->label(__('primix-forms::forms.file_upload.download'))
                                 ->icon('pi pi-download')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -358,7 +358,7 @@
                                 ->extraAttributes([
                                     'v-if' => "typeof file === 'object' && file.downloadUrl",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Download',
+                                    'title' => __('primix-forms::forms.file_upload.download'),
                                 ]);
                         @endphp
                         {{ $downloadUploadedFileAction }}
@@ -367,7 +367,7 @@
                             :href="'/storage/' + file"
                             target="_blank"
                             class="p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
-                            title="Download"
+                            title="{{ __('primix-forms::forms.file_upload.download') }}"
                         >
                             <i class="pi pi-download text-sm"></i>
                         </a>
@@ -465,7 +465,7 @@
                     @if($isDownloadable)
                         @php
                             $downloadSingleUploadedFileAction = \Primix\Actions\Action::make('downloadSingleUploadedFile')
-                                ->label('Download')
+                                ->label(__('primix-forms::forms.file_upload.download'))
                                 ->icon('pi pi-download')
                                 ->iconButton(true, true)
                                 ->color('gray')
@@ -473,7 +473,7 @@
                                 ->extraAttributes([
                                     'v-if' => "typeof {$vueStatePath} === 'object' && {$vueStatePath}.downloadUrl",
                                     'class' => 'p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700',
-                                    'title' => 'Download',
+                                    'title' => __('primix-forms::forms.file_upload.download'),
                                 ]);
                         @endphp
                         {{ $downloadSingleUploadedFileAction }}
@@ -482,7 +482,7 @@
                             :href="'/storage/' + {{ $vueStatePath }}"
                             target="_blank"
                             class="p-2 text-surface-400 hover:text-primary-500 rounded-full hover:bg-surface-100 dark:hover:bg-surface-700"
-                            title="Download"
+                            title="{{ __('primix-forms::forms.file_upload.download') }}"
                         >
                             <i class="pi pi-download text-sm"></i>
                         </a>

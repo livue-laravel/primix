@@ -47,6 +47,7 @@ class PrimixSupportServiceProvider extends ServiceProvider
     protected function registerViews(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'primix');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'primix-support');
     }
 
     protected function registerBladeDirectives(): void

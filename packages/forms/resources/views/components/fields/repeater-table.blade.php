@@ -100,7 +100,7 @@
                     <tr>
                         <td colspan="{{ count($columns) + ($hasActions ? 1 : 0) }}" class="text-center py-6 text-surface-400">
                             <i class="pi pi-list text-2xl mb-2"></i>
-                            <p class="text-sm">No items yet. Click below to add one.</p>
+                            <p class="text-sm">{{ __('primix-forms::forms.repeater_empty_state') }}</p>
                         </td>
                     </tr>
                 @endforelse

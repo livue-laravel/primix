@@ -94,6 +94,12 @@ return [
         'organization_name' => 'Organization name',
         'forgot_password_title' => 'Forgot your password?',
         'verification_link_sent' => 'A new verification link has been sent to your email address.',
+        'forgot_password_link' => 'Forgot your password?',
+        'no_account_prompt' => "Don't have an account?",
+        'create_account_link' => 'Create an account',
+        'have_account_prompt' => 'Already have an account?',
+        'sign_in_link' => 'Sign in',
+        'back_to_sign_in' => 'Back to sign in',
     ],
 
     'notifications_panel' => [
@@ -107,5 +113,9 @@ return [
 
     'workspace' => [
         'close_tab' => 'Close tab',
+    ],
+
+    'buttons' => [
+        'open_sidebar' => 'Open sidebar',
     ],
 ];
