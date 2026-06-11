@@ -23,6 +23,8 @@ class RichEditor extends Field
 
     protected string|Closure|null $editorHeight = null;
 
+    protected bool|Closure $markdown = false;
+
     public function toolbarButtons(array|Closure $buttons): static
     {
         $this->toolbarButtons = $buttons;
@@ -51,9 +53,22 @@ class RichEditor extends Field
         return $this;
     }
 
+    public function markdown(bool|Closure $condition = true): static
+    {
+        $this->markdown = $condition;
+
+        return $this;
+    }
+
     public function getToolbarButtons(): array
     {
-        return $this->evaluate($this->toolbarButtons);
+        $buttons = $this->evaluate($this->toolbarButtons);
+
+        if ($this->isMarkdown()) {
+            $buttons = array_values(array_filter($buttons, fn (string $button): bool => $button !== 'underline'));
+        }
+
+        return $buttons;
     }
 
     public function getDisabledToolbarButtons(): array
@@ -69,6 +84,11 @@ class RichEditor extends Field
     public function getEditorHeight(): ?string
     {
         return $this->evaluate($this->editorHeight);
+    }
+
+    public function isMarkdown(): bool
+    {
+        return (bool) $this->evaluate($this->markdown);
     }
 
     protected function getAutoRules(): array
@@ -95,6 +115,7 @@ class RichEditor extends Field
             'disabledToolbarButtons' => $this->getDisabledToolbarButtons(),
             'maxLength' => $this->getMaxLength(),
             'editorHeight' => $this->getEditorHeight(),
+            'markdown' => $this->isMarkdown(),
         ]);
     }
 }

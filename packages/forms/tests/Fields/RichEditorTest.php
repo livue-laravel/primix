@@ -59,6 +59,40 @@ it('can set editor height', function () {
     expect($field->getEditorHeight())->toBe('400px');
 });
 
+it('is not markdown by default', function () {
+    $field = RichEditor::make('content');
+
+    expect($field->isMarkdown())->toBeFalse();
+});
+
+it('can enable markdown mode', function () {
+    $field = RichEditor::make('content')->markdown();
+
+    expect($field->isMarkdown())->toBeTrue();
+});
+
+it('accepts a closure for markdown mode', function () {
+    $field = RichEditor::make('content')->markdown(fn () => true);
+
+    expect($field->isMarkdown())->toBeTrue();
+});
+
+it('removes underline from toolbar buttons in markdown mode', function () {
+    $field = RichEditor::make('content')->markdown();
+
+    expect($field->getToolbarButtons())
+        ->not->toContain('underline')
+        ->toContain('bold', 'italic', 'strike');
+});
+
+it('removes underline from custom toolbar buttons in markdown mode', function () {
+    $field = RichEditor::make('content')
+        ->toolbarButtons(['bold', 'underline', 'italic'])
+        ->markdown();
+
+    expect($field->getToolbarButtons())->toBe(['bold', 'italic']);
+});
+
 it('returns correct view', function () {
     $field = RichEditor::make('content');
 
@@ -78,5 +112,12 @@ it('returns complete vue props', function () {
         ->toHaveKey('toolbarButtons', ['bold'])
         ->toHaveKey('disabledToolbarButtons', ['italic'])
         ->toHaveKey('maxLength', 1000)
-        ->toHaveKey('editorHeight', '300px');
+        ->toHaveKey('editorHeight', '300px')
+        ->toHaveKey('markdown', false);
+});
+
+it('includes markdown in vue props when enabled', function () {
+    $field = RichEditor::make('content')->markdown();
+
+    expect($field->toVueProps())->toHaveKey('markdown', true);
 });

@@ -3,6 +3,7 @@
 namespace Primix\Resources\Pages;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Primix\Actions\Action;
 use Primix\Details\Components\Entries\BooleanEntry;
 use Primix\Details\Components\Entries\ColorEntry;
@@ -124,6 +125,10 @@ class ViewRecord extends Page
     {
         $entry = match (true) {
             $this->fieldReturnsMultipleValues($field) => ListEntry::make($field->getName()),
+            $field instanceof RichEditor && $field->isMarkdown() => HtmlEntry::make($field->getName())
+                ->formatStateUsing(fn (mixed $state): mixed => filled($state)
+                    ? Str::markdown($state, ['html_input' => 'strip', 'allow_unsafe_links' => false])
+                    : $state),
             $field instanceof RichEditor => HtmlEntry::make($field->getName()),
             $field instanceof Textarea => LongTextEntry::make($field->getName()),
             $field instanceof Checkbox,

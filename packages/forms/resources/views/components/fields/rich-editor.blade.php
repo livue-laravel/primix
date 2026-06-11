@@ -14,6 +14,7 @@
     <primix-rich-editor
         id="{{ $id }}"
         v-model="{{ $statePath }}"
+        @if($markdown) :markdown="true" @endif
         :toolbar-buttons="{!! \Illuminate\Support\Js::from($toolbarButtons) !!}"
         :disabled-toolbar-buttons="{!! \Illuminate\Support\Js::from($disabledToolbarButtons) !!}"
         @if($disabled) :disabled="true" @endif

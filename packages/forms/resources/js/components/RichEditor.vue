@@ -69,6 +69,7 @@ const props = defineProps({
     },
     disabled: Boolean,
     invalid: Boolean,
+    markdown: Boolean,
     maxLength: Number,
     editorHeight: String,
     stylePt: Object,
@@ -151,6 +152,12 @@ function executeCommand(button) {
     }
 }
 
+// In markdown mode the model value is markdown text; tiptap-markdown parses
+// incoming content and serializes the document back via its storage API.
+function getEditorContent(e) {
+    return props.markdown ? e.storage.markdown.getMarkdown() : e.getHTML();
+}
+
 onMounted(async () => {
     const { Editor } = await import('@tiptap/core');
     const { default: StarterKit } = await import('@tiptap/starter-kit');
@@ -168,6 +175,14 @@ onMounted(async () => {
         extensions.push(CharacterCount.configure({ limit: props.maxLength }));
     }
 
+    if (props.markdown) {
+        const { Markdown } = await import('tiptap-markdown');
+        extensions.push(Markdown.configure({
+            html: false,
+            transformPastedText: true,
+        }));
+    }
+
     editor.value = new Editor({
         element: editorElement.value,
         extensions,
@@ -175,7 +190,7 @@ onMounted(async () => {
         editable: !props.disabled,
         onUpdate: ({ editor: e }) => {
             isUpdatingFromEditor.value = true;
-            emit('update:modelValue', e.getHTML());
+            emit('update:modelValue', getEditorContent(e));
             // Reset flag on next tick so the watch triggered by emit is skipped
             Promise.resolve().then(() => {
                 isUpdatingFromEditor.value = false;
@@ -190,7 +205,7 @@ onBeforeUnmount(() => {
 
 watch(() => props.modelValue, (newVal) => {
     if (isUpdatingFromEditor.value) return;
-    if (editor.value && editor.value.getHTML() !== newVal) {
+    if (editor.value && getEditorContent(editor.value) !== newVal) {
         editor.value.commands.setContent(newVal || '', false);
     }
 });
