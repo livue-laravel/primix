@@ -3,7 +3,7 @@
     @livueLoadScript('primix-forms', 'primix/forms', ['type' => 'module'])
 @endonce
 
-<form @submit.prevent="{{ $form->getSubmitAction() }}()" @class(['primix-form', 'mt-6' => $form->isWrapped()])>
+<form @submit.prevent="livue.runFormSubmit('{{ addslashes($form->getName()) }}', '{{ $form->getSubmitAction() }}')" @class(['primix-form', 'mt-6' => $form->isWrapped()])>
     @if($form->isWrapped())
     <div class="bg-[var(--p-content-background)] shadow-none ring-1 ring-[var(--p-content-border-color)] sm:rounded-lg">
         <div class="px-4 py-6 sm:p-8">

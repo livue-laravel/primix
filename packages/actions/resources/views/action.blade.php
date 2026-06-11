@@ -26,6 +26,11 @@
     $hasTooltipLabel = $tooltipLabel !== null && $tooltipLabel !== '';
 
     $recordKeyArg = isset($recordKey) && $recordKey !== null ? ", recordKey: '" . addslashes($recordKey) . "'" : '';
+    $runActionParams = isset($recordKey) && $recordKey !== null
+        ? ", { recordKey: '" . addslashes($recordKey) . "' }"
+        : '';
+    $confirmDescription = addslashes($confirmationDescription ?? 'Are you sure?');
+    $escapedName = addslashes($name ?? '');
     $iconHtml = $icon ? app(\Primix\Support\Icons\IconManager::class)->render($icon, 'primix-action-icon') : null;
     $renderableAttributes = $component->getRenderableExtraAttributes(
         'primix-action-button',
@@ -40,6 +45,7 @@
     <p-button
         class="{{ $buttonClass }}"
         type="submit"
+        :loading="livue.isSubmittingForm()"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -82,6 +88,7 @@
     {{-- Button with confirmation dialog --}}
     <p-button
         class="{{ $buttonClass }}"
+        :loading="livue.isCallingAction('{{ $escapedName }}')"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -96,7 +103,7 @@
         @if($hasTooltipLabel && !in_array($tooltipPosition, ['top', 'right', 'bottom', 'left'], true)) v-tooltip="'{{ addslashes($tooltipLabel) }}'" @endif
         @if($iconPosition === 'after') icon-pos="right" @endif
         {!! $extraAttributes !!}
-        @click="livue.callWithConfirm('{{ $callMethod }}', '{{ addslashes($confirmationDescription ?? 'Are you sure?') }}', { name: '{{ $name }}'{{ $recordKeyArg }} })"
+        @click="livue.runActionWithConfirm('{{ $escapedName }}', '{{ $callMethod }}', '{{ $confirmDescription }}'{{ $runActionParams }})"
     >@if($iconHtml)<template #icon>{!! $iconHtml !!}</template>@endif</p-button>
 @elseif($isModal)
     {{-- Button that opens modal --}}
@@ -142,6 +149,7 @@
     {{-- Simple action button --}}
     <p-button
         class="{{ $buttonClass }}"
+        :loading="livue.isCallingAction('{{ $escapedName }}')"
         @if($severity) severity="{{ $severity }}" @endif
         @if($buttonSize) size="{{ $buttonSize }}" @endif
         @if($outlined) outlined @endif
@@ -156,6 +164,6 @@
         @if($hasTooltipLabel && !in_array($tooltipPosition, ['top', 'right', 'bottom', 'left'], true)) v-tooltip="'{{ addslashes($tooltipLabel) }}'" @endif
         @if($iconPosition === 'after') icon-pos="right" @endif
         {!! $extraAttributes !!}
-        @click="{{ $callMethod }}({ name: '{{ $name }}'{{ $recordKeyArg }} })"
+        @click="livue.runAction('{{ $escapedName }}', '{{ $callMethod }}'{{ $runActionParams }})"
     >@if($iconHtml)<template #icon>{!! $iconHtml !!}</template>@endif</p-button>
 @endif

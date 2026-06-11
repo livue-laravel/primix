@@ -205,12 +205,17 @@
                 <template #footer>
                     @foreach($action->getModalActions() as $modalAction)
                         @php
+                            $modalLoadingExpr = null;
                             if ($modalAction->isCancel()) {
                                 $clickExpr = $closeHandler;
                             } elseif ($modalAction->isSubmit()) {
-                                $clickExpr = $isPageAction
-                                    ? "callAction({ name: '" . addslashes($action->getName()) . "' })"
-                                    : 'submitFormFieldAction()';
+                                if ($isPageAction) {
+                                    $clickExpr = "livue.runAction('" . addslashes($action->getName()) . "', 'callAction')";
+                                    $modalLoadingExpr = "livue.isCallingAction('" . addslashes($action->getName()) . "')";
+                                } else {
+                                    $clickExpr = 'submitFormFieldAction()';
+                                    $modalLoadingExpr = "livue.isLoading('submitFormFieldAction')";
+                                }
                             } else {
                                 $clickExpr = $modalAction->getJsAction() ?? '';
                             }
@@ -219,6 +224,7 @@
                             label="{{ $modalAction->getLabel() }}"
                             severity="{{ $modalAction->getSeverity() }}"
                             @click="{{ $clickExpr }}"
+                            @if($modalLoadingExpr) :loading="{{ $modalLoadingExpr }}" @endif
                             @if($modalAction->isOutlined()) outlined @endif
                         ></p-button>
                     @endforeach

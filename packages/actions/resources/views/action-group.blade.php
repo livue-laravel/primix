@@ -72,11 +72,11 @@
                         url: '{{ $action->getUrl() }}',
                         @if($action->shouldOpenUrlInNewTab()) target: '_blank', @endif
                     @elseif($action->doesRequireConfirmation())
-                        command: () => livue.callWithConfirm('{{ $action->getCallMethod() }}', '{{ addslashes($action->getConfirmationDescription() ?? 'Are you sure?') }}', { name: '{{ $action->getName() }}' }),
+                        command: () => livue.runActionWithConfirm('{{ addslashes($action->getName()) }}', '{{ $action->getCallMethod() }}', '{{ addslashes($action->getConfirmationDescription() ?? 'Are you sure?') }}'),
                     @elseif($action->isModal())
                         command: () => openActionModal({ name: '{{ $action->getName() }}', callMethod: '{{ $action->getCallMethod() }}' }),
                     @else
-                        command: () => {{ $action->getCallMethod() }}({ name: '{{ $action->getName() }}' }),
+                        command: () => livue.runAction('{{ addslashes($action->getName()) }}', '{{ $action->getCallMethod() }}'),
                     @endif
                 },
                 @endforeach
