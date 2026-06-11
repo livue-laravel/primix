@@ -9,19 +9,6 @@
         'load_more' => __('primix::panel.notifications_panel.load_more'),
         'close' => __('primix::panel.actions.close'),
     ];
-
-    $mobileDrawerPt = [
-        'header' => ['class' => 'border-b border-gray-100 dark:border-gray-700/50 px-4 py-3'],
-        'content' => ['class' => 'p-0'],
-        'mask' => ['class' => 'bg-gray-900/50'],
-    ];
-
-    $mobileDrawerCloseProps = [
-        'severity' => 'secondary',
-        'text' => true,
-        'rounded' => false,
-        'size' => 'small',
-    ];
 @endphp
 <div class="{{ $fixedTopbar ? 'fixed' : 'sticky' }} top-0 left-0 right-0 z-50">
     {{-- === NAVIGATION BAR (topbar mode only) === --}}
@@ -131,7 +118,7 @@
         <p-drawer
             v-model:visible="mobileSidebarOpen"
             position="left"
-            class="lg:hidden w-64 bg-white dark:bg-gray-900"
+            :pt="mobileDrawerPt"
         >
             <template #header>
                 <x-primix::brand

@@ -60,6 +60,14 @@ class Topbar extends Component
 
     public bool $mobileSidebarOpen = false;
 
+    public array $mobileDrawerPt = [
+        'root' => ['class' => 'lg:hidden w-64'],
+        'container' => ['class' => 'bg-white dark:bg-gray-900'],
+        'header' => ['class' => 'border-b border-gray-100 dark:border-gray-700/50 px-4 py-3'],
+        'content' => ['class' => 'p-0'],
+        'mask' => ['class' => 'bg-gray-900/50'],
+    ];
+
     #[Json]
     public function search(string $query): array
     {
