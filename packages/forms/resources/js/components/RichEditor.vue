@@ -217,7 +217,9 @@ watch(() => props.disabled, (val) => {
 
 <style>
 .primix-tiptap-editor {
-    border: 1px solid var(--p-surface-300);
+    /* Same dark-aware token used by PrimeVue input fields (surface-300
+       stays light in dark mode and would render a brighter border). */
+    border: 1px solid var(--p-inputtext-border-color, var(--p-surface-300));
     border-radius: var(--p-content-border-radius);
     overflow: hidden;
 }
@@ -298,6 +300,10 @@ watch(() => props.disabled, (val) => {
     background: var(--p-surface-300);
 }
 
+.dark .primix-tiptap-divider {
+    background: var(--p-surface-600);
+}
+
 .primix-tiptap-content {
     padding: 0.75rem 1rem;
     outline: none;
@@ -339,6 +345,11 @@ watch(() => props.disabled, (val) => {
     color: var(--p-surface-500);
 }
 
+.dark .primix-tiptap-content .tiptap blockquote {
+    border-left-color: var(--p-surface-600);
+    color: var(--p-surface-400);
+}
+
 .primix-tiptap-content .tiptap code {
     background: var(--p-surface-100);
     border-radius: 3px;
@@ -347,12 +358,20 @@ watch(() => props.disabled, (val) => {
     font-size: 0.9em;
 }
 
+.dark .primix-tiptap-content .tiptap code {
+    background: var(--p-surface-800);
+}
+
 .primix-tiptap-content .tiptap pre {
     background: var(--p-surface-100);
     border-radius: var(--p-content-border-radius);
     padding: 0.75em 1em;
     margin: 0.5em 0;
     overflow-x: auto;
+}
+
+.dark .primix-tiptap-content .tiptap pre {
+    background: var(--p-surface-800);
 }
 
 .primix-tiptap-content .tiptap pre code {
@@ -370,5 +389,9 @@ watch(() => props.disabled, (val) => {
     justify-content: flex-end;
     padding: 0.25rem 0.5rem;
     border-top: 1px solid var(--p-surface-200);
+}
+
+.dark .primix-tiptap-footer {
+    border-top-color: var(--p-surface-700);
 }
 </style>

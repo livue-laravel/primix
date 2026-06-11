@@ -1,6 +1,6 @@
 {
     "name": "primix",
-    "version": "0.6.3",
+    "version": "0.6.4",
     "description": "Admin panel framework for Laravel based on LiVue and PrimeVue",
     "type": "module",
     "exports": {
