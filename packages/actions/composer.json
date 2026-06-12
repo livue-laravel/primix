@@ -5,8 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "primix/support": "^0.6",
-        "primix/notifications": "^0.6"
+        "primix/support": "^0.6.5",
+        "primix/notifications": "^0.6.5"
     },
     "autoload": {
         "psr-4": {
