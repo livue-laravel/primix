@@ -128,10 +128,16 @@ it('registers path-based panel routes with tenancy before authentication', funct
 
 function makeTenantAuthPanel(): Panel
 {
-    return Panel::make('admin')
+    $panel = Panel::make('admin')
         ->path('admin')
         ->authGuard('web')
         ->login()
         ->tenant(Tenant::class)
         ->tenantIdentification('path');
+
+    // Route closures resolve the panel from the registry at request time,
+    // mirroring PanelProvider::boot() which registers before route registration.
+    app(\Primix\PanelRegistry::class)->register($panel);
+
+    return $panel;
 }

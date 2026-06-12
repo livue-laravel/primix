@@ -10,6 +10,7 @@ use Primix\MultiTenant\Middleware\InitializeTenancyByPath;
 use Primix\MultiTenant\Middleware\InitializeTenancyByRequestData;
 use Primix\MultiTenant\Middleware\InitializeTenancyBySubdomain;
 use Primix\Panel;
+use Primix\PanelRegistry;
 use Primix\Routing\PanelRouteRegistrar;
 
 class TenantPanelRouteRegistrar extends PanelRouteRegistrar
@@ -53,8 +54,12 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
                 });
         }
 
-        // Landing route: redirects to first tenant or creation page (central domain only)
-        $landingRoute = Route::get($panel->getPath(), function () use ($panel, $identification) {
+        // Landing route: redirects to first tenant or creation page (central domain only).
+        // Capture only the panel id: route closures are serialized by `route:cache`,
+        // and serializing the whole Panel breaks unserialization.
+        $landingRoute = Route::get($panel->getPath(), static function () use ($panelId, $identification) {
+            $panel = app(PanelRegistry::class)->get($panelId) ?? abort(404);
+
             $user = auth()->guard($panel->getAuthGuard())->user();
 
             if (! $user) {
@@ -118,7 +123,9 @@ class TenantPanelRouteRegistrar extends PanelRouteRegistrar
 
                         // Logout under tenant prefix so URL::defaults is set when
                         // getLoginUrl() generates the post-logout redirect URL.
-                        Route::post('logout', function () use ($panel) {
+                        Route::post('logout', static function () use ($panelId) {
+                            $panel = app(PanelRegistry::class)->get($panelId) ?? abort(404);
+
                             auth()->guard($panel->getAuthGuard())->logout();
                             session()->invalidate();
                             session()->regenerateToken();

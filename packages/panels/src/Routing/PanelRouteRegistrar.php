@@ -5,6 +5,7 @@ namespace Primix\Routing;
 use Illuminate\Support\Facades\Route;
 use LiVue\Http\Controllers\LiVuePageController;
 use Primix\Panel;
+use Primix\PanelRegistry;
 
 class PanelRouteRegistrar
 {
@@ -26,7 +27,11 @@ class PanelRouteRegistrar
                     $loginPage = $panel->getLoginPage();
                     $this->registerPageRoute($loginPage, $panelId);
 
-                    Route::post('logout', function () use ($panel) {
+                    // Capture only the panel id: route closures are serialized by
+                    // `route:cache`, and serializing the whole Panel breaks unserialization.
+                    Route::post('logout', static function () use ($panelId) {
+                        $panel = app(PanelRegistry::class)->get($panelId) ?? abort(404);
+
                         auth()->guard($panel->getAuthGuard())->logout();
                         session()->invalidate();
                         session()->regenerateToken();
@@ -79,7 +84,11 @@ class PanelRouteRegistrar
             ->defaults('_panel', $panelId)
             ->middleware($authMiddleware);
 
-        Route::get('email/verify/{id}/{hash}', function (\Illuminate\Http\Request $request) use ($panel) {
+        // Capture only the panel id: route closures are serialized by
+        // `route:cache`, and serializing the whole Panel breaks unserialization.
+        Route::get('email/verify/{id}/{hash}', static function (\Illuminate\Http\Request $request) use ($panelId) {
+            $panel = app(PanelRegistry::class)->get($panelId) ?? abort(404);
+
             $user = \Illuminate\Support\Facades\Auth::guard($panel->getAuthGuard())->user();
 
             if ($user === null) {
