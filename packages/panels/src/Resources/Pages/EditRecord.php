@@ -39,7 +39,7 @@ class EditRecord extends Page
                 $this->record->refresh();
                 $form = $this->getForm('form');
                 $this->data = $form->fillWithRelationships(
-                    $this->record->toArray(),
+                    $this->mutateFormDataBeforeFill($this->record->toArray()),
                     $this->record,
                 );
             }),
@@ -81,10 +81,26 @@ class EditRecord extends Page
 
         $this->resetFormCache();
 
-        $data = $this->record->toArray();
+        $data = $this->mutateFormDataBeforeFill($this->record->toArray());
 
         $form = $this->getForm('form');
         $this->data = $form->fillWithRelationships($data, $this->record);
+    }
+
+    /**
+     * Hook to mutate the record's data before it fills the form on edit.
+     *
+     * Override in a resource Edit page to inject non-column form state — e.g.
+     * data derived from relationships that the form renders (repeaters, etc.).
+     * Called on every path that fills the form for display (mount, post-save
+     * re-fill, restore).
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return $data;
     }
 
     protected function form(Form $form): Form
@@ -135,7 +151,7 @@ class EditRecord extends Page
 
         $this->record->refresh();
         $this->data = $form->fillWithRelationships(
-            $this->record->toArray(),
+            $this->mutateFormDataBeforeFill($this->record->toArray()),
             $this->record,
         );
 

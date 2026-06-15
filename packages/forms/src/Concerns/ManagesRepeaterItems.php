@@ -47,12 +47,12 @@ trait ManagesRepeaterItems
 
     protected function getRepeaterItems(string $statePath): array
     {
-        return data_get($this, $statePath) ?? [];
+        return data_get($this, $this->normalizeRepeaterStatePath($statePath)) ?? [];
     }
 
     protected function setRepeaterItems(string $statePath, array $items): void
     {
-        $segments = explode('.', $statePath);
+        $segments = explode('.', $this->normalizeRepeaterStatePath($statePath));
         $property = array_shift($segments);
 
         if (empty($segments)) {
@@ -64,5 +64,17 @@ trait ManagesRepeaterItems
         $data = $this->{$property};
         data_set($data, implode('.', $segments), $items);
         $this->{$property} = $data;
+    }
+
+    /**
+     * Repeater action statePaths arrive as JS expressions (the same form used
+     * for v-model), e.g. "data.items[0].children". Convert the "[index]"
+     * segments back to Laravel dot notation ("data.items.0.children") so
+     * data_get()/data_set() resolve nested repeaters correctly. Top-level
+     * repeaters ("data.items") contain no brackets and are left untouched.
+     */
+    protected function normalizeRepeaterStatePath(string $statePath): string
+    {
+        return preg_replace('/\[(\d+)\]/', '.$1', $statePath);
     }
 }
