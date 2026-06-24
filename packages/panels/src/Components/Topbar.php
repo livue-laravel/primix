@@ -109,7 +109,13 @@ class Topbar extends Component
 
     public function shouldCloak(): bool
     {
-        return false;
+        // Cloak the island until Vue mounts. Without this, during the window
+        // between first paint and hydration the browser shows the raw,
+        // uncompiled template: the <p-drawer> mobile menu leaks its <nav>
+        // inline (duplicating the sidebar navigation) and PrimeVue custom
+        // elements flicker. Layout space is reserved by the parent shell
+        // (pt-16), so cloaking causes no layout shift.
+        return true;
     }
 
     protected function render(): string
