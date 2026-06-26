@@ -48,6 +48,7 @@ class CreateRecord extends Page
         $resource = $this->resolveResource();
 
         return $resource::form($form)
+            ->operation('create')
             ->statePath('data')
             ->model($resource::getModel())
             ->submitAction('create')

@@ -10,6 +10,7 @@ use Primix\Support\Concerns\HasColumnSpan;
 use Primix\Support\Concerns\HasContext;
 use Primix\Support\Concerns\HasId;
 use Primix\Support\Concerns\HasLabel;
+use Primix\Support\Concerns\HasOperation;
 use Primix\Support\Concerns\HasStyle;
 use Primix\Support\Concerns\HasWidth;
 use Primix\Support\Components\ViewComponent;
@@ -24,6 +25,7 @@ abstract class Component extends ViewComponent
     use HasContext;
     use HasId;
     use HasLabel;
+    use HasOperation;
     use HasStyle;
     use HasWidth;
 
@@ -35,7 +37,8 @@ abstract class Component extends ViewComponent
     protected function resolveDefaultClosureDependencyForEvaluationByName(string $parameterName): array
     {
         return match ($parameterName) {
-            'context', 'operation' => [$this->getContext()],
+            'context' => [$this->getContext()],
+            'operation' => [$this->getOperation()],
             'record' => [$this->container?->getRecord()],
             'livue' => [$this->getLiVue()],
             default => parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName),

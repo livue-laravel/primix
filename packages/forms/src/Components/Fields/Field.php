@@ -307,6 +307,7 @@ abstract class Field extends FormComponent
             'columnStart' => $this->getColumnStart(),
             'default' => $this->getDefaultValue(),
             'context' => $this->getContext()?->value,
+            'operation' => $this->getOperation(),
             'style' => $this->getStylePassThrough(),
         ]);
     }

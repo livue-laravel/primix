@@ -88,7 +88,7 @@ class ListRecords extends Page
 
     protected function configureCreateModalAction(CreateAction $action, string $resource): void
     {
-        $action->form(fn (Form $form) => $resource::form($form));
+        $action->form(fn (Form $form) => $resource::form($form)->operation('create'));
 
         $action->action(function (array $data) use ($resource): void {
             $model = $resource::getModel();
@@ -127,7 +127,7 @@ class ListRecords extends Page
     protected function configureEditModalAction(EditAction $action, string $resource): void
     {
         $action->form(function (Form $form, ?Model $record) use ($resource) {
-            $form = $resource::form($form);
+            $form = $resource::form($form)->operation('edit');
 
             if ($record !== null) {
                 $form->model($record);
@@ -187,7 +187,7 @@ class ListRecords extends Page
     protected function configureViewModalAction(ViewAction $action, string $resource): void
     {
         $action->form(function (Form $form, ?Model $record) use ($resource) {
-            $form = $resource::form($form);
+            $form = $resource::form($form)->operation('view');
 
             if ($record !== null) {
                 $form->model($record);

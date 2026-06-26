@@ -76,6 +76,7 @@ abstract class LayoutComponent extends FormComponent
             'columnStart' => $this->getColumnStart(),
             $this->getChildComponentsVuePropKey() => array_map(fn ($c) => $c->toVueProps(), $this->getChildComponents()),
             'context' => $this->getContext()?->value,
+            'operation' => $this->getOperation(),
             'contained' => $this->isContained(),
             'style' => $this->getStylePassThrough(),
         ]);

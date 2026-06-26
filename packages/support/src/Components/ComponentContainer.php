@@ -4,12 +4,14 @@ namespace Primix\Support\Components;
 
 use Primix\Support\Concerns\BelongsToLiVue;
 use Primix\Support\Concerns\EvaluatesClosures;
+use Primix\Support\Concerns\HasOperation;
 use Primix\Support\Concerns\Makeable;
 
 abstract class ComponentContainer
 {
     use BelongsToLiVue;
     use EvaluatesClosures;
+    use HasOperation;
     use Makeable;
 
     public function getRecord(): mixed

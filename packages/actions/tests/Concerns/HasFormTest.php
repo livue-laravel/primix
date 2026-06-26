@@ -1,6 +1,7 @@
 <?php
 
 use Primix\Actions\Action;
+use Primix\Forms\Form;
 use Primix\Forms\Components\Fields\Select;
 use Primix\Forms\Components\Fields\TextInput;
 use Primix\Support\ComponentTypeRegistry;
@@ -81,6 +82,30 @@ it('can build form schema from definitions with callbacks', function () {
 
     expect($schema)->toHaveCount(1);
     expect($schema[0])->toBeInstanceOf(Select::class);
+});
+
+it('buildForm preserves the operation set inside the form closure', function () {
+    // Mirrors how ListRecords wires modal CreateAction/EditAction/ViewAction:
+    // the closure receives the pre-built Form and sets the resource operation on it.
+    $action = Action::make('create')->form(
+        fn (Form $form) => $form->schema([TextInput::make('slug')])->operation('create')
+    );
+
+    $form = $action->buildForm();
+
+    expect($form)->toBeInstanceOf(Form::class);
+    expect($form->getOperation())->toBe('create');
+    expect($form->getComponents()[0]->getOperation())->toBe('create');
+});
+
+it('buildForm leaves operation null when the closure does not set one', function () {
+    $action = Action::make('edit')->form(
+        fn (Form $form) => $form->schema([TextInput::make('slug')])
+    );
+
+    $form = $action->buildForm();
+
+    expect($form->getOperation())->toBeNull();
 });
 
 it('has empty form data by default', function () {

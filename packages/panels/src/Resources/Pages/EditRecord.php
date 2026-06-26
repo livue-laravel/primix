@@ -108,6 +108,7 @@ class EditRecord extends Page
         $resource = $this->resolveResource();
 
         return $resource::form($form)
+            ->operation('edit')
             ->statePath('data')
             ->model($this->record)
             ->submitAction('save')

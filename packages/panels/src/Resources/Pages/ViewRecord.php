@@ -89,6 +89,7 @@ class ViewRecord extends Page
         $resource = $this->resolveResource();
 
         $details = $resource::details($details)
+            ->operation('view')
             ->statePath('data')
             ->record($this->record)
             ->model($this->record);
