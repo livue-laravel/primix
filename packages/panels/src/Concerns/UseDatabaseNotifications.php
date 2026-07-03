@@ -35,15 +35,30 @@ trait UseDatabaseNotifications
         return ['count' => $this->resolveUnreadNotificationsCount()];
     }
 
+    /**
+     * Client-invoked via `livue.getNotifications({ page, perPage })`. LiVue
+     * forwards a single non-array argument as the first positional parameter,
+     * so this method must accept the payload as an array (not typed scalars,
+     * which would raise a TypeError and silently break the panel list).
+     */
     #[Json]
-    public function getNotifications(int $page = 1, int $perPage = 15): array
+    public function getNotifications(array $options = []): array
     {
-        return $this->resolveNotificationsPayload($page, $perPage);
+        return $this->resolveNotificationsPayload(
+            (int) ($options['page'] ?? 1),
+            (int) ($options['perPage'] ?? 15),
+        );
     }
 
+    /**
+     * Client-invoked via `livue.markNotificationAsRead({ id })`. Accepts the
+     * LiVue single-object payload; falls back to a plain string id.
+     */
     #[Json]
-    public function markNotificationAsRead(string $id): array
+    public function markNotificationAsRead(array|string $payload): array
     {
+        $id = is_array($payload) ? (string) ($payload['id'] ?? '') : $payload;
+
         return $this->resolveMarkNotificationAsRead($id);
     }
 

@@ -64,6 +64,18 @@ it('ListRecords re-renders modal and table fragments after table actions', funct
         ->and($submitActionFragments)->toBe(['modal', 'table']);
 });
 
+it('list-records view emits the table fragment declared by callAction', function () {
+    // The #[Fragment('modal', 'table')] on callAction/submitMountedAction only
+    // re-renders the table after an action if the view actually emits a 'table'
+    // fragment marker. Without it, extractFragments() finds only 'modal' and the
+    // table silently stays stale (the original "tables not reactive" bug).
+    $path = app('view')->getFinder()->find('primix::pages.list-records');
+    $source = file_get_contents($path);
+
+    expect($source)->toContain("@fragment('table')")
+        ->and($source)->toContain('@endfragment');
+});
+
 // ============================================================
 // CreateRecord
 // ============================================================
