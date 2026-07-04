@@ -22,8 +22,9 @@
             id="{{ $id }}"
             :model-value="(function(v) {
                 if (!v) return null;
-                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif) : d; });
-                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif);
+                function toDate(d) { if (!d || d instanceof Date) return d || null; var s = String(d).replace(' ', 'T'); @if($component->showsTime()) if (!/[Z+\-]\d*$/.test(s.slice(-6)) && !s.endsWith('Z')) s += 'Z'; @endif return new Date(s); }
+                if (Array.isArray(v)) return v.map(toDate);
+                return toDate(v);
             })({{ $statePath }})"
             @update:model-value="(function(d) {
                 function fmt(dt) {
@@ -61,8 +62,9 @@
             id="{{ $id }}"
             :model-value="(function(v) {
                 if (!v) return null;
-                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif) : d; });
-                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif);
+                function toDate(d) { if (!d || d instanceof Date) return d || null; var s = String(d).replace(' ', 'T'); @if($component->showsTime()) if (!/[Z+\-]\d*$/.test(s.slice(-6)) && !s.endsWith('Z')) s += 'Z'; @endif return new Date(s); }
+                if (Array.isArray(v)) return v.map(toDate);
+                return toDate(v);
             })({{ $statePath }})"
             @update:model-value="(function(d) {
                 function fmt(dt) {
