@@ -10,12 +10,14 @@ use Primix\Forms\Components\Layouts\Wizard;
 use Primix\Forms\Concerns\HandlesFormFileUploads;
 use Primix\Forms\Concerns\ManagesFormRelationships;
 use Primix\Forms\Concerns\ManagesNestedRelationships;
+use Primix\Support\Concerns\HasOperation;
 use Primix\Support\SchemaBuilder;
 use Primix\Support\Enums\SchemaContext;
 
 class Form extends Schema implements Htmlable
 {
     use HandlesFormFileUploads;
+    use HasOperation;
     use ManagesFormRelationships;
     use ManagesNestedRelationships;
 
