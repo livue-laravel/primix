@@ -22,14 +22,18 @@
             id="{{ $id }}"
             :model-value="(function(v) {
                 if (!v) return null;
-                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T')) : d; });
-                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T'));
+                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif) : d; });
+                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif);
             })({{ $statePath }})"
             @update:model-value="(function(d) {
                 function fmt(dt) {
                     if (!dt || !(dt instanceof Date) || isNaN(dt.getTime())) return null;
+                    @if($component->showsTime())
+                    var s = dt.getUTCFullYear() + '-' + String(dt.getUTCMonth()+1).padStart(2,'0') + '-' + String(dt.getUTCDate()).padStart(2,'0');
+                    s += ' ' + String(dt.getUTCHours()).padStart(2,'0') + ':' + String(dt.getUTCMinutes()).padStart(2,'0');
+                    @else
                     var s = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
-                    @if($component->showsTime()) s += ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0'); @endif
+                    @endif
                     return s;
                 }
                 if (!d) { {{ $statePath }} = null; return; }
@@ -57,14 +61,18 @@
             id="{{ $id }}"
             :model-value="(function(v) {
                 if (!v) return null;
-                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T')) : d; });
-                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T'));
+                if (Array.isArray(v)) return v.map(function(d) { return d && !(d instanceof Date) ? new Date(String(d).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif) : d; });
+                return v instanceof Date ? v : new Date(String(v).replace(' ', 'T') + @if($component->showsTime()) 'Z' @else '' @endif);
             })({{ $statePath }})"
             @update:model-value="(function(d) {
                 function fmt(dt) {
                     if (!dt || !(dt instanceof Date) || isNaN(dt.getTime())) return null;
+                    @if($component->showsTime())
+                    var s = dt.getUTCFullYear() + '-' + String(dt.getUTCMonth()+1).padStart(2,'0') + '-' + String(dt.getUTCDate()).padStart(2,'0');
+                    s += ' ' + String(dt.getUTCHours()).padStart(2,'0') + ':' + String(dt.getUTCMinutes()).padStart(2,'0');
+                    @else
                     var s = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
-                    @if($component->showsTime()) s += ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0'); @endif
+                    @endif
                     return s;
                 }
                 if (!d) { {{ $statePath }} = null; return; }
