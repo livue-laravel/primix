@@ -1,7 +1,7 @@
 import we from "livue";
 import { e as Le } from "./chunks/primix-D3w9RuwV.js";
 import { s as v, f as V } from "./chunks/index-CoIgDweF.js";
-import { B as k, R as U, T as Pe, z as x, C as Ce, K as A, v as Te, V as q, k as ee, b as P, Q as j, s as B, M as Y, Y as te, l as N, J as $e, m as ne, _ as Se, t as Ke, D as Be, r as Ae, W as xe, S as Oe } from "./chunks/index-uMyjrk0Z.js";
+import { B as k, R as U, T as Pe, z as A, C as Ce, K as x, v as Te, V as q, k as ee, b as P, Q as j, s as B, M as Y, Y as te, l as N, J as $e, m as ne, _ as Se, t as Ke, D as Be, r as xe, W as Ae, S as Oe } from "./chunks/index-uMyjrk0Z.js";
 import { openBlock as l, createElementBlock as u, mergeProps as a, renderSlot as b, createCommentVNode as p, createElementVNode as h, resolveComponent as S, normalizeClass as C, toDisplayString as E, createVNode as T, withCtx as K, createBlock as g, resolveDynamicComponent as I, Transition as G, withDirectives as L, vShow as Z, resolveDirective as R, Fragment as $, renderList as ie, normalizeStyle as Ee, normalizeProps as Me, guardReactiveProps as ze } from "vue";
 import { s as re } from "./chunks/index-B2Wxlp19.js";
 import { s as oe, T as De } from "./chunks/index-CGQIuEMq.js";
@@ -618,8 +618,8 @@ var mt = {
     updateInkBar: function() {
       var t = this.$refs, n = t.content, r = t.inkbar, o = t.tabs;
       if (r) {
-        var i = x(n, '[data-pc-name="tab"][data-p-active="true"]');
-        this.$pcTabs.isVertical() ? (r.style.height = Ce(i) + "px", r.style.top = A(i).top - A(o).top + "px") : (r.style.width = Te(i) + "px", r.style.left = A(i).left - A(o).left + "px");
+        var i = A(n, '[data-pc-name="tab"][data-p-active="true"]');
+        this.$pcTabs.isVertical() ? (r.style.height = Ce(i) + "px", r.style.top = x(i).top - x(o).top + "px") : (r.style.width = Te(i) + "px", r.style.left = x(i).left - x(o).left + "px");
       }
     },
     updateButtonState: function() {
@@ -820,11 +820,11 @@ var kt = {
     },
     findNextTab: function(t) {
       var n = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !1, r = n ? t : t.nextElementSibling;
-      return r ? j(r, "data-p-disabled") || j(r, "data-pc-section") === "activebar" ? this.findNextTab(r) : x(r, '[data-pc-name="tab"]') : null;
+      return r ? j(r, "data-p-disabled") || j(r, "data-pc-section") === "activebar" ? this.findNextTab(r) : A(r, '[data-pc-name="tab"]') : null;
     },
     findPrevTab: function(t) {
       var n = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !1, r = n ? t : t.previousElementSibling;
-      return r ? j(r, "data-p-disabled") || j(r, "data-pc-section") === "activebar" ? this.findPrevTab(r) : x(r, '[data-pc-name="tab"]') : null;
+      return r ? j(r, "data-p-disabled") || j(r, "data-pc-section") === "activebar" ? this.findPrevTab(r) : A(r, '[data-pc-name="tab"]') : null;
     },
     findFirstTab: function() {
       return this.findNextTab(this.$pcTabList.$refs.tabs.firstElementChild, !0);
@@ -958,7 +958,7 @@ var Kt = {
 }, Bt = k.extend({
   name: "tabpanel",
   classes: Kt
-}), At = {
+}), xt = {
   name: "BaseTabPanel",
   extends: v,
   props: {
@@ -995,7 +995,7 @@ var Kt = {
   }
 }, be = {
   name: "TabPanel",
-  extends: At,
+  extends: xt,
   inheritAttrs: !1,
   inject: ["$pcTabs"],
   computed: {
@@ -1034,7 +1034,7 @@ var Kt = {
     }
   }
 };
-function xt(e, t, n, r, o, i) {
+function At(e, t, n, r, o, i) {
   var d, c;
   return i.$pcTabs ? (l(), u($, {
     key: 1
@@ -1057,7 +1057,7 @@ function xt(e, t, n, r, o, i) {
     key: 0
   });
 }
-be.render = xt;
+be.render = At;
 var Ot = `
     .p-fieldset {
         background: dt('fieldset.background');
@@ -2264,7 +2264,7 @@ var ge = {
     },
     onEnterKey: function(t) {
       if (this.focusedItemInfo.index !== -1) {
-        var n = x(this.menubar, 'li[id="'.concat("".concat(this.focusedItemId), '"]')), r = n && x(n, 'a[data-pc-section="itemlink"]');
+        var n = A(this.menubar, 'li[id="'.concat("".concat(this.focusedItemId), '"]')), r = n && A(n, 'a[data-pc-section="itemlink"]');
         r ? r.click() : n && n.click();
         var o = this.visibleItems[this.focusedItemInfo.index], i = this.isProccessedItemGroup(o);
         !i && (this.focusedItemInfo.index = this.findFirstFocusedItemIndex());
@@ -2397,7 +2397,7 @@ var ge = {
       this.focusedItemInfo.index !== n && (this.focusedItemInfo.index = n, this.scrollInView());
     },
     scrollInView: function() {
-      var t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : -1, n = t !== -1 ? "".concat(this.$id, "_").concat(t) : this.focusedItemId, r = x(this.menubar, 'li[id="'.concat(n, '"]'));
+      var t = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : -1, n = t !== -1 ? "".concat(this.$id, "_").concat(t) : this.focusedItemId, r = A(this.menubar, 'li[id="'.concat(n, '"]'));
       r && r.scrollIntoView && r.scrollIntoView({
         block: "nearest",
         inline: "start"
@@ -2968,8 +2968,8 @@ var wn = `
     },
     alignOverlay: function() {
       Be(this.container, this.target, !1);
-      var t = A(this.container), n = A(this.target), r = 0;
-      t.left < n.left && (r = n.left - t.left), this.container.style.setProperty(Ae("popover.arrow.left").name, "".concat(r, "px")), t.top < n.top && (this.container.setAttribute("data-p-popover-flipped", "true"), !this.isUnstyled && xe(this.container, "p-popover-flipped"));
+      var t = x(this.container), n = x(this.target), r = 0;
+      t.left < n.left && (r = n.left - t.left), this.container.style.setProperty(xe("popover.arrow.left").name, "".concat(r, "px")), t.top < n.top && (this.container.setAttribute("data-p-popover-flipped", "true"), !this.isUnstyled && Ae(this.container, "p-popover-flipped"));
     },
     onContentKeydown: function(t) {
       t.code === "Escape" && this.closeOnEscape && (this.hide(), P(this.target));
@@ -3112,7 +3112,28 @@ function $n(e, t, n, r, o, i) {
   }, 8, ["appendTo"]);
 }
 Ie.render = $n;
-var Sn = `
+const Sn = De.extend("tooltip", {
+  methods: {
+    align(e) {
+      const t = e.$_ptooltipModifiers || {}, n = t.top ? "top" : t.left ? "left" : t.bottom ? "bottom" : "right", r = {
+        top: ["top", "right", "bottom", "left"],
+        right: ["right", "bottom", "left", "top"],
+        bottom: ["bottom", "left", "top", "right"],
+        left: ["left", "top", "right", "bottom"]
+      }, o = {
+        top: this.alignTop,
+        right: this.alignRight,
+        bottom: this.alignBottom,
+        left: this.alignLeft
+      };
+      for (const i of r[n])
+        if (o[i].call(this, e), !this.isOutOfBounds(e))
+          return;
+      o[n].call(this, e);
+    }
+  }
+});
+var Kn = `
     .p-tag {
         display: inline-flex;
         align-items: center;
@@ -3165,7 +3186,7 @@ var Sn = `
         background: dt('tag.contrast.background');
         color: dt('tag.contrast.color');
     }
-`, Kn = {
+`, Bn = {
   root: function(t) {
     var n = t.props;
     return ["p-tag p-component", {
@@ -3180,10 +3201,10 @@ var Sn = `
   },
   icon: "p-tag-icon",
   label: "p-tag-label"
-}, Bn = k.extend({
+}, xn = k.extend({
   name: "tag",
-  style: Sn,
-  classes: Kn
+  style: Kn,
+  classes: Bn
 }), An = {
   name: "BaseTag",
   extends: v,
@@ -3193,7 +3214,7 @@ var Sn = `
     rounded: Boolean,
     icon: String
   },
-  style: Bn,
+  style: xn,
   provide: function() {
     return {
       $pcTag: this,
@@ -3209,14 +3230,14 @@ function F(e) {
     return t && typeof Symbol == "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
   }, F(e);
 }
-function xn(e, t, n) {
-  return (t = On(t)) in e ? Object.defineProperty(e, t, { value: n, enumerable: !0, configurable: !0, writable: !0 }) : e[t] = n, e;
+function On(e, t, n) {
+  return (t = En(t)) in e ? Object.defineProperty(e, t, { value: n, enumerable: !0, configurable: !0, writable: !0 }) : e[t] = n, e;
 }
-function On(e) {
-  var t = En(e, "string");
+function En(e) {
+  var t = Mn(e, "string");
   return F(t) == "symbol" ? t : t + "";
 }
-function En(e, t) {
+function Mn(e, t) {
   if (F(e) != "object" || !e) return e;
   var n = e[Symbol.toPrimitive];
   if (n !== void 0) {
@@ -3232,13 +3253,13 @@ var ke = {
   inheritAttrs: !1,
   computed: {
     dataP: function() {
-      return V(xn({
+      return V(On({
         rounded: this.rounded
       }, this.severity, this.severity));
     }
   }
-}, Mn = ["data-p"];
-function zn(e, t, n, r, o, i) {
+}, zn = ["data-p"];
+function Dn(e, t, n, r, o, i) {
   return l(), u("span", a({
     class: e.cx("root"),
     "data-p": i.dataP
@@ -3254,11 +3275,11 @@ function zn(e, t, n, r, o, i) {
     return [h("span", a({
       class: e.cx("label")
     }, e.ptm("label")), E(e.value), 17)];
-  }) : p("", !0)], 16, Mn);
+  }) : p("", !0)], 16, zn);
 }
-ke.render = zn;
-const Dn = (e) => {
-  e?.config?.globalProperties?.__primixSupportReady || (e.config.globalProperties.__primixSupportReady = !0, Le(e), e.component("PCard", se), e.component("PPanel", le), e.component("PTabs", de), e.component("PTabList", ue), e.component("PTab", ce), e.component("PTabPanels", me), e.component("PTabPanel", be), e.component("PFieldset", pe), e.component("PMenubar", ge), e.component("PBreadcrumb", ye), e.component("PPopover", Ie), e.directive("tooltip", De), e.component("PBadge", Ve), e.component("PTag", ke));
+ke.render = Dn;
+const Fn = (e) => {
+  e?.config?.globalProperties?.__primixSupportReady || (e.config.globalProperties.__primixSupportReady = !0, Le(e), e.component("PCard", se), e.component("PPanel", le), e.component("PTabs", de), e.component("PTabList", ue), e.component("PTab", ce), e.component("PTabPanels", me), e.component("PTabPanel", be), e.component("PFieldset", pe), e.component("PMenubar", ge), e.component("PBreadcrumb", ye), e.component("PPopover", Ie), e.directive("tooltip", Sn), e.component("PBadge", Ve), e.component("PTag", ke));
 };
-we.setup(Dn);
+we.setup(Fn);
 //# sourceMappingURL=primix-support.js.map

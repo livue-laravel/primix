@@ -32,3 +32,12 @@ textarea {
 :where(h1, h2, h3, h4, h5, h6, [data-primix-heading]) {
     font-family: var(--px-heading-font-family, var(--px-body-font-family, var(--p-font-family, inherit)));
 }
+
+/*
+ * Tooltip: larghezza naturale (no shrink al bordo del viewport) così
+ * l'overflow è misurabile e il fallback orario di smart-tooltip.js scatta.
+ */
+.p-tooltip {
+    width: max-content;
+    max-width: 20rem;
+}
