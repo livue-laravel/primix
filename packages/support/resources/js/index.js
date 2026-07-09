@@ -30,7 +30,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 
 // Overlay Components
 import Popover from 'primevue/popover';
-import Tooltip from 'primevue/tooltip';
+import SmartTooltip from './smart-tooltip';
 
 // Misc Components
 import Badge from 'primevue/badge';
@@ -63,7 +63,7 @@ const registerSupportComponents = (app) => {
     app.component('PPopover', Popover);
 
     // Directives
-    app.directive('tooltip', Tooltip);
+    app.directive('tooltip', SmartTooltip);
 
     // Misc
     app.component('PBadge', Badge);
