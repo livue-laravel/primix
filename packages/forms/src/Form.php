@@ -295,6 +295,18 @@ class Form extends Schema implements Htmlable
     public function fill(array $state = []): static
     {
         $formStatePath = $this->getStatePath();
+        $livue = $this->getLiVue();
+        $writeToLiVue = $livue !== null && $formStatePath !== null && property_exists($livue, $formStatePath);
+
+        // Expose the incoming state to the LiVue property before evaluating
+        // defaults: default closures use $get() to read sibling values, and
+        // $get() resolves against the LiVue property, not against $state.
+        // (Non-destructively: existing values — e.g. user input already
+        // hydrated — take precedence.)
+        if ($writeToLiVue) {
+            $existing = $livue->{$formStatePath};
+            $livue->{$formStatePath} = array_merge($state, is_array($existing) ? $existing : []);
+        }
 
         // Initialize every field key to null (or its default) if not already in $state
         foreach ($this->getLeafComponents() as $path => $field) {
@@ -310,10 +322,7 @@ class Form extends Schema implements Htmlable
 
         $this->state = $state;
 
-        // Write to the LiVue component's public property (non-destructively:
-        // existing values — e.g. user input already hydrated — take precedence)
-        $livue = $this->getLiVue();
-        if ($livue !== null && $formStatePath !== null && property_exists($livue, $formStatePath)) {
+        if ($writeToLiVue) {
             $existing = $livue->{$formStatePath};
             $livue->{$formStatePath} = array_merge($state, is_array($existing) ? $existing : []);
         }
