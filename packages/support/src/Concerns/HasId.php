@@ -19,7 +19,9 @@ trait HasId
     public function getId(): string
     {
         if ($this->id === null) {
-            return Str::random(8);
+            // Memoized: callers pair the id across elements (label for= /
+            // input id=), so repeated calls must return the same value.
+            $this->id = Str::random(8);
         }
 
         return $this->evaluate($this->id);
