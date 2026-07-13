@@ -2,11 +2,18 @@
     $style = $style ?? [];
     $floatLabelPt = !empty($style['label']) ? ['root' => $style['label']] : null;
 
+    // In 24h mode typing goes through a digit mask (auto ':'), so the mobile
+    // numeric keypad is enough; the mask placeholder shows the expected shape.
+    // PrimeVue hardcodes inputmode="none" on the DatePicker input, which
+    // suppresses the virtual keyboard on touch devices — override it.
+    $masked = $is24Hour;
+    $maskDigits = $withSeconds ? 6 : 4;
+
     $timePickerPt = [
-        // PrimeVue hardcodes inputmode="none" on the DatePicker input, which
-        // suppresses the virtual keyboard on touch devices and forces the
-        // overlay picker. Re-enable typing.
-        'pcInputText' => ['root' => ['inputmode' => 'text']],
+        'pcInputText' => ['root' => array_merge(
+            ['inputmode' => $masked ? 'numeric' : 'text'],
+            $masked ? ['placeholder' => $withSeconds ? '__:__:__' : '__:__'] : [],
+        )],
     ];
     if (!empty($style['picker'])) $timePickerPt['root'] = $style['picker'];
 @endphp
@@ -23,6 +30,32 @@
         input-id="{{ $id }}"
         @focus="$event.target.select(); $event.target._pxJustFocused = true"
         @mouseup="if ($event.target._pxJustFocused) { $event.preventDefault(); $event.target._pxJustFocused = false; }"
+        @if($masked)
+        {{--
+            Digit mask: strip anything that isn't a digit, pad a leading hour
+            digit > 2 (9 → 09), insert ':' between pairs. Rewriting the value
+            re-dispatches a synthetic input event so PrimeVue parses the masked
+            text; the isTrusted guard keeps that from recursing.
+        --}}
+        {{--
+            Only whitelisted globals exist in Vue template scope: no
+            HTMLInputElement/Event constructors here (tagName check and
+            e.constructor take their place).
+        --}}
+        @input="(function(e) {
+            var t = e.target;
+            if (!t || t.tagName !== 'INPUT' || !e.isTrusted) return;
+            var digits = t.value.replace(/\D/g, '').slice(0, {{ $maskDigits }});
+            if (digits.length >= 1 && digits[0] > '2') digits = ('0' + digits).slice(0, {{ $maskDigits }});
+            var masked = (digits.match(/.{1,2}/g) || []).join(':');
+            if (/[:.]$/.test(t.value) && digits.length >= 2 && digits.length < {{ $maskDigits }} && digits.length % 2 === 0) masked += ':';
+            if (masked !== t.value) {
+                t.value = masked;
+                t.setSelectionRange(masked.length, masked.length);
+                t.dispatchEvent(new e.constructor('input', { bubbles: true }));
+            }
+        })($event)"
+        @endif
         :model-value="(function(v) {
             if (!v) return null;
             if (v instanceof Date) return v;
