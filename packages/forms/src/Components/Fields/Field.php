@@ -289,6 +289,22 @@ abstract class Field extends FormComponent
         return $path;
     }
 
+    public function getId(): string
+    {
+        if ($this->id === null) {
+            // Deterministic across LiVue re-renders: a random id changes on
+            // every render, so the DOM morph can leave the <label for> and
+            // the input id pointing at ids from two different renders.
+            $path = $this->getStatePath();
+
+            if ($path !== null) {
+                $this->id = 'field-' . str_replace('.', '-', $path);
+            }
+        }
+
+        return parent::getId();
+    }
+
     public function toVueProps(): array
     {
         $statePath = $this->getStatePath();

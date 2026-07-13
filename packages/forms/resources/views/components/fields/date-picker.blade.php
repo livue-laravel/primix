@@ -59,7 +59,7 @@
         @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
     >
         <p-date-picker
-            id="{{ $id }}"
+            input-id="{{ $id }}"
             :model-value="(function(v) {
                 if (!v) return null;
                 function toDate(d) { if (!d || d instanceof Date) return d || null; var s = String(d).replace(' ', 'T'); @if($component->showsTime()) if (!/[Z+\-]\d*$/.test(s.slice(-6)) && !s.endsWith('Z')) s += 'Z'; @endif return new Date(s); }

@@ -2,15 +2,27 @@
     $style = $style ?? [];
     $floatLabelPt = !empty($style['label']) ? ['root' => $style['label']] : null;
 
-    $timePickerPt = [];
+    $timePickerPt = [
+        // PrimeVue hardcodes inputmode="none" on the DatePicker input, which
+        // suppresses the virtual keyboard on touch devices and forces the
+        // overlay picker. Re-enable typing.
+        'pcInputText' => ['root' => ['inputmode' => 'text']],
+    ];
     if (!empty($style['picker'])) $timePickerPt['root'] = $style['picker'];
 @endphp
 
 <p-float-label
     @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
 >
+    {{--
+        Select-all on focus lets the user overwrite the time by typing.
+        The mouseup guard is needed because the browser collapses a selection
+        made during the focusing click when that click's mouseup lands.
+    --}}
     <p-date-picker
-        id="{{ $id }}"
+        input-id="{{ $id }}"
+        @focus="$event.target.select(); $event.target._pxJustFocused = true"
+        @mouseup="if ($event.target._pxJustFocused) { $event.preventDefault(); $event.target._pxJustFocused = false; }"
         :model-value="(function(v) {
             if (!v) return null;
             if (v instanceof Date) return v;
