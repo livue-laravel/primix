@@ -308,14 +308,21 @@ class Form extends Schema implements Htmlable
             $livue->{$formStatePath} = array_merge($state, is_array($existing) ? $existing : []);
         }
 
-        // Initialize every field key to null (or its default) if not already in $state
+        // Initialize every field key to null (or its default) if not already in $state.
+        // Only real Fields: display-only entries (Details) must not inject their
+        // keys into the form state — the key would flow into the persisted
+        // attribute data as an explicit null (e.g. overriding a model default).
         foreach ($this->getLeafComponents() as $path => $field) {
+            if (! $field instanceof Field) {
+                continue;
+            }
+
             $relPath = ($formStatePath !== null && str_starts_with($path, $formStatePath . '.'))
                 ? substr($path, strlen($formStatePath) + 1)
                 : $path;
 
             if ($relPath === '' || ! array_key_exists($relPath, $state)) {
-                $default = method_exists($field, 'getDefaultValue') ? $field->getDefaultValue() : null;
+                $default = $field->getDefaultValue();
                 data_set($state, $relPath, $default);
             }
         }
