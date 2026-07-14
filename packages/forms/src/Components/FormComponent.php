@@ -85,30 +85,20 @@ abstract class FormComponent extends Component
         };
     }
 
-    protected function makeGetUtility(): ?Get
+    protected function makeGetUtility(): Get
     {
-        $livue = $this->getLiVue();
-
-        if (! $livue) {
-            return null;
-        }
-
+        // Get gestisce internamente il caso livue null (ritorna null per
+        // qualsiasi path): mai iniettare null al posto di $get.
         return new Get(
-            livue: $livue,
+            livue: $this->getLiVue(),
             containerStatePath: $this->container?->getStatePath(),
         );
     }
 
-    protected function makeSetUtility(): ?Set
+    protected function makeSetUtility(): Set
     {
-        $livue = $this->getLiVue();
-
-        if (! $livue) {
-            return null;
-        }
-
         return new Set(
-            livue: $livue,
+            livue: $this->getLiVue(),
             containerStatePath: $this->container?->getStatePath(),
         );
     }
