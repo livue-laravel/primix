@@ -103,6 +103,7 @@ class ViewRecord extends Page
             ->model($this->record);
 
         $entries = [];
+        $formStatePath = $form->getStatePath();
 
         foreach ($form->getLeafComponents() as $component) {
             if (! $component instanceof Field) {
@@ -113,6 +114,13 @@ class ViewRecord extends Page
 
             if ($statePath === null) {
                 continue;
+            }
+
+            // Il Details container riprefissa il proprio statePath sulle
+            // entry: il path del field va reso relativo o finisce doppio
+            // ('data.data.name') e non risolve mai.
+            if ($formStatePath && str_starts_with($statePath, $formStatePath . '.')) {
+                $statePath = substr($statePath, strlen($formStatePath) + 1);
             }
 
             $entries[] = $this->makeEntryFromField($component, $statePath);
