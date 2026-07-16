@@ -3115,21 +3115,23 @@ Ie.render = $n;
 const Sn = De.extend("tooltip", {
   methods: {
     align(e) {
-      const t = e.$_ptooltipModifiers || {}, n = t.top ? "top" : t.left ? "left" : t.bottom ? "bottom" : "right", r = {
+      const t = this.getTooltipElement(e);
+      t && (t.style.width = "max-content");
+      const n = e.$_ptooltipModifiers || {}, r = n.top ? "top" : n.left ? "left" : n.bottom ? "bottom" : "right", o = {
         top: ["top", "right", "bottom", "left"],
         right: ["right", "bottom", "left", "top"],
         bottom: ["bottom", "left", "top", "right"],
         left: ["left", "top", "right", "bottom"]
-      }, o = {
+      }, i = {
         top: this.alignTop,
         right: this.alignRight,
         bottom: this.alignBottom,
         left: this.alignLeft
       };
-      for (const i of r[n])
-        if (o[i].call(this, e), !this.isOutOfBounds(e))
+      for (const d of o[r])
+        if (i[d].call(this, e), !this.isOutOfBounds(e))
           return;
-      o[n].call(this, e);
+      i[r].call(this, e);
     }
   }
 });
