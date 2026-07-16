@@ -14,6 +14,17 @@ import Tooltip from 'primevue/tooltip';
 const SmartTooltip = Tooltip.extend('tooltip', {
     methods: {
         align(el) {
+            // PrimeVue (fitContent, default true) imposta width: fit-content
+            // INLINE sul tooltip: vince sulla regola CSS width: max-content e
+            // vicino al bordo si restringe (testo in verticale) senza mai
+            // andare out-of-bounds. Ripristiniamo la larghezza naturale prima
+            // di misurare; il max-width: 20rem del CSS resta come tetto.
+            const tooltipElement = this.getTooltipElement(el);
+
+            if (tooltipElement) {
+                tooltipElement.style.width = 'max-content';
+            }
+
             const modifiers = el.$_ptooltipModifiers || {};
             const preferred = modifiers.top ? 'top' : modifiers.left ? 'left' : modifiers.bottom ? 'bottom' : 'right';
 
