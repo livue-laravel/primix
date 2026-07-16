@@ -10,7 +10,9 @@
 @endphp
 
 <div>
-    <div class="primix-stats-overview primix-grid" style="{{ $gridStyle }}">
+    <div class="primix-stats-overview primix-grid" style="{{ $gridStyle }}"
+        @if($this->getPollInterval()) v-poll.{{ $this->getPollInterval() }}s.visible @endif
+    >
         @foreach($stats as $stat)
             @php
                 $hasDescriptionSection = in_array('description', $statCardSections ?? [], true);
