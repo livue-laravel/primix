@@ -19,7 +19,7 @@
         </div>
 
         <!-- Notification list -->
-        <div class="max-h-[32rem] overflow-y-auto">
+        <div class="max-h-[32rem] overflow-y-auto" @scroll.passive="onScroll">
             <template v-if="notifications.length > 0">
                 <NotificationItem
                     v-for="notification in notifications"
@@ -37,9 +37,14 @@
                 </svg>
                 <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ translations.no_notifications || 'No notifications' }}</p>
             </div>
+
+            <!-- Loader infinite scroll -->
+            <div v-if="loading && notifications.length > 0" class="px-4 py-3 text-center text-xs text-gray-400 dark:text-gray-500">
+                {{ translations.loading || 'Loading...' }}
+            </div>
         </div>
 
-        <!-- Load more -->
+        <!-- Load more (fallback quando la lista non ha scrollbar) -->
         <div v-if="hasMore" class="border-t border-gray-100 dark:border-gray-700">
             <button
                 type="button"
@@ -56,7 +61,7 @@
 <script setup>
 import NotificationItem from './NotificationItem.vue';
 
-defineProps({
+const props = defineProps({
     notifications: {
         type: Array,
         default: () => [],
@@ -79,5 +84,19 @@ defineProps({
     },
 });
 
-defineEmits(['load-more', 'mark-read', 'mark-all-read', 'navigate']);
+const emit = defineEmits(['load-more', 'mark-read', 'mark-all-read', 'navigate']);
+
+// Infinite scroll: vicino al fondo carica la pagina successiva. Il guard su
+// loading evita raffiche di load-more mentre la richiesta e' in volo.
+function onScroll(event) {
+    if (!props.hasMore || props.loading) {
+        return;
+    }
+
+    const el = event.target;
+
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 80) {
+        emit('load-more');
+    }
+}
 </script>

@@ -53,7 +53,7 @@
                 </div>
 
                 <!-- Notification list -->
-                <div class="flex-1 overflow-y-auto">
+                <div class="flex-1 overflow-y-auto" @scroll.passive="onScroll">
                     <template v-if="notifications.length > 0">
                         <NotificationItem
                             v-for="notification in notifications"
@@ -93,7 +93,7 @@
 import { onMounted, onUnmounted } from 'vue';
 import NotificationItem from './NotificationItem.vue';
 
-defineProps({
+const props = defineProps({
     open: {
         type: Boolean,
         default: false,
@@ -121,6 +121,19 @@ defineProps({
 });
 
 const emit = defineEmits(['close', 'load-more', 'mark-read', 'mark-all-read', 'navigate']);
+
+// Infinite scroll: vicino al fondo carica la pagina successiva.
+function onScroll(event) {
+    if (!props.hasMore || props.loading) {
+        return;
+    }
+
+    const el = event.target;
+
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 80) {
+        emit('load-more');
+    }
+}
 
 function handleEscapeKey(event) {
     if (event.key === 'Escape') {
