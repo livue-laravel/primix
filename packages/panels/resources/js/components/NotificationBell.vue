@@ -123,7 +123,7 @@ async function fetchNotifications() {
     loading.value = true;
     currentPage.value = 1;
     try {
-        const response = await livue.getNotifications({ page: 1, perPage: 15 });
+        const response = await livue.getNotifications({ page: 1, perPage: 10 });
         notifications.value = response.data ?? [];
         hasMore.value = response.hasMore ?? false;
         unreadCount.value = response.unreadCount ?? 0;
@@ -140,7 +140,7 @@ async function loadMore() {
     loading.value = true;
     currentPage.value += 1;
     try {
-        const response = await livue.getNotifications({ page: currentPage.value, perPage: 15 });
+        const response = await livue.getNotifications({ page: currentPage.value, perPage: 10 });
         notifications.value = [...notifications.value, ...(response.data ?? [])];
         hasMore.value = response.hasMore ?? false;
     } catch {
