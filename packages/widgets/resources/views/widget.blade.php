@@ -35,6 +35,7 @@
     @if($boxedStyle) style="{{ $boxedStyle }}" @endif
     data-primix-widget
     data-primix-widget-variant="{{ $resolvedVariant }}"
+    @if(($widget instanceof \Primix\Widgets\Widget) && $widget->getPollInterval()) v-poll.{{ $widget->getPollInterval() }}s.visible @endif
 >
     {{ $slot }}
 </div>

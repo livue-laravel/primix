@@ -14,6 +14,13 @@ abstract class Widget extends Component
 
     public string $variant = 'boxed';
 
+    /**
+     * Re-render automatico del widget ogni N secondi via LiVue v-poll
+     * (in pausa con tab inattivo, attivo solo se visibile nel viewport).
+     * Null = nessun polling.
+     */
+    protected static ?int $pollInterval = null;
+
     protected ?int $sort = null;
 
     public function mount(?string $variant = null): void
@@ -71,6 +78,11 @@ abstract class Widget extends Component
     public function getVariant(): string
     {
         return $this->variant;
+    }
+
+    public function getPollInterval(): ?int
+    {
+        return static::$pollInterval !== null ? max(1, static::$pollInterval) : null;
     }
 
     public function isBoxed(): bool
