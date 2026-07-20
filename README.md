@@ -180,7 +180,7 @@ Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md)
 
 ## Credits
 
-- [Claudio Castorina](https://github.com/ccastit)
+- [Claudio Castorina](https://github.com/c-claucast)
 - [All Contributors](https://github.com/livue-laravel/primix/graphs/contributors)
 
 ## License
