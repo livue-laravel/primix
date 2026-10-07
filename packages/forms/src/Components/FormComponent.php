@@ -11,6 +11,23 @@ abstract class FormComponent extends Component
 {
     protected bool|Closure $isUnwrapped = false;
 
+    protected ?string $scopeStatePath = null;
+
+    /**
+     * The state a closure of this component reads and writes through `$get` and
+     * `$set`, when it is not the container's.
+     *
+     * A field rendered for one row of a Repeater has no container — its state
+     * path is already the full one — so without this its `$get('type')` would
+     * read the root of the form instead of the row it belongs to.
+     */
+    public function scopeStatePath(?string $path): static
+    {
+        $this->scopeStatePath = $path;
+
+        return $this;
+    }
+
     public function unwrapped(bool|Closure $condition = true): static
     {
         $this->isUnwrapped = $condition;
@@ -91,7 +108,7 @@ abstract class FormComponent extends Component
         // qualsiasi path): mai iniettare null al posto di $get.
         return new Get(
             livue: $this->getLiVue(),
-            containerStatePath: $this->container?->getStatePath(),
+            containerStatePath: $this->scopeStatePath ?? $this->container?->getStatePath(),
         );
     }
 
@@ -99,7 +116,7 @@ abstract class FormComponent extends Component
     {
         return new Set(
             livue: $this->getLiVue(),
-            containerStatePath: $this->container?->getStatePath(),
+            containerStatePath: $this->scopeStatePath ?? $this->container?->getStatePath(),
         );
     }
 }

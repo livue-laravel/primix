@@ -1,7 +1,9 @@
 <?php
 
 use Primix\Forms\Components\Fields\Repeater;
+use Primix\Forms\Components\Fields\Select;
 use Primix\Forms\Components\Fields\TextInput;
+use Primix\Forms\Components\Utilities\Get;
 
 it('can set schema', function () {
     $field = Repeater::make('items')->schema([
@@ -217,4 +219,99 @@ it('getBlankItemData works correctly after getChildComponents isolation', functi
     // getBlankItemData uses getSchema(), not getChildComponents() — must still work
     expect($field->getBlankItemData())->toBe(['title' => 'Draft', 'qty' => 1]);
     expect($field->getChildComponents())->toHaveCount(0);
+});
+
+/*
+ * A field of a row is a field like any other: it reads the row it belongs to,
+ * it knows the operation the form is in, and when it says it is hidden, it is
+ * not rendered. The controlling field has to be watched, or nothing asks the
+ * server to render the row again.
+ */
+
+/** The smallest LiVue component that holds form state. */
+class RepeaterStateHost extends LiVue\Component
+{
+    public array $data = [];
+
+    protected function render(): string
+    {
+        return 'repeater-state-host';
+    }
+}
+
+function repeaterHostWith(array $data): RepeaterStateHost
+{
+    $host = new RepeaterStateHost();
+    $host->data = $data;
+
+    return $host;
+}
+
+beforeEach(function () {
+    // A field's blade reads the error bag of the request.
+    view()->share('errors', new Illuminate\Support\ViewErrorBag());
+});
+
+function repeaterFor(array $schema, array $rows): Repeater
+{
+    $repeater = Repeater::make('conditions')->schema($schema);
+    $repeater->statePath('data.conditions');
+    $repeater->livue(repeaterHostWith(['conditions' => $rows]));
+
+    return $repeater;
+}
+
+it('reads the row a field belongs to, not the root of the form', function () {
+    $seen = [];
+
+    $repeater = repeaterFor([
+        Select::make('type'),
+        TextInput::make('value')->visible(function (Get $get) use (&$seen): bool {
+            $seen[] = $get('type');
+
+            return $get('type') === 'page';
+        }),
+    ], [
+        ['type' => 'page', 'value' => 'home'],
+        ['type' => 'url', 'value' => 'https://example.test'],
+    ]);
+
+    $first = $repeater->renderItemField($repeater->getSchema()[1], 0);
+    $second = $repeater->renderItemField($repeater->getSchema()[1], 1);
+
+    expect($seen)->toBe(['page', 'url'])
+        ->and($first)->not->toBe('')
+        // The second row asks for a URL, so its page picker is not there.
+        ->and($second)->toBe('');
+});
+
+it('renders a field that is visible for that row, with the row in its state path', function () {
+    $repeater = repeaterFor([
+        Select::make('type'),
+        TextInput::make('value')->visible(static fn (Get $get): bool => $get('type') === 'page'),
+    ], [['type' => 'page', 'value' => 'home']]);
+
+    expect($repeater->renderItemField($repeater->getSchema()[1], 0))
+        ->toContain('data.conditions[0].value');
+});
+
+it('gives a row the operation the form is in', function () {
+    $repeater = repeaterFor([
+        TextInput::make('value')->hiddenOn('create'),
+    ], [['value' => 'home']]);
+
+    $repeater->operation('create');
+    expect($repeater->renderItemField($repeater->getSchema()[0], 0))->toBe('');
+
+    $repeater->operation('edit');
+    expect($repeater->renderItemField($repeater->getSchema()[0], 0))->not->toBe('');
+});
+
+it('hides a field of a row in the table layout too', function () {
+    $repeater = repeaterFor([
+        Select::make('type'),
+        TextInput::make('value')->visible(static fn (Get $get): bool => $get('type') === 'page'),
+    ], [['type' => 'url']]);
+
+    expect($repeater->renderItemFieldForTable($repeater->getSchema()[1], 0))->toBe('');
 });

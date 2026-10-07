@@ -247,25 +247,13 @@ class Repeater extends Field
      */
     public function renderItemFieldForTable(object $field, int $index): string
     {
-        $clone = clone $field;
+        $clone = $this->prepareItemField($field, $index);
 
-        $itemPath = $this->getStatePath() . '.' . $index . '.' . $field->getName();
-        $clone->statePath($itemPath);
-
-        if (method_exists($clone, 'container')) {
-            $clone->container(null);
-        }
-
-        $livue = $this->getLiVue();
-        if ($livue && method_exists($clone, 'livue')) {
-            $clone->livue($livue);
+        if ($clone === null) {
+            return '';
         }
 
         $clone->hiddenLabel();
-
-        if ($this->isUnwrapped() && method_exists($clone, 'unwrapped')) {
-            $clone->unwrapped();
-        }
 
         return $clone->toHtml();
     }
@@ -276,6 +264,23 @@ class Repeater extends Field
      */
     public function renderItemField(object $field, int $index): string
     {
+        $clone = $this->prepareItemField($field, $index);
+
+        return $clone === null ? '' : $clone->toHtml();
+    }
+
+    /**
+     * One field of the schema, bound to one row: its state path, the row its
+     * closures read through `$get`, the LiVue context and the operation the
+     * repeater itself was rendered for.
+     *
+     * Returns null when the field is hidden for that row — a field whose
+     * `visible()` or `hiddenOn()` answers no is not rendered, exactly as it
+     * would not be outside a repeater. The controlling field has to be watched
+     * (`->watch()`), or nothing asks the server to render the row again.
+     */
+    protected function prepareItemField(object $field, int $index): ?object
+    {
         $clone = clone $field;
 
         $itemPath = $this->getStatePath() . '.' . $index . '.' . $field->getName();
@@ -284,6 +289,16 @@ class Repeater extends Field
         // Clear container to prevent double-prefixing in getStatePath()
         if (method_exists($clone, 'container')) {
             $clone->container(null);
+        }
+
+        // …which also takes away what the container answered: the row a closure
+        // reads, and the operation the form is in.
+        if (method_exists($clone, 'scopeStatePath')) {
+            $clone->scopeStatePath($this->getStatePath() . '.' . $index);
+        }
+
+        if (method_exists($clone, 'operation')) {
+            $clone->operation($this->getOperation());
         }
 
         // Propagate LiVue context
@@ -297,7 +312,11 @@ class Repeater extends Field
             $clone->unwrapped();
         }
 
-        return $clone->toHtml();
+        if (method_exists($clone, 'isHidden') && $clone->isHidden()) {
+            return null;
+        }
+
+        return $clone;
     }
 
     public function getChildComponents(): array
