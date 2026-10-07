@@ -7,7 +7,7 @@
 
 <div class="flex items-start gap-2">
     <p-checkbox
-        id="{{ $id }}"
+        input-id="{{ $id }}"
         v-model="{{ $statePath }}"
         binary
         @if($disabled) disabled @endif

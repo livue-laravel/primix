@@ -7,7 +7,7 @@
 
 <div class="flex items-center gap-3">
     <p-color-picker
-        id="{{ $id }}"
+        input-id="{{ $id }}"
         v-model="{{ $statePath }}"
         format="{{ $format }}"
         @if($inline) inline @endif

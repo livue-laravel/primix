@@ -2,7 +2,7 @@
     @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
 >
     <p-input-number
-        id="{{ $id }}"
+        input-id="{{ $id }}"
         v-model="{{ $statePath }}"
         @if($disabled) :disabled="true" @endif
         @error($component->getStatePath()) :invalid="true" @enderror

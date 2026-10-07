@@ -102,7 +102,7 @@
         @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
     >
         <p-tree-select
-            id="{{ $id }}"
+            input-id="{{ $id }}"
             v-model="{{ $statePath }}"
             :options="{!! $initialOptionsJs !!}"
             option-disabled="disabled"
@@ -127,7 +127,7 @@
         @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
     >
         <p-cascade-select
-            id="{{ $id }}"
+            input-id="{{ $id }}"
             v-model="{{ $statePath }}"
             :options="{!! $initialOptionsJs !!}"
             option-label="label"
@@ -180,7 +180,7 @@
         @if($floatLabelPt) :pt="{!! \Illuminate\Support\Js::from($floatLabelPt) !!}" @endif
     >
         <p-auto-complete
-            id="{{ $id }}"
+            input-id="{{ $id }}"
             v-model="{{ $statePath }}"
             option-disabled="disabled"
             @if($asyncSearch)
@@ -221,7 +221,7 @@
             @if($multiple)
                 <p-multi-select
                     key="{{ uniqid('ms-') }}"
-                    id="{{ $id }}"
+                    input-id="{{ $id }}"
                     v-model="{{ $statePath }}"
                     option-disabled="disabled"
                     @if($asyncSearch)
@@ -251,7 +251,7 @@
             @else
                 <p-select
                     key="{{ uniqid('s-') }}"
-                    id="{{ $id }}"
+                    input-id="{{ $id }}"
                     v-model="{{ $statePath }}"
                     option-disabled="disabled"
                     @if($asyncSearch)

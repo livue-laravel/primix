@@ -28,7 +28,7 @@
         @endif
     </label>
     <p-toggle-switch
-        id="{{ $id }}"
+        input-id="{{ $id }}"
         v-model="{{ $statePath }}"
         @if($disabled) disabled @endif
         @error($component->getStatePath()) invalid @enderror
