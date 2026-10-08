@@ -134,17 +134,24 @@
             </div>
         </div>
 
-        {{-- Remove Button --}}
-        <button
-            v-if="{{ $vueStatePath }}"
-            type="button"
-            class="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm transition-colors"
-            @click.stop="livue.removeUpload('{{ $statePath }}')"
-            @if($disabled) disabled style="display: none;" @endif
-            title="{{ __('primix-forms::forms.file_upload.remove') }}"
-        >
-            <i class="pi pi-times text-xs"></i>
-        </button>
+        {{-- Remove --}}
+        @if(! $disabled)
+            <template v-if="{{ $vueStatePath }}">
+                @php
+                    $removeAvatarUploadedFileAction = \Primix\Actions\Action::make('removeAvatarUploadedFile')
+                        ->label(__('primix-forms::forms.file_upload.remove'))
+                        ->icon('pi pi-times')
+                        ->iconButton(true, false)
+                        ->color('danger')
+                        ->jsAction("\$event.stopPropagation(); livue.removeUpload('{$statePath}')")
+                        ->extraAttributes([
+                            'class' => 'absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-sm transition-colors',
+                            'title' => __('primix-forms::forms.file_upload.remove'),
+                        ]);
+                @endphp
+                {{ $removeAvatarUploadedFileAction }}
+            </template>
+        @endif
     </div>
 
     {{-- Upload Error --}}
@@ -153,9 +160,19 @@
         class="mt-2 text-xs text-red-600 dark:text-red-400"
     >
         <span v-text="livue.errors['{{ $statePath }}'].message"></span>
-        <button type="button" class="ml-1 text-red-400 hover:text-red-600" @click="delete livue.errors['{{ $statePath }}']">
-            <i class="pi pi-times text-xs"></i>
-        </button>
+        @php
+            $dismissAvatarUploadErrorAction = \Primix\Actions\Action::make('dismissAvatarUploadError')
+                ->label(__('primix-forms::forms.file_upload.close'))
+                ->icon('pi pi-times')
+                ->iconButton(true, false)
+                ->color('danger')
+                ->jsAction("delete livue.errors['{$statePath}']")
+                ->extraAttributes([
+                    'class' => 'ml-1 text-red-400 hover:text-red-600',
+                    'title' => __('primix-forms::forms.file_upload.close'),
+                ]);
+        @endphp
+        {{ $dismissAvatarUploadErrorAction }}
     </div>
 
     {{-- Image Editor Modal --}}
