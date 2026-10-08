@@ -107,28 +107,39 @@ describe('TimePicker', function () {
 // === Repeater ===
 
 describe('Repeater', function () {
+    // Un repeater non obbligatorio arriva vuoto come null, non come lista
+    // vuota: senza `nullable` la regola `array` lo boccia. Vedi il fix in
+    // Repeater::getAutoRules().
     it('always adds array auto-rule', function () {
         $field = Repeater::make('items');
 
-        expect($field->getRules())->toBe('array');
+        expect($field->getRules())->toBe('nullable|array');
     });
 
     it('adds min auto-rule with minItems', function () {
         $field = Repeater::make('items')->minItems(1);
 
-        expect($field->getRules())->toBe('array|min:1');
+        expect($field->getRules())->toBe('nullable|array|min:1');
     });
 
     it('adds max auto-rule with maxItems', function () {
         $field = Repeater::make('items')->maxItems(5);
 
-        expect($field->getRules())->toBe('array|max:5');
+        expect($field->getRules())->toBe('nullable|array|max:5');
     });
 
     it('adds both min and max auto-rules', function () {
         $field = Repeater::make('items')->minItems(1)->maxItems(10);
 
-        expect($field->getRules())->toBe('array|min:1|max:10');
+        expect($field->getRules())->toBe('nullable|array|min:1|max:10');
+    });
+
+    // E quando è obbligatorio il `nullable` non ci va: sarebbe il contrario
+    // di quello che il campo chiede.
+    it('asks for the rows instead, when it is required', function () {
+        expect(Repeater::make('items')->required()->getRules())->toBe('required|array')
+            ->and(Repeater::make('items')->required()->minItems(2)->getRules())
+            ->toBe('required|array|min:2');
     });
 });
 
